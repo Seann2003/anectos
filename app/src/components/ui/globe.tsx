@@ -218,11 +218,7 @@ export function Globe({ globeConfig, data }: WorldProps) {
     };
   }, [globeRef.current, globeData]);
 
-  return (
-    <>
-      <threeGlobe ref={globeRef} />
-    </>
-  );
+  return <></>;
 }
 
 export function WebGLRendererConfig() {
