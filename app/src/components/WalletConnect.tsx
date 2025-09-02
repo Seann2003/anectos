@@ -1,46 +1,53 @@
 "use client";
 
-import dynamic from "next/dynamic";
-import {
-  ConnectionProvider,
-  WalletProvider,
-} from "@solana/wallet-adapter-react";
-import { WalletModalProvider } from "@solana/wallet-adapter-react-ui";
-import {
-  BitgetWalletAdapter,
-  PhantomWalletAdapter,
-  SolflareWalletAdapter,
-  SalmonWalletAdapter,
-} from "@solana/wallet-adapter-wallets";
-import { ReactNode, useMemo } from "react";
-import "@solana/wallet-adapter-react-ui/styles.css";
-import { CONNECTION } from "../lib/constants";
+// This component is now deprecated in favor of Crossmint wallet integration
+// See CrossmintProvider.tsx and WalletDashboard.tsx for the new implementation
 
-export const WalletMultiButtonDynamic = dynamic(
-  async () =>
-    (await import("@solana/wallet-adapter-react-ui")).WalletMultiButton,
-  {
-    ssr: false,
+import { useAuth, useWallet } from "@crossmint/client-sdk-react-ui";
+
+export function WalletStatus() {
+  const { user } = useAuth();
+  const { wallet, status } = useWallet();
+
+  if (!user) {
+    return (
+      <div className="text-center p-4">
+        <p>Please log in to access your wallet</p>
+      </div>
+    );
   }
-);
 
-export function SolanaProvider({ children }: { children: ReactNode }) {
-  const endpoint = useMemo(() => CONNECTION.rpcEndpoint, []);
-  const wallets = useMemo(
-    () => [
-      new PhantomWalletAdapter(),
-      new SolflareWalletAdapter(),
-      new BitgetWalletAdapter(),
-      new SalmonWalletAdapter(),
-    ],
-    []
-  );
+  if (status === "in-progress") {
+    return (
+      <div className="text-center p-4">
+        <p>Creating your wallet...</p>
+      </div>
+    );
+  }
+
+  if (wallet) {
+    return (
+      <div className="text-center p-4">
+        <p>
+          Wallet connected: {wallet.address.slice(0, 8)}...
+          {wallet.address.slice(-8)}
+        </p>
+      </div>
+    );
+  }
 
   return (
-    <ConnectionProvider endpoint={endpoint}>
-      <WalletProvider wallets={wallets} autoConnect>
-        <WalletModalProvider>{children}</WalletModalProvider>
-      </WalletProvider>
-    </ConnectionProvider>
+    <div className="text-center p-4">
+      <p>Wallet not available</p>
+    </div>
   );
 }
+
+// Legacy Solana wallet adapter components (kept for reference)
+export const WalletMultiButtonDynamic = null;
+export const SolanaProvider = ({ children }: { children: React.ReactNode }) => (
+  <>{children}</>
+);
+
+// Export the new component as the default
+export default WalletStatus;

@@ -1,8 +1,9 @@
 import type { Metadata } from "next";
 import { Barlow_Condensed } from "next/font/google";
 import "./globals.css";
-import { SolanaProvider } from "@/components/WalletConnect";
 import Navbar from "@/components/Navbar";
+import { Cross } from "lucide-react";
+import { CrossmintProviders } from "@/providers/CrossmintProvider";
 
 const barlow = Barlow_Condensed({
   subsets: ["latin"],
@@ -22,12 +23,12 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body
-        className={`${barlow.className} antialiased bg-gradient-to-r from-[#1B1F4B] via-[#800080] to-[#FF1493]`}
+        className={`${barlow.className} antialiased bg-gradient-to-r from-blue-200 via-blue-400 to-blue-300`}
       >
-        <SolanaProvider>
+        <CrossmintProviders>
           <Navbar />
           {children}
-        </SolanaProvider>
+        </CrossmintProviders>
       </body>
     </html>
   );

@@ -11,6 +11,8 @@ import {
   SunMedium,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { useAuth } from "@crossmint/client-sdk-react-ui";
+import WalletDashboard from "@/components/WalletDashboard";
 import dynamic from "next/dynamic";
 
 const World = dynamic(
@@ -21,6 +23,9 @@ const World = dynamic(
 );
 
 export default function Home() {
+  const { user } = useAuth();
+  const [showWallet, setShowWallet] = useState(false);
+
   const globeConfig = {
     pointSize: 4,
     globeColor: "#062056",
@@ -436,7 +441,7 @@ export default function Home() {
   ];
 
   return (
-    <div className=" text-gray-100 flex flex-col justify-center items-center">
+    <div className=" text-gray-200 flex flex-col justify-center items-center from-blue-200 via-blue-400 to-blue-300 bg-radial-gradient min-h-screen">
       {/* Hero Section */}
       <section className="min-h-screen flex items-center justify-center flex-col">
         <div className="absolute w-full lg:-bottom-20 h-72 md:h-full -z-50">
@@ -444,24 +449,64 @@ export default function Home() {
         </div>
 
         <div className="space-y-8">
-          <h1 className="text-6xl md:text-7xl font-extrabold leading-tight text-white">
-            Welcome to the Future of
-            <span className="block text-transparent bg-clip-text bg-gradient-to-r from-purple-400 to-pink-600">
+          <h1 className="text-6xl md:text-7xl font-extrabold leading-tight text-gray-200">
+            Welcome to the Future of{" "}
+            <span className="block bg-clip-text bg-gradient-to-r text-blue-800">
               Decentralized Governance
             </span>
           </h1>
-          <p className="text-2xl text-gray-300">
+          <p className="text-2xl text-gray-200">
             A Decentralized Autonomous Organization on Solana supporting
             regenerative businesses through community governance and quadratic
             funding.
           </p>
           <div className="flex flex-col sm:flex-row gap-4">
-            <Button variant={"cover"} className="h-16 w-52 text-xl">
+            <Button variant={"default"} className="h-16 w-52 text-xl">
               Get Started <ArrowRight className="ml-2 h-28 w-28" />
             </Button>
+            <Button
+              variant={"outline"}
+              className="h-16 w-52 text-xl bg-transparent border-blue-500 text-blue-600 hover:bg-blue-500 hover:text-white"
+              onClick={() => (window.location.href = "/projects")}
+            >
+              Browse Projects
+            </Button>
+            {user && (
+              <>
+                <Button
+                  variant={"outline"}
+                  className="h-16 w-52 text-xl bg-transparent border-green-500 text-green-600 hover:bg-green-500 hover:text-white"
+                  onClick={() => (window.location.href = "/governance")}
+                >
+                  DAO Governance
+                </Button>
+                <Button
+                  variant={"outline"}
+                  className="h-16 w-52 text-xl bg-transparent border-purple-500 text-purple-600 hover:bg-purple-500 hover:text-white"
+                  onClick={() => setShowWallet(!showWallet)}
+                >
+                  {showWallet ? "Hide Wallet" : "View Wallet"}
+                </Button>
+              </>
+            )}
           </div>
         </div>
       </section>
+
+      {/* Wallet Dashboard Section */}
+      {user && showWallet && (
+        <section className="py-20 px-6 w-full">
+          <div className="container mx-auto">
+            <div className="text-center mb-8">
+              <h2 className="text-4xl font-bold mb-4">Your Wallet</h2>
+              <p className="text-xl text-gray-300">
+                Manage your Solana wallet and participate in the DAO
+              </p>
+            </div>
+            <WalletDashboard />
+          </div>
+        </section>
+      )}
 
       <section className="py-20 px-6">
         <div className="container mx-auto">
@@ -469,7 +514,7 @@ export default function Home() {
             <h2 className="text-4xl font-bold mb-4">
               Empowering Regenerative Economy
             </h2>
-            <p className="text-xl text-gray-400 max-w-3xl mx-auto">
+            <p className="text-xl text-gray-300 max-w-3xl mx-auto">
               Anectos combines the power of Solana blockchain with
               community-driven governance to create sustainable impact.
             </p>
@@ -532,7 +577,7 @@ export default function Home() {
       <section className="py-20 px-6 bg-gradient-to-b">
         <div className="text-center mb-16">
           <h2 className="text-4xl font-bold mb-4">How Anectos Works</h2>
-          <p className="text-xl text-gray-400 max-w-3xl mx-auto">
+          <p className="text-xl text-gray-300 max-w-3xl mx-auto">
             Our decentralized platform makes it easy to participate in funding
             and governance decisions.
           </p>
@@ -548,7 +593,7 @@ export default function Home() {
               </div>
               <div className={`md:w-4/5`}>
                 <h3 className="text-2xl font-bold mb-3">{step.title}</h3>
-                <p className="text-gray-400">{step.description}</p>
+                <p className="text-gray-300">{step.description}</p>
               </div>
             </div>
           ))}
