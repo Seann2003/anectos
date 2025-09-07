@@ -1,12 +1,12 @@
 [package]
-name = "anectos"
+name = "anectos_project"
 version = "0.1.0"
 description = "Created with Anchor"
 edition = "2021"
 
 [lib]
 crate-type = ["cdylib", "lib"]
-name = "anectos"
+name = "anectos_project"
 
 [features]
 default = []
@@ -16,5 +16,11 @@ no-idl = []
 no-log-ix-name = []
 idl-build = ["anchor-lang/idl-build"]
 
+
 [dependencies]
 anchor-lang = "0.31.1"
+num-derive = "0.4.2"
+num-traits = "0.2.19"
+
+[dev-dependencies]
+# Using basic testing dependencies only
