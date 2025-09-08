@@ -25,7 +25,6 @@ pub fn handler(ctx: Context<DistributeFundsToOwner>, amount: u64) -> Result<()> 
     require!(project.owner == ctx.accounts.owner.key(), AnectosError::Unauthorized);
     require!(project.current_funding > 0, AnectosError::InsufficientProjectVaultFunds);
 
-    // Check milestone achievement
     if project.milestones.get(0).map_or(false, |m| m.is_achieved) {
         let bindings = ctx.accounts.owner.key();
         let signer_seeds = [b"vault", bindings.as_ref(), &[ctx.bumps.vault]];

@@ -11,7 +11,7 @@ use anchor_lang::prelude::*;
 pub use instructions::*;
 pub use state::*;
 
-declare_id!("GwfpLkrezJQFnHwNMa3e6PRJ2Q2TvbXC77uWaam3T9zE");
+declare_id!("26yr8seqaSUEJidnG6yif5W6Fgm84MfkC7UP7ZNAjwgj");
 
 #[program]
 pub mod anectos {

@@ -1,5 +1,5 @@
 use anchor_lang::prelude::*;
-use crate::{state::{Milestone, Project}, FundingStage, ProjectMeta, SDGGoals};
+use crate::{state::{Milestone, Project, ProjectCreated}, FundingStage, ProjectMeta, SDGGoals};
 
 #[derive(Accounts)]
 pub struct CreateProject<'info> {
@@ -79,6 +79,14 @@ pub fn handler(
     project_metadata.description = description;
     project_metadata.funding_stage = FundingStage::Planning;
     project_metadata.sdg_goals = sdg_goals;
+
+    emit!(ProjectCreated {
+        project: project.key(),
+        owner: ctx.accounts.owner.key(),
+        target_amount,
+        milestone_count,
+        timestamp: Clock::get()?.unix_timestamp,
+    });
 
     Ok(())
 }

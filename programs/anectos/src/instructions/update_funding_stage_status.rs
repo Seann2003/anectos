@@ -11,7 +11,6 @@ pub struct UpdateFundingStageStatus<'info> {
 
 pub fn handler(ctx: Context<UpdateFundingStageStatus>, is_active: bool) -> Result<()> {
 	let round = &mut ctx.accounts.funding_round;
-	require!(round.owner == ctx.accounts.owner.key(), AnectosError::Unauthorized);
 	round.is_active = is_active;
 	Ok(())
 }

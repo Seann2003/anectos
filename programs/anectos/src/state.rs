@@ -148,3 +148,30 @@ impl ProjectMeta {
         (ProjectMeta::INIT_SPACE * max_sdg_goals + 4) // sdg_goals
     }
 }
+
+// Events following Splurge pattern
+#[event]
+pub struct ContributionMade {
+    pub project: Pubkey,
+    pub contributor: Pubkey,
+    pub amount: u64,
+    pub new_total_funding: u64,
+    pub timestamp: i64,
+}
+
+#[event]
+pub struct ProjectCreated {
+    pub project: Pubkey,
+    pub owner: Pubkey,
+    pub target_amount: u64,
+    pub milestone_count: u8,
+    pub timestamp: i64,
+}
+
+#[event]
+pub struct MilestoneCompleted {
+    pub project: Pubkey,
+    pub milestone_index: u8,
+    pub milestone_amount: u64,
+    pub timestamp: i64,
+}

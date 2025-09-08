@@ -1,6 +1,8 @@
 use anchor_lang::prelude::*;
 use crate::state::{FundingRound, Project};
+use crate::error::AnectosError;
 use anchor_lang::system_program::{transfer, Transfer};
+use crate::state::ContributionMade;
 
 #[derive(Accounts)]
 pub struct Contribute<'info> {
@@ -24,8 +26,12 @@ pub struct Contribute<'info> {
 }
 
 pub fn handler(ctx: Context<Contribute>, amount: u64) -> Result<()> {
+	require!(amount > 0, AnectosError::InvalidContributionAmount);
+	
 	let funding_round = &mut ctx.accounts.funding_round;
 	let project = &mut ctx.accounts.project;
+	
+	require!(funding_round.is_active, AnectosError::FundingRoundInactive);
 
     transfer(
         CpiContext::new(
@@ -49,6 +55,13 @@ pub fn handler(ctx: Context<Contribute>, amount: u64) -> Result<()> {
 
 	funding_round.contributor_count = funding_round.contributor_count.checked_add(1).unwrap();
 
+    emit!(ContributionMade {
+        project: project.key(),
+        contributor: ctx.accounts.user.key(),
+        amount,
+        new_total_funding: project.current_funding,
+        timestamp: Clock::get()?.unix_timestamp,
+    });
     
 	Ok(())
 }

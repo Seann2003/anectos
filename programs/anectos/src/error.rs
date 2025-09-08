@@ -10,12 +10,16 @@ pub enum AnectosError {
     FundingRoundNotStarted,
     #[msg("You are not authorized to perform this action.")]
     Unauthorized,
+    #[msg("Invalid contribution amount. Amount must be greater than 0.")]
+    InvalidContributionAmount,
     #[msg("The project is not whitelisted.")]
     ProjectNotWhitelisted,
     #[msg("The project has already withdrawn funds.")]
     ProjectAlreadyWithdrawn,
     #[msg("Milestone index out of bounds.")]
     MilestoneIndexOutOfBounds,
+    #[msg("Milestone has already been completed.")]
+    MilestoneAlreadyCompleted,
     #[msg("Insufficient funds in the project vault.")]
     InsufficientProjectVaultFunds,
     #[msg("The funding round is already closed.")]

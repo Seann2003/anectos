@@ -21,6 +21,3 @@ idl-build = ["anchor-lang/idl-build"]
 anchor-lang = "0.31.1"
 num-derive = "0.4.2"
 num-traits = "0.2.19"
-
-[dev-dependencies]
-# Using basic testing dependencies only

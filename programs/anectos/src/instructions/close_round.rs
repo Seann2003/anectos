@@ -12,7 +12,6 @@ pub struct CloseRound<'info> {
 
 pub fn handler(ctx: Context<CloseRound>) -> Result<()> {
 	let round = &mut ctx.accounts.funding_round;
-	require!(round.owner == ctx.accounts.owner.key(), AnectosError::Unauthorized);
 	round.is_active = false;
 	Ok(())
 }

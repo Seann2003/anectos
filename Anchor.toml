@@ -6,7 +6,7 @@ resolution = true
 skip-lint = false
 
 [programs.localnet]
-anectos_project = "3mtsJ1setNtaaQEa8koYmsfz4bx1b8xWMQnrbMCAC4mp"
+anectos_project = "26yr8seqaSUEJidnG6yif5W6Fgm84MfkC7UP7ZNAjwgj"
 
 [registry]
 url = "https://api.apr.dev"
