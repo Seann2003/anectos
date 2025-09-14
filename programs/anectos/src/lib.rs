@@ -66,4 +66,14 @@ pub mod anectos {
         update_funding_stage_status::handler(ctx, is_active)
     }
 
+    pub fn create_spl_token(
+        ctx: Context<CreateSplToken>,
+        name: String,
+        symbol: String,
+        uri: String,
+        decimals: u8,
+    ) -> Result<()> {
+        create_spl_token::handler(ctx, name, symbol, uri, decimals)
+    }
+
 }

@@ -13,6 +13,7 @@ import {
 import { Button } from "@/components/ui/button";
 import { useAuth } from "@crossmint/client-sdk-react-ui";
 import WalletDashboard from "@/components/WalletDashboard";
+import TokenInfo from "@/components/TokenInfo";
 import dynamic from "next/dynamic";
 
 const World = dynamic(
@@ -508,95 +509,19 @@ export default function Home() {
         </section>
       )}
 
-      <section className="py-20 px-6">
+      {/* ACTS Token Information Section */}
+      <section className="py-20 px-6 w-full">
         <div className="container mx-auto">
-          <div className="text-center mb-16">
-            <h2 className="text-4xl font-bold mb-4">
-              Empowering Regenerative Economy
+          <div className="text-center mb-8">
+            <h2 className="text-4xl font-bold mb-4 text-gray-200">
+              ACTS Governance Token
             </h2>
-            <p className="text-xl text-gray-300 max-w-3xl mx-auto">
-              Anectos combines the power of Solana blockchain with
-              community-driven governance to create sustainable impact.
+            <p className="text-xl text-gray-300">
+              The heart of Anectos DAO governance with 18+ billion tokens in
+              circulation
             </p>
           </div>
-
-          <div className="grid md:grid-cols-3 gap-8">
-            {[
-              {
-                icon: <Leaf className="h-10 w-10 text-emerald-600" />,
-                title: "Regenerative Focus",
-                description:
-                  "Supporting regenerative businesses and SDG initiatives that restore ecosystems and build community resilience.",
-              },
-              {
-                icon: <Users className="h-10 w-10 text-emerald-600" />,
-                title: "Community Governance",
-                description:
-                  "Transparent voting system that empowers community members to shape the future.",
-              },
-              {
-                icon: <Shield className="h-10 w-10 text-emerald-600" />,
-                title: "Quadratic Funding",
-                description:
-                  "Innovative funding model that amplifies small contributions and community support.",
-              },
-              {
-                icon: <Globe className="h-10 w-10 text-emerald-600" />,
-                title: "Small donations, Big impact",
-                description:
-                  "Solana's speed and minimal transaction costs with quadratic funding model allows community members to contribute without a substatial amount.",
-              },
-              {
-                icon: <GitMerge className="h-10 w-10 text-emerald-600" />,
-                title: "Transparent Operations",
-                description:
-                  "All funding allocations and governance decisions are recorded on-chain.",
-              },
-              {
-                icon: <SunMedium className="h-10 w-10 text-emerald-600" />,
-                title: "Sustainable Impact",
-                description:
-                  "Creating lasting positive change through aligned incentives and collective action.",
-              },
-            ].map((feature, index) => (
-              <div
-                key={index}
-                className="bg-[#1B1F4B] p-8 rounded-xl hover:shadow-lg transition-all"
-              >
-                <div className="bg-[#1B1F4B] w-16 h-16 rounded-lg flex items-center justify-center mb-6">
-                  {feature.icon}
-                </div>
-                <h3 className="text-xl font-bold mb-3">{feature.title}</h3>
-                <p className="text-gray-400">{feature.description}</p>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      <section className="py-20 px-6 bg-gradient-to-b">
-        <div className="text-center mb-16">
-          <h2 className="text-4xl font-bold mb-4">How Anectos Works</h2>
-          <p className="text-xl text-gray-300 max-w-3xl mx-auto">
-            Our decentralized platform makes it easy to participate in funding
-            and governance decisions.
-          </p>
-        </div>
-        <div className="flex justify-center">
-          {daoFlow.map((step, index) => (
-            <div
-              key={index}
-              className={`relative z-10 mb-12 flex justify-center text-center items-center space-y-3 flex-col h-max`}
-            >
-              <div className="bg-emerald-500 text-white w-8 h-8 rounded-full flex items-center justify-center font-bold">
-                {index + 1}
-              </div>
-              <div className={`md:w-4/5`}>
-                <h3 className="text-2xl font-bold mb-3">{step.title}</h3>
-                <p className="text-gray-300">{step.description}</p>
-              </div>
-            </div>
-          ))}
+          <TokenInfo />
         </div>
       </section>
 

@@ -149,7 +149,6 @@ impl ProjectMeta {
     }
 }
 
-// Events following Splurge pattern
 #[event]
 pub struct ContributionMade {
     pub project: Pubkey,

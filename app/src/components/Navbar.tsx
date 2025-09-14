@@ -19,7 +19,7 @@ export default function Navbar() {
   };
 
   return (
-    <nav className="text-white sticky top-0 z-20 justify-between items-center bg-transparent backdrop-blur-md p-4 flex">
+    <nav className="text-white sticky top-0 z-20 justify-between items-center bg-blue backdrop-blur-md p-4 flex">
       <h1 className="text-blue-600 text-4xl font-extrabold pl-10">Anectos</h1>
 
       {/* Navigation Links */}

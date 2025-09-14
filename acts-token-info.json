@@ -1,0 +1,11 @@
+{
+  "name": "Anectos Community Token",
+  "symbol": "ACTS", 
+  "mint": "HUUrWwyqN6uUp3JWtqstfAA8w7KmfanWChHw1s4m6n7J",
+  "tokenAccount": "3S8z6ao28Fe5pDKV4XW4YmRkECY47kfCaFFRoinhqrPm",
+  "supply": "100000000000",
+  "decimals": 9,
+  "network": "devnet",
+  "createdAt": "2025-09-09T16:04:53Z",
+  "description": "Governance token for the Anectos decentralized funding platform"
+}

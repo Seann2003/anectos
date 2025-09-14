@@ -1,18 +1,24 @@
 import type { Metadata } from "next";
 import { Barlow_Condensed } from "next/font/google";
 import "./globals.css";
-import Navbar from "@/components/Navbar";
-import { Cross } from "lucide-react";
+import RoleBasedNavbar from "@/components/RoleBasedNavbar";
 import { CrossmintProviders } from "@/providers/CrossmintProvider";
+import { Toaster } from "sonner";
 
 const barlow = Barlow_Condensed({
   subsets: ["latin"],
   weight: "600",
+  display: "swap",
 });
 
 export const metadata: Metadata = {
   title: "Anectos",
   description: "DAO for Regenerative Business",
+  icons: {
+    icon: "/anectos.png",
+    shortcut: "/anectos.png",
+    apple: "/apple-touch-icon.png",
+  },
 };
 
 export default function RootLayout({
@@ -26,8 +32,9 @@ export default function RootLayout({
         className={`${barlow.className} antialiased bg-gradient-to-r from-blue-200 via-blue-400 to-blue-300`}
       >
         <CrossmintProviders>
-          <Navbar />
-          {children}
+          <RoleBasedNavbar />
+          <main className="min-h-screen">{children}</main>
+          <Toaster position="top-right" richColors />
         </CrossmintProviders>
       </body>
     </html>

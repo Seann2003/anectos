@@ -21,3 +21,5 @@ idl-build = ["anchor-lang/idl-build"]
 anchor-lang = "0.31.1"
 num-derive = "0.4.2"
 num-traits = "0.2.19"
+mpl-token-metadata = "4.1.2"
+spl-token = "4.0"

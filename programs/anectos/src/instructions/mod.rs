@@ -1,6 +1,7 @@
 pub mod complete_milestone;
 pub mod contribute;
 pub mod create_project;
+pub mod create_spl_token;
 pub mod distribute_funds_to_owner;
 pub mod initialize_funding_round;
 pub mod update_funding_stage_status;
@@ -10,6 +11,7 @@ pub mod close_round;
 pub use complete_milestone::*;
 pub use contribute::*;
 pub use create_project::*;
+pub use create_spl_token::*;
 pub use distribute_funds_to_owner::*;
 pub use initialize_funding_round::*;
 pub use update_funding_stage_status::*;
