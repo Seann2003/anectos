@@ -26,8 +26,9 @@ pub mod anectos {
         target_amount: u64,
         milestone_count: u8,
         sdg_goals: Vec<SDGGoals>,
+        project_image_metadata_uri: String,
     ) -> Result<()> {
-        create_project::handler(ctx, title, description, round, target_amount, milestone_count, sdg_goals)
+        create_project::handler(ctx, title, description, round, target_amount, milestone_count, sdg_goals, project_image_metadata_uri)
     }
 
     pub fn complete_milestone(ctx: Context<CompleteMilestone>, milestone_index: u8, current_funding: u64) -> Result<()> {

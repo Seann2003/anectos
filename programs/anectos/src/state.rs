@@ -73,6 +73,7 @@ pub struct ProjectMeta {
     pub project: Pubkey,
     pub title: String,
     pub description: String,
+    pub image_metadata_uri: String,
     pub funding_stage: FundingStage,
     pub sdg_goals: Vec<SDGGoals>,
 }

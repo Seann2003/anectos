@@ -2,13 +2,11 @@
 
 import { useMemo, useState } from "react";
 import { PROJECTS } from "./data";
-import { Button } from "@/components/ui/button";
-
-const SDG_NUMBERS = Array.from({ length: 17 }, (_, i) => i + 1);
+import SdgSelector from "@/components/sdg-selector";
+// Removed unused Button import and SDG_NUMBERS
 
 export default function ProjectsPage() {
   const [query, setQuery] = useState("");
-  const [openFilter, setOpenFilter] = useState(false);
   const [selectedSdgs, setSelectedSdgs] = useState<number[]>([]);
 
   const filtered = useMemo(() => {
@@ -22,13 +20,7 @@ export default function ProjectsPage() {
     });
   }, [query, selectedSdgs]);
 
-  const toggleSdg = (n: number) => {
-    setSelectedSdgs((prev) =>
-      prev.includes(n) ? prev.filter((x) => x !== n) : [...prev, n]
-    );
-  };
-
-  const resetFilters = () => setSelectedSdgs([]);
+  // Removed unused filter helpers
 
   return (
     <div className="min-h-screen bg-gradient-to-b from-blue-50 to-white">
@@ -49,77 +41,16 @@ export default function ProjectsPage() {
               />
             </div>
             <div className="relative">
-              <Button
-                type="button"
-                onClick={() => setOpenFilter((v) => !v)}
-                className="whitespace-nowrap rounded-lg border border-blue-200 bg-blue-600 text-white hover:bg-blue-700 px-4 py-3 transition-colors"
-              >
-                Filter by SDGs{" "}
-                {selectedSdgs.length ? `(${selectedSdgs.length})` : ""}
-              </Button>
-              {openFilter && (
-                <div className="absolute right-0 mt-2 w-80 rounded-xl border border-blue-100 bg-white p-4 shadow-xl z-10">
-                  <div className="flex items-center justify-between mb-3">
-                    <p className="text-sm font-semibold text-blue-900">
-                      Select SDG Goals
-                    </p>
-                    <Button
-                      onClick={resetFilters}
-                      className="text-xs text-blue-600 hover:underline"
-                      type="button"
-                    >
-                      Reset
-                    </Button>
-                  </div>
-                  <div className="grid grid-cols-6 gap-2">
-                    {SDG_NUMBERS.map((n) => {
-                      const active = selectedSdgs.includes(n);
-                      return (
-                        <Button
-                          key={n}
-                          type="button"
-                          onClick={() => toggleSdg(n)}
-                          className={`rounded-md px-0.5 py-1 text-xs font-medium border transition-colors ${
-                            active
-                              ? "bg-blue-600 text-white border-blue-600"
-                              : "bg-white text-blue-700 border-blue-200 hover:bg-blue-50"
-                          }`}
-                          aria-pressed={active}
-                        >
-                          {n}
-                        </Button>
-                      );
-                    })}
-                  </div>
-                  <div className="flex justify-end mt-3">
-                    <Button
-                      type="button"
-                      onClick={() => setOpenFilter(false)}
-                      className="text-sm text-blue-700 hover:underline"
-                    >
-                      Close
-                    </Button>
-                  </div>
-                </div>
-              )}
+              <SdgSelector
+                selected={selectedSdgs}
+                onChange={setSelectedSdgs}
+                showSelected={false}
+              />
             </div>
           </div>
         </div>
 
-        {/* Results */}
         <div className="mt-6">
-          <div className="flex items-center justify-between mb-4">
-            <p className="text-sm text-blue-900/80">
-              Showing {filtered.length} of {PROJECTS.length} projects
-              {selectedSdgs.length > 0 && (
-                <span>
-                  {" "}
-                  • SDGs: {selectedSdgs.sort((a, b) => a - b).join(", ")}
-                </span>
-              )}
-            </p>
-          </div>
-
           <div className="grid gap-5 md:grid-cols-2 lg:grid-cols-3">
             {filtered.map((p) => {
               const percent = Math.min(
@@ -131,6 +62,17 @@ export default function ProjectsPage() {
                   key={p.id}
                   className="rounded-xl border border-blue-100 bg-white p-5 shadow-sm hover:shadow-md transition-shadow"
                 >
+                  {/* Project image */}
+                  {p.imageUrl ? (
+                    <img
+                      src={p.imageUrl}
+                      alt={p.title}
+                      className="mb-3 h-40 w-full object-cover rounded-md border border-blue-100"
+                    />
+                  ) : (
+                    <div className="mb-3 h-40 w-full rounded-md bg-blue-50 border border-blue-100" />
+                  )}
+
                   <div className="mb-3">
                     <h3 className="text-lg font-semibold text-blue-900">
                       {p.title}

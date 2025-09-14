@@ -2,11 +2,14 @@ export type Project = {
   id: string;
   title: string;
   description: string;
+  imageUrl?: string;
   sdgs: number[]; // 1..17
   fundingRaised: number; // USD
   fundingGoal: number; // USD
   milestones: number[]; // thresholds in USD
 };
+
+
 
 export const PROJECTS: Project[] = [
   {
@@ -14,6 +17,7 @@ export const PROJECTS: Project[] = [
     title: "Ocean Plastic Cleanup Technology",
     description:
       "Deploy modular river barriers and AI sorting to intercept plastic before it reaches the ocean, and recycle collected waste into construction materials.",
+    imageUrl: "/Ocean Plastic Cleanup Technology.png",
     sdgs: [12, 14, 13],
     fundingRaised: 420_000,
     fundingGoal: 1_000_000,

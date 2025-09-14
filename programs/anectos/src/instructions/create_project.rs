@@ -56,7 +56,8 @@ pub fn handler(
     round: Pubkey,
     target_amount: u64,
     milestone_count: u8,
-    sdg_goals: Vec<SDGGoals>
+    sdg_goals: Vec<SDGGoals>,
+    project_image_metadata_uri: String,
 ) -> Result<()> {
     let milestones = CreateProject::calculate_milestones(target_amount, milestone_count);
 
@@ -73,12 +74,13 @@ pub fn handler(
     project.has_withdrawn = false;
     project.milestone_count = milestone_count;
     project.milestones = milestones;
-
+    
     project_metadata.project = project.key();
     project_metadata.title = title;
     project_metadata.description = description;
     project_metadata.funding_stage = FundingStage::Planning;
     project_metadata.sdg_goals = sdg_goals;
+    project_metadata.image_metadata_uri = project_image_metadata_uri;
 
     emit!(ProjectCreated {
         project: project.key(),
