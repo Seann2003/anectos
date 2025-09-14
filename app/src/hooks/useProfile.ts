@@ -75,11 +75,14 @@ export function useProfile(walletAddress?: string | null) {
     if (!walletAddress) throw new Error("No wallet connected");
     const { data, error } = await supabase
       .from("profiles")
-      .upsert({
-        wallet_address: walletAddress,
-        name: input.name,
-        email: input.email,
-      })
+      .upsert(
+        {
+          wallet_address: walletAddress,
+          name: input.name,
+          email: input.email,
+        },
+        { onConflict: "wallet_address" }
+      )
       .select("*")
       .maybeSingle();
     if (error) throw error;

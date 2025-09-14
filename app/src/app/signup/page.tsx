@@ -1,89 +1,204 @@
 "use client";
 
-import { useState, useEffect } from "react";
-import { useWallet, useAuth } from "@crossmint/client-sdk-react-ui";
 import { useRouter } from "next/navigation";
-import { useProfile } from "@/hooks/useProfile";
-import { Input } from "@/components/ui/input";
-import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Select } from "@/components/ui/select";
+import { usePrivy } from "@privy-io/react-auth";
+import { useEffect, useState } from "react";
+import { createClient } from "@supabase/supabase-js";
 
-export default function SignUpPage() {
-  const { user } = useAuth();
-  const { wallet } = useWallet();
-  const walletAddress = wallet?.address;
+const supabase = createClient(
+  process.env.NEXT_PUBLIC_SUPABASE_URL!,
+  process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
+);
+
+export default function SignupPage() {
   const router = useRouter();
-  const { upsertProfile, ensureProfileExists } = useProfile(walletAddress);
-
-  const [name, setName] = useState("");
-  const [email, setEmail] = useState("");
-  const [saving, setSaving] = useState(false);
+  const { authenticated, user } = usePrivy();
+  const [formData, setFormData] = useState({
+    name: "",
+    email: "",
+  });
+  const [isLoading, setIsLoading] = useState(false);
+  const [checking, setChecking] = useState(true);
 
   useEffect(() => {
-    async function check() {
-      if (!walletAddress) return;
-      const { exists } = await ensureProfileExists();
-      if (exists) router.replace("/profile");
+    if (user?.email?.address) {
+      setFormData((prev) => ({ ...prev, email: user.email!.address }));
     }
-    check();
-  }, [walletAddress, ensureProfileExists, router]);
+  }, [user]);
 
-  const onSubmit = async (e: React.FormEvent) => {
+  useEffect(() => {
+    
+  }, [])
+
+  useEffect(() => {
+    const checkExistingUser = async () => {
+      if (!authenticated || !user) {
+        setChecking(false);
+        return;
+      }
+
+      try {
+        const { data, error } = await supabase
+          .from("profiles")
+          .select("id")
+          .eq("privy_user_id", user.id)
+          .maybeSingle();
+
+        if (error) {
+          console.error("Supabase check error:", error);
+        }
+
+        if (data) {
+          router.replace("/profile");
+          return;
+        }
+      } catch (e) {
+        console.error("Error checking existing user:", e);
+      } finally {
+        setChecking(false);
+      }
+    };
+
+    checkExistingUser();
+  }, [authenticated, user, router]);
+
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setFormData({
+      ...formData,
+      [e.target.name]: e.target.value,
+    });
+  };
+
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    setSaving(true);
+    setIsLoading(true);
+
     try {
-      await upsertProfile({ name, email });
-      router.replace("/profile");
-    } catch (e) {
-      console.error(e);
-      alert("Failed to save profile");
+      const { error } = await supabase.from("users").insert([
+        {
+          privy_user_id: user?.id,
+          name: formData.name,
+          email: user?.email?.address || formData.email,
+          wallet_address: user?.wallet?.address,
+        },
+      ]);
+
+      if (error) throw error;
+
+      router.push("/dashboard");
+    } catch (error) {
+      console.error("Error saving user:", error);
     } finally {
-      setSaving(false);
+      setIsLoading(false);
     }
   };
 
+  if (!authenticated || !user) {
+    return (
+      <div className="min-h-screen flex items-center justify-center bg-gray-50">
+        <div className="text-center">
+          <h2 className="text-2xl font-bold text-gray-800 mb-4">
+            Authentication Required
+          </h2>
+          <p className="text-gray-600 mb-6">
+            Please complete authentication first
+          </p>
+          <button
+            onClick={() => router.push("/")}
+            className="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded transition-colors"
+          >
+            Go to Home
+          </button>
+        </div>
+      </div>
+    );
+  }
+
+  if (checking) {
+    return (
+      <div className="min-h-screen flex items-center justify-center bg-gray-50">
+        <div className="text-center">
+          <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-500 mx-auto mb-4"></div>
+          <p className="text-gray-600">Preparing signup…</p>
+        </div>
+      </div>
+    );
+  }
+
   return (
-    <div className="container mx-auto px-4 py-10">
-      <Card className="max-w-md mx-auto">
-        <CardHeader>
-          <CardTitle>Complete your profile</CardTitle>
-        </CardHeader>
-        <CardContent>
-          {!user || !walletAddress ? (
-            <p className="text-sm text-gray-600">
-              Log in and connect your wallet first.
+    <div className="min-h-screen bg-gray-50 py-12 px-4 sm:px-6 lg:px-8">
+      <div className="max-w-md mx-auto">
+        <div className="bg-white rounded-lg shadow-lg p-8">
+          <div className="text-center mb-8">
+            <h2 className="text-3xl font-extrabold text-gray-900">
+              Complete Your Profile
+            </h2>
+            <p className="mt-2 text-sm text-gray-600">
+              Welcome! Please provide your name to complete registration.
             </p>
-          ) : (
-            <form onSubmit={onSubmit} className="space-y-4">
+          </div>
+
+          <form onSubmit={handleSubmit} className="space-y-6">
+            <div>
+              <label
+                htmlFor="email"
+                className="block text-sm font-medium text-gray-700 mb-2"
+              >
+                Email
+              </label>
+              <input
+                type="email"
+                id="email"
+                name="email"
+                value={user?.email?.address || formData.email}
+                disabled
+                className="w-full px-3 py-2 border border-gray-300 rounded-md bg-gray-50 text-gray-500"
+              />
+            </div>
+
+            <div>
+              <label
+                htmlFor="name"
+                className="block text-sm font-medium text-gray-700 mb-2"
+              >
+                Full Name
+              </label>
+              <input
+                type="text"
+                id="name"
+                name="name"
+                required
+                value={formData.name}
+                onChange={handleInputChange}
+                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                placeholder="Enter your full name"
+              />
+            </div>
+
+            {user?.wallet?.address && (
               <div>
-                <label className="block text-sm mb-1">Wallet</label>
-                <Input value={walletAddress} readOnly />
-              </div>
-              <div>
-                <label className="block text-sm mb-1">Name</label>
-                <Input
-                  value={name}
-                  onChange={(e) => setName(e.target.value)}
-                  required
+                <label className="block text-sm font-medium text-gray-700 mb-2">
+                  Wallet Address
+                </label>
+                <input
+                  type="text"
+                  value={user.wallet.address}
+                  disabled
+                  className="w-full px-3 py-2 border border-gray-300 rounded-md bg-gray-50 text-gray-500 text-xs"
                 />
               </div>
-              <div>
-                <label className="block text-sm mb-1">Email</label>
-                <Input
-                  type="email"
-                  value={email}
-                  onChange={(e) => setEmail(e.target.value)}
-                  required
-                />
-              </div>
-              <Button type="submit" disabled={saving} className="w-full">
-                {saving ? "Saving..." : "Save"}
-              </Button>
-            </form>
-          )}
-        </CardContent>
-      </Card>
+            )}
+
+            <button
+              type="submit"
+              disabled={isLoading || !formData.name.trim()}
+              className="w-full bg-blue-500 hover:bg-blue-600 disabled:opacity-50 text-white font-bold py-3 px-6 rounded-lg transition-colors"
+            >
+              {isLoading ? "Saving..." : "Complete Registration"}
+            </button>
+          </form>
+        </div>
+      </div>
     </div>
   );
 }

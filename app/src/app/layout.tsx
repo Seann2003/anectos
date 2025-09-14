@@ -1,10 +1,8 @@
 import type { Metadata } from "next";
 import { Barlow_Condensed } from "next/font/google";
 import "./globals.css";
-import RoleBasedNavbar from "@/components/RoleBasedNavbar";
-import { CrossmintProviders } from "@/providers/CrossmintProvider";
-import { Toaster } from "sonner";
-import { WalletGate } from "@/components/middleware/WalletGate";
+import Navbar from "@/components/Navbar";
+import Providers from "@/providers/PrivyProvider";
 
 const barlow = Barlow_Condensed({
   subsets: ["latin"],
@@ -29,16 +27,11 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body
-        className={`${barlow.className} antialiased bg-gradient-to-r from-blue-200 via-blue-400 to-blue-300`}
-      >
-        <CrossmintProviders>
-          <RoleBasedNavbar />
-          <WalletGate>
-            <main className="min-h-screen">{children}</main>
-          </WalletGate>
-          <Toaster position="top-right" richColors />
-        </CrossmintProviders>
+      <body className={`${barlow.className} antialiased`}>
+        <Providers>
+          <Navbar />
+          {children}
+        </Providers>
       </body>
     </html>
   );

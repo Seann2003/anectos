@@ -1,57 +1,73 @@
 "use client";
 
-import { useEffect } from "react";
-import { useWallet, useAuth } from "@crossmint/client-sdk-react-ui";
-import { useRouter } from "next/navigation";
-import { useProfile } from "@/hooks/useProfile";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Button } from "@/components/ui/button";
 import Link from "next/link";
+import { useEffect, useState } from "react";
+import { usePrivy } from "@privy-io/react-auth";
+import { useRouter } from "next/navigation";
+import { supabase } from "@/lib/supabaseClient";
 
 export default function ProfilePage() {
-  const { user } = useAuth();
-  const { wallet } = useWallet();
-  const walletAddress = wallet?.address;
+  const { authenticated, user, ready } = usePrivy();
   const router = useRouter();
-  const { profile, loading, ensureProfileExists } = useProfile(walletAddress);
+  const [loading, setLoading] = useState(true);
+  const [username, setUsername] = useState<string>("");
 
   useEffect(() => {
-    async function guard() {
-      if (!user || !walletAddress) return;
-      const { exists } = await ensureProfileExists();
-      if (!exists) router.replace("/signup");
+    if (!ready) return;
+    if (!authenticated || !user) {
+      router.replace("/signup");
+      return;
     }
-    guard();
-  }, [user, walletAddress, ensureProfileExists, router]);
 
-  if (!user || !walletAddress)
-    return <div className="p-6">Log in and connect your wallet.</div>;
-  if (loading) return <div className="p-6">Loading profile...</div>;
+    const load = async () => {
+      setLoading(true);
+      const { data, error } = await supabase
+        .from("profiles")
+        .select("name")
+        .eq("privy_user_id", user.id)
+        .maybeSingle();
+
+      if (!error && data?.name) setUsername(data.name);
+      setLoading(false);
+    };
+
+    load();
+  }, [ready, authenticated, user, router]);
+
+  if (!ready || loading) {
+    return (
+      <div className="min-h-screen flex items-center justify-center">
+        <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-500" />
+      </div>
+    );
+  }
 
   return (
-    <div className="container mx-auto px-4 py-10">
-      <Card className="max-w-xl mx-auto">
-        <CardHeader>
-          <CardTitle>Your Profile</CardTitle>
-        </CardHeader>
-        <CardContent className="space-y-3">
-          <div>
-            <div className="text-sm text-gray-500">Wallet</div>
-            <div className="font-mono text-sm">{walletAddress}</div>
-          </div>
-          <div>
-            <div className="text-sm text-gray-500">Name</div>
-            <div>{profile?.name ?? "-"}</div>
-          </div>
-          <div>
-            <div className="text-sm text-gray-500">Email</div>
-            <div>{profile?.email ?? "-"}</div>
-          </div>
-          <Link href="/profile/edit">
-            <Button variant="outline">Edit Profile</Button>
+    <div className="container mx-auto px-4 py-8">
+      <div className="bg-white rounded-lg shadow p-6">
+        <h1 className="text-2xl font-bold mb-4">Profile</h1>
+        <div className="space-y-2 text-gray-800">
+          <p>
+            <span className="font-medium">Username:</span> {username || "—"}
+          </p>
+          <p>
+            <span className="font-medium">Email:</span> {user?.email?.address}
+          </p>
+          {user?.wallet?.address && (
+            <p>
+              <span className="font-medium">Wallet:</span> {user.wallet.address}
+            </p>
+          )}
+        </div>
+        <div className="mt-6">
+          <Link
+            href="/profile/edit"
+            className="inline-block bg-blue-500 hover:bg-blue-600 text-white font-semibold px-4 py-2 rounded"
+          >
+            Edit Username
           </Link>
-        </CardContent>
-      </Card>
+        </div>
+      </div>
     </div>
   );
 }
