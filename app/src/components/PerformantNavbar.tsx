@@ -59,26 +59,14 @@ export default function Navbar({}: PerformantNavbarProps) {
           >
             Contribute
           </Link>
-          <Link
-            href="/governance"
-            className="text-gray-700 hover:text-blue-600 px-3 py-2 rounded-md text-lg font-medium transition-colors"
-          >
-            Governance
-          </Link>
+          {/* Governance link removed in DB-only mode */}
           <Link
             href="/admin"
             className="text-gray-700 hover:text-blue-600 px-3 py-2 rounded-md text-lg font-medium transition-colors"
           >
             Admin
           </Link>
-          {user && (
-            <Link
-              href="/dashboard"
-              className="text-blue-100 hover:text-white transition-colors"
-            >
-              Wallet
-            </Link>
-          )}
+          {/* Wallet page removed in DB-only mode */}
         </div>
 
         <div className="flex justify-center items-center space-x-8 text-[20px] pr-[70px] font-normal">

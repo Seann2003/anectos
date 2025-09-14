@@ -3,11 +3,13 @@
 import { useState } from "react";
 import { useAuth, useWallet } from "@crossmint/client-sdk-react-ui";
 import Link from "next/link";
+import { useUserRole } from "@/hooks/useUserRole";
 
 export default function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
   const { login, logout, user, jwt } = useAuth();
   const { wallet, status: walletStatus } = useWallet();
+  const { isAdmin } = useUserRole();
 
   const handleMenuClick = () => {
     setIsOpen(!isOpen);
@@ -36,20 +38,24 @@ export default function Navbar() {
         >
           Projects
         </Link>
-        <Link
-          href="/governance"
-          className="text-blue-100 hover:text-white transition-colors"
-        >
-          Governance
-        </Link>
+        {/* Governance link removed in DB-only mode */}
         {user && (
           <Link
-            href="/dashboard"
+            href="/proposals"
             className="text-blue-100 hover:text-white transition-colors"
           >
-            Wallet
+            Proposals
           </Link>
         )}
+        {user && isAdmin && (
+          <Link
+            href="/admin/proposals"
+            className="text-blue-100 hover:text-white transition-colors"
+          >
+            Admin
+          </Link>
+        )}
+        {/* Wallet page removed in DB-only mode */}
       </div>
 
       <div className="flex justify-center items-center space-x-8 text-[20px] pr-[70px] font-normal">

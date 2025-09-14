@@ -62,7 +62,6 @@ export default function RoleBasedNavbar() {
   useEffect(() => {
     router.prefetch("/");
     router.prefetch("/contribute");
-    router.prefetch("/governance");
     if (hasPermission("access_admin_panel")) {
       router.prefetch("/admin");
     }
@@ -100,14 +99,7 @@ export default function RoleBasedNavbar() {
             Contribute
           </Link>
 
-          {hasPermission("vote_on_governance") && (
-            <Link
-              href="/governance"
-              className="text-gray-700 hover:text-blue-600 px-3 py-2 rounded-md text-lg font-medium transition-colors"
-            >
-              Governance
-            </Link>
-          )}
+          {/* Governance link removed in DB-only mode */}
 
           {hasPermission("access_business_dashboard") && (
             <Link
@@ -149,13 +141,7 @@ export default function RoleBasedNavbar() {
                 </Badge>
               )}
 
-              {/* ACTS Balance */}
-              {actsBalance > 0 && (
-                <div className="flex items-center gap-1 text-sm bg-yellow-100 text-yellow-800 px-2 py-1 rounded">
-                  <Award className="h-3 w-3" />
-                  {actsBalance.toLocaleString()} ACTS
-                </div>
-              )}
+              {/* Token balance removed in DB-only mode */}
 
               {/* User Dropdown */}
               <DropdownMenu>
@@ -216,30 +202,19 @@ export default function RoleBasedNavbar() {
                     </DropdownMenuItem>
                   )}
 
-                  {hasPermission("view_contributions") && (
-                    <DropdownMenuItem
-                      onClick={() => router.push("/my-contributions")}
-                    >
-                      <Award className="h-4 w-4 mr-2" />
-                      My Contributions
-                    </DropdownMenuItem>
-                  )}
+                  {/* Contributions page disabled in DB-only mode */}
 
                   {hasPermission("access_business_dashboard") && (
-                    <DropdownMenuItem
-                      onClick={() => router.push("/business/dashboard")}
-                    >
+                    <DropdownMenuItem onClick={() => router.push("/business")}>
                       <Building className="h-4 w-4 mr-2" />
-                      Business Dashboard
+                      Business
                     </DropdownMenuItem>
                   )}
 
                   {hasPermission("access_admin_panel") && (
-                    <DropdownMenuItem
-                      onClick={() => router.push("/admin/dashboard")}
-                    >
+                    <DropdownMenuItem onClick={() => router.push("/admin")}>
                       <Shield className="h-4 w-4 mr-2" />
-                      Admin Dashboard
+                      Admin
                     </DropdownMenuItem>
                   )}
 

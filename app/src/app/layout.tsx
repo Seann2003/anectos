@@ -4,6 +4,7 @@ import "./globals.css";
 import RoleBasedNavbar from "@/components/RoleBasedNavbar";
 import { CrossmintProviders } from "@/providers/CrossmintProvider";
 import { Toaster } from "sonner";
+import { WalletGate } from "@/components/middleware/WalletGate";
 
 const barlow = Barlow_Condensed({
   subsets: ["latin"],
@@ -33,7 +34,9 @@ export default function RootLayout({
       >
         <CrossmintProviders>
           <RoleBasedNavbar />
-          <main className="min-h-screen">{children}</main>
+          <WalletGate>
+            <main className="min-h-screen">{children}</main>
+          </WalletGate>
           <Toaster position="top-right" richColors />
         </CrossmintProviders>
       </body>

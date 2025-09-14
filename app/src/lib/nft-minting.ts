@@ -255,3 +255,7 @@ export interface NFTMintResult {
   error?: string;
   transactionSignature?: string;
 }
+
+// Stub for NFT minting functionality
+export {};
+export {};

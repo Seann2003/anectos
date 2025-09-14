@@ -1,0 +1,27 @@
+
+action "anectos_contribution_made" "svm::deploy_subgraph" {
+    program_id = action.deploy_anectos.program_id
+    program_idl = action.deploy_anectos.program_idl
+    block_height = 0 // action.deploy_anectos.block_height
+    event {
+        name = "ContributionMade"
+    }
+}
+
+action "anectos_milestone_completed" "svm::deploy_subgraph" {
+    program_id = action.deploy_anectos.program_id
+    program_idl = action.deploy_anectos.program_idl
+    block_height = 0 // action.deploy_anectos.block_height
+    event {
+        name = "MilestoneCompleted"
+    }
+}
+
+action "anectos_project_created" "svm::deploy_subgraph" {
+    program_id = action.deploy_anectos.program_id
+    program_idl = action.deploy_anectos.program_idl
+    block_height = 0 // action.deploy_anectos.block_height
+    event {
+        name = "ProjectCreated"
+    }
+}

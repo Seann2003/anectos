@@ -235,11 +235,6 @@ function BusinessDashboardPage() {
               <p className="text-gray-600 dark:text-gray-400 mt-2">
                 Manage your regenerative projects and track their progress
               </p>
-              {businessInfo && (
-                <p className="text-sm text-blue-600 dark:text-blue-400 mt-1">
-                  {businessInfo.companyName} • Verified Business
-                </p>
-              )}
             </div>
             <Badge className="bg-blue-100 text-blue-800 border-blue-200">
               <Building className="h-3 w-3 mr-1" />

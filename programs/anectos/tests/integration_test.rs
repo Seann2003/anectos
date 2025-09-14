@@ -1,4 +1,4 @@
-use anectos_project::state::Milestone;
+use anectos::state::Milestone;
 
 // Simple unit tests for the business logic
 #[cfg(test)]

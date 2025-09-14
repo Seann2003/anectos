@@ -11,7 +11,7 @@ use anchor_lang::prelude::*;
 pub use instructions::*;
 pub use state::*;
 
-declare_id!("26yr8seqaSUEJidnG6yif5W6Fgm84MfkC7UP7ZNAjwgj");
+declare_id!("4Tjq5Em4qauF9DjXjVN2WW6NkM49tScR47czXHekquBp");
 
 #[program]
 pub mod anectos {
@@ -64,16 +64,6 @@ pub mod anectos {
         is_active: bool,
     ) -> Result<()> {
         update_funding_stage_status::handler(ctx, is_active)
-    }
-
-    pub fn create_spl_token(
-        ctx: Context<CreateSplToken>,
-        name: String,
-        symbol: String,
-        uri: String,
-        decimals: u8,
-    ) -> Result<()> {
-        create_spl_token::handler(ctx, name, symbol, uri, decimals)
     }
 
 }

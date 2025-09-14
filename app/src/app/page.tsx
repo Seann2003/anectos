@@ -12,8 +12,6 @@ import {
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useAuth } from "@crossmint/client-sdk-react-ui";
-import WalletDashboard from "@/components/WalletDashboard";
-import TokenInfo from "@/components/TokenInfo";
 import dynamic from "next/dynamic";
 
 const World = dynamic(
@@ -25,7 +23,6 @@ const World = dynamic(
 
 export default function Home() {
   const { user } = useAuth();
-  const [showWallet, setShowWallet] = useState(false);
 
   const globeConfig = {
     pointSize: 4,
@@ -445,10 +442,6 @@ export default function Home() {
     <div className=" text-gray-200 flex flex-col justify-center items-center from-blue-200 via-blue-400 to-blue-300 bg-radial-gradient min-h-screen">
       {/* Hero Section */}
       <section className="min-h-screen flex items-center justify-center flex-col">
-        <div className="absolute w-full lg:-bottom-20 h-72 md:h-full -z-50">
-          <World data={sampleArcs} globeConfig={globeConfig} />
-        </div>
-
         <div className="space-y-8">
           <h1 className="text-6xl md:text-7xl font-extrabold leading-tight text-gray-200">
             Welcome to the Future of{" "}
@@ -472,42 +465,13 @@ export default function Home() {
             >
               Browse Projects
             </Button>
-            {user && (
-              <>
-                <Button
-                  variant={"outline"}
-                  className="h-16 w-52 text-xl bg-transparent border-green-500 text-green-600 hover:bg-green-500 hover:text-white"
-                  onClick={() => (window.location.href = "/governance")}
-                >
-                  DAO Governance
-                </Button>
-                <Button
-                  variant={"outline"}
-                  className="h-16 w-52 text-xl bg-transparent border-purple-500 text-purple-600 hover:bg-purple-500 hover:text-white"
-                  onClick={() => setShowWallet(!showWallet)}
-                >
-                  {showWallet ? "Hide Wallet" : "View Wallet"}
-                </Button>
-              </>
-            )}
+            {/* Governance and Wallet actions removed in DB-only mode */}
           </div>
         </div>
       </section>
 
       {/* Wallet Dashboard Section */}
-      {user && showWallet && (
-        <section className="py-20 px-6 w-full">
-          <div className="container mx-auto">
-            <div className="text-center mb-8">
-              <h2 className="text-4xl font-bold mb-4">Your Wallet</h2>
-              <p className="text-xl text-gray-300">
-                Manage your Solana wallet and participate in the DAO
-              </p>
-            </div>
-            <WalletDashboard />
-          </div>
-        </section>
-      )}
+      {/* Wallet dashboard removed in DB-only mode */}
 
       {/* ACTS Token Information Section */}
       <section className="py-20 px-6 w-full">
@@ -521,7 +485,7 @@ export default function Home() {
               circulation
             </p>
           </div>
-          <TokenInfo />
+          {/* Token info removed: client is DB-only now. */}
         </div>
       </section>
 

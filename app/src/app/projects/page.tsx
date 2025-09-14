@@ -1,475 +1,473 @@
 "use client";
 
-import { useState, useEffect } from "react";
-import {
-  useAuth,
-  useWallet,
-  CrossmintEmbeddedCheckout,
-  CrossmintCheckoutProvider,
-} from "@crossmint/client-sdk-react-ui";
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
+import { useState } from "react";
+import { useAuth } from "@crossmint/client-sdk-react-ui";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
 import { Badge } from "@/components/ui/badge";
-import { Progress } from "@/components/ui/progress";
+import { Label } from "@/components/ui/label";
+import { Checkbox } from "@/components/ui/checkbox";
 import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuTrigger,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
+  DropdownMenuItem,
+} from "@/components/ui/dropdown-menu";
+import {
+  Search,
+  Filter,
+  X,
+  ChevronDown,
+  Target,
+  Coins,
   Leaf,
   Heart,
   Users,
   TrendingUp,
-  Calendar,
-  Target,
-  Coins,
-  Award,
-  Vote,
-  MessageCircle,
 } from "lucide-react";
+import Link from "next/link";
 
-const mockProjects = [
-  {
-    id: 1,
-    title: "Solar Water Purification for Rural Communities",
-    description:
-      "Providing clean water access through solar-powered purification systems in underserved rural areas.",
-    sdgGoals: ["Clean Water and Sanitation", "Affordable and Clean Energy"],
-    targetAmount: 50000,
-    currentAmount: 32000,
-    donorCount: 124,
-    daysLeft: 15,
-    founder: "GreenTech Solutions",
-    category: "Water & Energy",
-    image: "/Solar Water Purification for Rural Communities.png",
-    quadraticMatch: 8500,
-    nftReward: "Water Guardian NFT",
-    verified: true,
-  },
-  {
-    id: 2,
-    title: "Regenerative Agriculture Training Program",
-    description:
-      "Teaching sustainable farming practices to help restore soil health and increase crop yields.",
-    sdgGoals: ["Zero Hunger", "Climate Action", "Life on Land"],
-    targetAmount: 25000,
-    currentAmount: 18000,
-    donorCount: 89,
-    daysLeft: 22,
-    founder: "EcoFarm Initiative",
-    category: "Agriculture",
-    image: "/Regenerative Agriculture Training Program.png",
-    quadraticMatch: 5200,
-    nftReward: "Soil Steward NFT",
-    verified: true,
-  },
-  {
-    id: 3,
-    title: "Ocean Plastic Cleanup Technology",
-    description:
-      "Developing innovative technology to remove microplastics from ocean water.",
-    sdgGoals: ["Life Below Water", "Responsible Consumption"],
-    targetAmount: 75000,
-    currentAmount: 12000,
-    donorCount: 45,
-    daysLeft: 30,
-    founder: "Blue Ocean Tech",
-    category: "Environment",
-    image: "/Ocean Plastic Cleanup Technology.png",
-    quadraticMatch: 3800,
-    nftReward: "Ocean Protector NFT",
-    verified: false,
-  },
-];
+// SDG Goals mapping for display
+const sdgGoalsDisplay: { [key: string]: string } = {
+  NoPoverty: "No Poverty",
+  ZeroHunger: "Zero Hunger",
+  GoodHealthAndWellBeing: "Good Health and Well-Being",
+  QualityEducation: "Quality Education",
+  GenderEquality: "Gender Equality",
+  CleanWaterAndSanitation: "Clean Water and Sanitation",
+  AffordableAndCleanEnergy: "Affordable and Clean Energy",
+  DecentWorkAndEconomicGrowth: "Decent Work and Economic Growth",
+  IndustryInnovationAndInfrastructure:
+    "Industry, Innovation and Infrastructure",
+  ReducedInequalities: "Reduced Inequalities",
+  SustainableCitiesAndCommunities: "Sustainable Cities and Communities",
+  ResponsibleConsumptionAndProduction: "Responsible Consumption and Production",
+  ClimateAction: "Climate Action",
+  LifeBelowWater: "Life Below Water",
+  LifeOnLand: "Life on Land",
+  PeaceJusticeAndStrongInstitutions: "Peace, Justice and Strong Institutions",
+  PartnershipsForTheGoals: "Partnerships for the Goals",
+};
 
-interface Project {
-  id: number;
-  title: string;
-  description: string;
-  sdgGoals: string[];
-  targetAmount: number;
-  currentAmount: number;
-  donorCount: number;
-  daysLeft: number;
-  founder: string;
-  category: string;
-  image: string;
-  quadraticMatch: number;
-  nftReward: string;
-  verified: boolean;
-}
+// Category colors and icons
+const categoryConfig: {
+  [key: string]: { color: string; icon: React.ComponentType };
+} = {
+  "Clean Energy": { color: "bg-yellow-100 text-yellow-800", icon: Coins },
+  Environment: { color: "bg-green-100 text-green-800", icon: Leaf },
+  Agriculture: { color: "bg-orange-100 text-orange-800", icon: Heart },
+  "Water & Energy": { color: "bg-blue-100 text-blue-800", icon: Users },
+  "Urban Development": {
+    color: "bg-purple-100 text-purple-800",
+    icon: TrendingUp,
+  },
+  Default: { color: "bg-gray-100 text-gray-800", icon: Target },
+};
 
-export default function ProjectBrowser() {
+function ProjectsPage() {
   const { user } = useAuth();
-  const { wallet } = useWallet();
-  const [projects, setProjects] = useState<Project[]>(mockProjects);
-  const [selectedProject, setSelectedProject] = useState<Project | null>(null);
-  const [donationAmount, setDonationAmount] = useState("");
-  const [showCheckout, setShowCheckout] = useState(false);
-  const [filter, setFilter] = useState("all");
-  const [userNFTs, setUserNFTs] = useState<any[]>([]);
+  // DB-only: placeholder values
+  const projects: any[] = [];
+  const projectsLoading = false;
+  const error: any = null;
+  const getWhitelistedProjects = () => projects;
 
-  // Fetch user's NFT rewards (mock implementation)
-  useEffect(() => {
-    if (wallet) {
-      // In real implementation, fetch NFTs from wallet
-      setUserNFTs([
-        {
-          id: 1,
-          name: "Early Supporter NFT",
-          project: "Solar Water",
-          rarity: "Common",
-        },
-        {
-          id: 2,
-          name: "Climate Champion NFT",
-          project: "RegenAg",
-          rarity: "Rare",
-        },
-      ]);
+  const [selectedCategory, setSelectedCategory] = useState("all");
+  const [searchQuery, setSearchQuery] = useState("");
+  const [selectedSdgGoals, setSelectedSdgGoals] = useState<string[]>([]);
+  const [contributionAmounts, setContributionAmounts] = useState<{
+    [key: string]: string;
+  }>({});
+
+  // Filter projects based on selection
+  const whitelistedProjects = getWhitelistedProjects();
+
+  // Filter projects based on selection, search, and SDG goals
+  const filteredProjects = whitelistedProjects.filter((project) => {
+    // Search filter
+    if (searchQuery.trim()) {
+      const query = searchQuery.toLowerCase();
+      const titleMatch = project.title?.toLowerCase().includes(query);
+      const descriptionMatch = project.description
+        ?.toLowerCase()
+        .includes(query);
+      if (!titleMatch && !descriptionMatch) return false;
     }
-  }, [wallet]);
 
-  const handleDonate = (project: Project) => {
-    if (!user) {
-      alert("Please log in to donate");
-      return;
+    // Category filter
+    if (selectedCategory !== "all") {
+      // Map category based on SDG goals or title content
+      if (
+        selectedCategory === "energy" &&
+        !project.sdgGoals?.includes("AffordableAndCleanEnergy")
+      )
+        return false;
+      if (
+        selectedCategory === "environment" &&
+        !(
+          project.sdgGoals?.includes("LifeBelowWater") ||
+          project.sdgGoals?.includes("LifeOnLand") ||
+          project.sdgGoals?.includes("ClimateAction")
+        )
+      )
+        return false;
+      if (
+        selectedCategory === "agriculture" &&
+        !project.sdgGoals?.includes("ZeroHunger")
+      )
+        return false;
     }
-    setSelectedProject(project);
-    setShowCheckout(true);
-  };
 
-  const handleQuadraticVote = (projectId: number) => {
-    if (!user) {
-      alert("Please log in to participate in quadratic funding");
-      return;
+    // SDG Goals filter
+    if (selectedSdgGoals.length > 0) {
+      const hasMatchingSdg = selectedSdgGoals.some((sdg) =>
+        project.sdgGoals?.includes(sdg)
+      );
+      if (!hasMatchingSdg) return false;
     }
-    // Implement quadratic voting logic
-    console.log("Quadratic vote for project:", projectId);
-  };
 
-  const calculateQuadraticBonus = (amount: string) => {
-    // Simplified quadratic funding calculation
-    return Math.sqrt(parseFloat(amount) || 0) * 10;
-  };
-
-  const filteredProjects = projects.filter((project) => {
-    if (filter === "all") return true;
-    return project.category.toLowerCase().includes(filter.toLowerCase());
+    return true;
   });
 
-  const getProgressColor = (percentage: number) => {
-    if (percentage >= 80) return "bg-green-500";
-    if (percentage >= 50) return "bg-blue-500";
-    return "bg-yellow-500";
+  // Helper functions for filtering
+  const toggleSdgGoal = (sdgGoal: string) => {
+    setSelectedSdgGoals((prev) =>
+      prev.includes(sdgGoal)
+        ? prev.filter((goal) => goal !== sdgGoal)
+        : [...prev, sdgGoal]
+    );
   };
 
-  if (showCheckout && selectedProject) {
+  const clearAllFilters = () => {
+    setSearchQuery("");
+    setSelectedSdgGoals([]);
+    setSelectedCategory("all");
+  };
+
+  const clearSearch = () => {
+    setSearchQuery("");
+  };
+
+  const clearSdgFilters = () => {
+    setSelectedSdgGoals([]);
+  };
+
+  // Get unique SDG goals from all projects for filter options
+  const availableSdgGoals = Array.from(
+    new Set(whitelistedProjects.flatMap((project) => project.sdgGoals || []))
+  ).sort();
+
+  const handleContribute = async (_projectId: string, _amount: string) => {
+    alert("Contributions are disabled in the DB-only client.");
+  };
+
+  const getProjectProgress = (_project: any) => 0;
+  const getCompletedMilestones = (_project: any) => 0;
+
+  if (projectsLoading) {
     return (
-      <div className="max-w-4xl mx-auto p-6">
-        <Button
-          onClick={() => setShowCheckout(false)}
-          className="mb-6"
-          variant="outline"
-        >
-          ← Back to Projects
-        </Button>
+      <div className="min-h-screen bg-gray-50 dark:bg-gray-900 flex items-center justify-center">
+        <div className="text-center">
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-green-500 mx-auto mb-4"></div>
+          <p className="text-gray-600 dark:text-gray-400">
+            Loading projects from Solana...
+          </p>
+        </div>
+      </div>
+    );
+  }
 
-        <div className="grid md:grid-cols-2 gap-8">
-          <div>
-            <img
-              src={selectedProject.image}
-              alt={selectedProject.title}
-              className="w-full h-64 object-cover rounded-lg mb-4"
-            />
-            <h2 className="text-2xl font-bold mb-2">{selectedProject.title}</h2>
-            <p className="text-gray-600 mb-4">{selectedProject.description}</p>
-
-            <div className="space-y-4">
-              <div>
-                <div className="flex justify-between mb-2">
-                  <span>Progress</span>
-                  <span>
-                    {Math.round(
-                      (selectedProject.currentAmount /
-                        selectedProject.targetAmount) *
-                        100
-                    )}
-                    %
-                  </span>
-                </div>
-                <Progress
-                  value={
-                    (selectedProject.currentAmount /
-                      selectedProject.targetAmount) *
-                    100
-                  }
-                  className="h-3"
-                />
-              </div>
-
-              <div className="grid grid-cols-2 gap-4 text-sm">
-                <div>
-                  <p className="text-gray-500">Target Amount</p>
-                  <p className="font-bold">
-                    {selectedProject.targetAmount.toLocaleString()} SOL
-                  </p>
-                </div>
-                <div>
-                  <p className="text-gray-500">Quadratic Match</p>
-                  <p className="font-bold text-green-600">
-                    +{selectedProject.quadraticMatch.toLocaleString()} SOL
-                  </p>
-                </div>
-              </div>
-
-              <div>
-                <p className="text-gray-500 mb-2">NFT Reward</p>
-                <Badge variant="secondary" className="flex items-center gap-2">
-                  <Award className="h-4 w-4" />
-                  {selectedProject.nftReward}
-                </Badge>
-              </div>
-            </div>
-          </div>
-
-          <div>
-            <Card>
-              <CardHeader>
-                <CardTitle>Support This Project</CardTitle>
-                <CardDescription>
-                  Your donation will be amplified through quadratic funding
-                </CardDescription>
-              </CardHeader>
-              <CardContent>
-                <div className="space-y-4">
-                  <div>
-                    <Label htmlFor="amount">Donation Amount (SOL)</Label>
-                    <Input
-                      id="amount"
-                      type="number"
-                      placeholder="0.0"
-                      value={donationAmount}
-                      onChange={(e) => setDonationAmount(e.target.value)}
-                      step="0.001"
-                    />
-                    {donationAmount && (
-                      <p className="text-sm text-green-600 mt-2">
-                        Quadratic bonus: +
-                        {calculateQuadraticBonus(donationAmount).toFixed(3)} SOL
-                      </p>
-                    )}
-                  </div>
-
-                  <CrossmintCheckoutProvider>
-                    <CrossmintEmbeddedCheckout
-                      lineItems={{
-                        // This would be your donation/funding collection ID
-                        collectionLocator: `crossmint:anectos-donation-${selectedProject.id}`,
-                        callData: {
-                          totalPrice: donationAmount || "0.001",
-                          quantity: 1,
-                          projectId: selectedProject.id,
-                          donorAddress: wallet?.address,
-                        },
-                      }}
-                      payment={{
-                        crypto: {
-                          enabled: true,
-                          defaultChain: "solana",
-                          defaultCurrency: "sol",
-                        },
-                        fiat: {
-                          enabled: true,
-                          defaultCurrency: "usd",
-                        },
-                      }}
-                      recipient={{
-                        email: user?.email || "",
-                      }}
-                      locale="en-US"
-                    />
-                  </CrossmintCheckoutProvider>
-                </div>
-              </CardContent>
-            </Card>
-          </div>
+  if (error) {
+    return (
+      <div className="min-h-screen bg-gray-50 dark:bg-gray-900 flex items-center justify-center">
+        <div className="text-center">
+          <p className="text-red-600 dark:text-red-400 mb-4">
+            Error loading projects: {error}
+          </p>
+          <Button onClick={() => window.location.reload()}>Retry</Button>
         </div>
       </div>
     );
   }
 
   return (
-    <div className="max-w-6xl mx-auto p-6">
-      {/* Header */}
-      <div className="text-center mb-8">
-        <h1 className="text-4xl font-bold mb-4">Regenerative Projects</h1>
-        <p className="text-xl text-gray-600 mb-6">
-          Support SDG-aligned businesses through transparent, quadratic funding
-        </p>
+    <div className="min-h-screen bg-gray-50 dark:bg-gray-900">
+      <div className="container mx-auto px-4 py-8">
+        {/* Header */}
+        <div className="mb-8">
+          <h1 className="text-4xl font-bold text-gray-900 dark:text-white mb-4">
+            Regenerative Impact Projects
+          </h1>
+          <p className="text-lg text-gray-600 dark:text-gray-400 mb-6">
+            Discover and support verified regenerative projects that are
+            creating positive impact worldwide. Built on Solana blockchain with
+            transparent fund tracking.
+          </p>
 
-        {/* User Stats */}
-        {user && (
-          <div className="flex justify-center gap-6 mb-6">
-            <div className="text-center">
-              <p className="text-2xl font-bold text-blue-600">
-                {userNFTs.length}
-              </p>
-              <p className="text-sm text-gray-500">NFT Rewards</p>
-            </div>
-            <div className="text-center">
-              <p className="text-2xl font-bold text-green-600">12</p>
-              <p className="text-sm text-gray-500">Projects Supported</p>
-            </div>
-            <div className="text-center">
-              <p className="text-2xl font-bold text-purple-600">450</p>
-              <p className="text-sm text-gray-500">DAO Voting Power</p>
-            </div>
-          </div>
-        )}
-      </div>
+          {/* Stats section removed in DB-only mode */}
+        </div>
 
-      {/* Filters */}
-      <div className="flex justify-center gap-4 mb-8">
-        {["all", "water", "agriculture", "environment", "energy"].map(
-          (category) => (
-            <Button
-              key={category}
-              variant={filter === category ? "default" : "outline"}
-              onClick={() => setFilter(category)}
-              className="capitalize"
-            >
-              {category}
-            </Button>
-          )
-        )}
-      </div>
-
-      {/* Projects Grid */}
-      <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-        {filteredProjects.map((project) => {
-          const progressPercentage =
-            (project.currentAmount / project.targetAmount) * 100;
-
-          return (
-            <Card
-              key={project.id}
-              className="hover:shadow-lg transition-shadow"
-            >
+        {/* Enhanced Filtering Section */}
+        <div className="bg-white dark:bg-gray-800 rounded-lg p-6 shadow-sm border mb-8">
+          <div className="flex flex-col lg:flex-row gap-4">
+            {/* Search Input */}
+            <div className="flex-1">
               <div className="relative">
-                <img
-                  src={project.image}
-                  alt={project.title}
-                  className="w-full h-48 object-cover rounded-t-lg"
+                <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 h-4 w-4" />
+                <Input
+                  placeholder="Search projects by name or description..."
+                  value={searchQuery}
+                  onChange={(e) => setSearchQuery(e.target.value)}
+                  className="pl-10 pr-10"
                 />
-                {project.verified && (
-                  <Badge className="absolute top-2 right-2 bg-green-500">
-                    Verified
-                  </Badge>
+                {searchQuery && (
+                  <button
+                    onClick={clearSearch}
+                    className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-gray-600"
+                  >
+                    <X className="h-4 w-4" />
+                  </button>
                 )}
               </div>
+            </div>
 
-              <CardHeader>
-                <div className="flex justify-between items-start mb-2">
-                  <CardTitle className="text-lg line-clamp-2">
-                    {project.title}
-                  </CardTitle>
-                  <Badge variant="outline">{project.category}</Badge>
-                </div>
-                <CardDescription className="line-clamp-3">
-                  {project.description}
-                </CardDescription>
-              </CardHeader>
-
-              <CardContent className="space-y-4">
-                {/* SDG Goals */}
-                <div>
-                  <p className="text-sm font-medium mb-2">SDG Goals:</p>
-                  <div className="flex flex-wrap gap-1">
-                    {project.sdgGoals.slice(0, 2).map((goal, index) => (
-                      <Badge
-                        key={index}
-                        variant="secondary"
-                        className="text-xs"
-                      >
-                        {goal}
-                      </Badge>
-                    ))}
-                    {project.sdgGoals.length > 2 && (
-                      <Badge variant="secondary" className="text-xs">
-                        +{project.sdgGoals.length - 2}
+            {/* SDG Goals Filter Dropdown */}
+            <div className="lg:w-auto">
+              <DropdownMenu>
+                <DropdownMenuTrigger asChild>
+                  <Button variant="outline" className="w-full lg:w-auto">
+                    <Filter className="h-4 w-4 mr-2" />
+                    SDG Goals
+                    {selectedSdgGoals.length > 0 && (
+                      <Badge variant="secondary" className="ml-2">
+                        {selectedSdgGoals.length}
                       </Badge>
                     )}
-                  </div>
-                </div>
+                    <ChevronDown className="h-4 w-4 ml-2" />
+                  </Button>
+                </DropdownMenuTrigger>
+                <DropdownMenuContent className="w-80 max-h-80 overflow-y-auto">
+                  <DropdownMenuLabel>Select SDG Goals</DropdownMenuLabel>
+                  <DropdownMenuSeparator />
+                  {availableSdgGoals.map((sdgGoal) => (
+                    <DropdownMenuItem
+                      key={sdgGoal}
+                      className="flex items-center space-x-2"
+                      onSelect={(e) => e.preventDefault()}
+                    >
+                      <Checkbox
+                        id={sdgGoal}
+                        checked={selectedSdgGoals.includes(sdgGoal)}
+                        onCheckedChange={() => toggleSdgGoal(sdgGoal)}
+                      />
+                      <Label
+                        htmlFor={sdgGoal}
+                        className="text-sm font-normal cursor-pointer flex-1"
+                      >
+                        {sdgGoalsDisplay[sdgGoal] || sdgGoal}
+                      </Label>
+                    </DropdownMenuItem>
+                  ))}
+                  {selectedSdgGoals.length > 0 && (
+                    <>
+                      <DropdownMenuSeparator />
+                      <DropdownMenuItem onSelect={clearSdgFilters}>
+                        <X className="h-4 w-4 mr-2" />
+                        Clear SDG Filters
+                      </DropdownMenuItem>
+                    </>
+                  )}
+                </DropdownMenuContent>
+              </DropdownMenu>
+            </div>
 
-                {/* Progress */}
-                <div>
-                  <div className="flex justify-between text-sm mb-2">
-                    <span>
-                      {project.currentAmount.toLocaleString()} SOL raised
-                    </span>
-                    <span>{Math.round(progressPercentage)}%</span>
-                  </div>
-                  <Progress value={progressPercentage} className="h-2" />
-                  <div className="flex justify-between text-xs text-gray-500 mt-1">
-                    <span>{project.donorCount} donors</span>
-                    <span>{project.daysLeft} days left</span>
-                  </div>
-                </div>
+            {/* Clear All Filters */}
+            {(searchQuery ||
+              selectedSdgGoals.length > 0 ||
+              selectedCategory !== "all") && (
+              <Button
+                variant="ghost"
+                onClick={clearAllFilters}
+                className="lg:w-auto"
+              >
+                <X className="h-4 w-4 mr-2" />
+                Clear All
+              </Button>
+            )}
+          </div>
 
-                {/* Quadratic Match */}
-                <div className="bg-green-50 p-3 rounded-lg">
-                  <div className="flex items-center gap-2 mb-1">
-                    <TrendingUp className="h-4 w-4 text-green-600" />
-                    <span className="text-sm font-medium text-green-800">
-                      Quadratic Match
-                    </span>
-                  </div>
-                  <p className="text-lg font-bold text-green-600">
-                    +{project.quadraticMatch.toLocaleString()} SOL
-                  </p>
-                  <p className="text-xs text-green-700">
-                    Your small donation has big impact!
-                  </p>
-                </div>
+          {/* Active Filters Display */}
+          {(searchQuery || selectedSdgGoals.length > 0) && (
+            <div className="mt-4 pt-4 border-t">
+              <div className="flex flex-wrap gap-2 items-center">
+                <span className="text-sm text-gray-600 dark:text-gray-400">
+                  Active filters:
+                </span>
 
-                {/* Actions */}
-                <div className="flex gap-2">
-                  <Button
-                    onClick={() => handleDonate(project)}
-                    className="flex-1"
-                    disabled={!user}
+                {searchQuery && (
+                  <Badge
+                    variant="secondary"
+                    className="flex items-center gap-1"
                   >
-                    <Heart className="h-4 w-4 mr-2" />
-                    Donate
-                  </Button>
-                  <Button
-                    variant="outline"
-                    onClick={() => handleQuadraticVote(project.id)}
-                    disabled={!user}
-                  >
-                    <Vote className="h-4 w-4" />
-                  </Button>
-                  <Button variant="outline" disabled={!user}>
-                    <MessageCircle className="h-4 w-4" />
-                  </Button>
-                </div>
-
-                {!user && (
-                  <p className="text-xs text-center text-gray-500">
-                    Login to donate and participate in governance
-                  </p>
+                    Search: "{searchQuery}"
+                    <button onClick={clearSearch} className="ml-1">
+                      <X className="h-3 w-3" />
+                    </button>
+                  </Badge>
                 )}
-              </CardContent>
-            </Card>
-          );
-        })}
+
+                {selectedSdgGoals.map((sdgGoal) => (
+                  <Badge
+                    key={sdgGoal}
+                    variant="secondary"
+                    className="flex items-center gap-1"
+                  >
+                    {sdgGoalsDisplay[sdgGoal] || sdgGoal}
+                    <button
+                      onClick={() => toggleSdgGoal(sdgGoal)}
+                      className="ml-1"
+                    >
+                      <X className="h-3 w-3" />
+                    </button>
+                  </Badge>
+                ))}
+              </div>
+            </div>
+          )}
+        </div>
+
+        {/* Category Buttons */}
+        <div className="flex flex-wrap gap-2 mb-6">
+          {[
+            { id: "all", label: "All Projects", icon: Target },
+            { id: "energy", label: "Clean Energy", icon: Coins },
+            { id: "environment", label: "Environment", icon: Leaf },
+            { id: "agriculture", label: "Agriculture", icon: Heart },
+          ].map((category) => (
+            <Button
+              key={category.id}
+              variant={selectedCategory === category.id ? "default" : "outline"}
+              onClick={() => setSelectedCategory(category.id)}
+              className="flex items-center gap-2"
+            >
+              <category.icon className="h-4 w-4" />
+              {category.label}
+            </Button>
+          ))}
+        </div>
+
+        {/* Results Count */}
+        <div className="mb-4">
+          <p className="text-sm text-gray-600 dark:text-gray-400">
+            Showing {filteredProjects.length} of {whitelistedProjects.length}{" "}
+            projects
+          </p>
+        </div>
+
+        {/* Projects Grid */}
+        {filteredProjects.length === 0 ? (
+          <div className="text-center py-12">
+            <div className="max-w-md mx-auto">
+              <div className="text-gray-400 mb-4">
+                <Search className="h-12 w-12 mx-auto" />
+              </div>
+              <h3 className="text-lg font-medium text-gray-900 dark:text-white mb-2">
+                No projects found
+              </h3>
+              <p className="text-gray-500 dark:text-gray-400 mb-4">
+                Try adjusting your search or filter criteria to find projects.
+              </p>
+              <Button variant="outline" onClick={clearAllFilters}>
+                Clear all filters
+              </Button>
+            </div>
+          </div>
+        ) : (
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            {filteredProjects.map((project: any) => {
+              const progress = getProjectProgress(project);
+              const completedMilestones = getCompletedMilestones(project);
+
+              return (
+                <Card
+                  key={project.publicKey.toString()}
+                  className="h-full flex flex-col"
+                >
+                  <CardHeader>
+                    <div className="flex justify-between items-start mb-2">
+                      <CardTitle className="text-lg line-clamp-2">
+                        {project.title || "Untitled Project"}
+                      </CardTitle>
+                      <Badge
+                        className={
+                          categoryConfig[project.category]?.color ||
+                          categoryConfig.Default.color
+                        }
+                      >
+                        {project.category || "General"}
+                      </Badge>
+                    </div>
+                    <p className="text-sm text-muted-foreground line-clamp-3">
+                      {project.description || "No description available"}
+                    </p>
+                  </CardHeader>
+
+                  <CardContent className="flex-1 flex flex-col">
+                    <div className="space-y-4 flex-1">
+                      {/* Location */}
+                      {/* Location removed in DB-only mode */}
+
+                      {/* SDG Goals */}
+                      {project.sdgGoals && project.sdgGoals.length > 0 && (
+                        <div className="flex flex-wrap gap-1">
+                          {project.sdgGoals.slice(0, 3).map((goal: string) => (
+                            <Badge
+                              key={goal}
+                              variant="outline"
+                              className="text-xs"
+                            >
+                              {sdgGoalsDisplay[goal] || goal}
+                            </Badge>
+                          ))}
+                          {project.sdgGoals.length > 3 && (
+                            <Badge variant="outline" className="text-xs">
+                              +{project.sdgGoals.length - 3} more
+                            </Badge>
+                          )}
+                        </div>
+                      )}
+
+                      {/* Progress removed in DB-only mode */}
+
+                      {/* Milestones removed in DB-only mode */}
+
+                      {/* Contribution Section removed in DB-only mode */}
+                    </div>
+
+                    {/* Action Buttons */}
+                    <div className="mt-4 pt-4 border-t">
+                      <div className="flex gap-2">
+                        <Link href={`/discussions`} className="flex-1">
+                          <Button variant="outline" className="w-full">
+                            Explore Discussions
+                          </Button>
+                        </Link>
+                      </div>
+                    </div>
+                  </CardContent>
+                </Card>
+              );
+            })}
+          </div>
+        )}
+
+        {/* Wallet prompt removed in DB-only mode */}
       </div>
     </div>
   );
 }
+
+export default ProjectsPage;
