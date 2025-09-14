@@ -128,10 +128,10 @@ export default function Navbar() {
         )}
         {authenticated && role === 1 && (
           <Link
-            href="/business"
+            href="/create/proposal"
             className="text-blue-100 hover:text-white transition-colors"
           >
-            Business
+            Create Proposal
           </Link>
         )}
         {authenticated && role === 2 && (

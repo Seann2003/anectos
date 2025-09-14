@@ -2,10 +2,10 @@
 
 import { useState } from "react";
 import { usePrivy } from "@privy-io/react-auth";
-import axios from "axios";
 import { Button } from "@/components/ui/button";
-import { ImagePlus, Loader2 } from "lucide-react";
+import { Loader2 } from "lucide-react";
 import SdgSelector from "@/components/sdg-selector";
+import ImageUploader from "@/components/image-uploader";
 
 export default function BusinessDashboardPage() {
   const { user, authenticated } = usePrivy();
@@ -14,46 +14,30 @@ export default function BusinessDashboardPage() {
   const [description, setDescription] = useState("");
   const [targetAmount, setTargetAmount] = useState("");
   const [selectedGoals, setSelectedGoals] = useState<number[]>([]);
-  const [imageFile, setImageFile] = useState<File | null>(null);
-  const [imagePreview, setImagePreview] = useState<string | null>(null);
-  const [uploadingImage, setUploadingImage] = useState(false);
-  const [metadataUri, setMetadataUri] = useState<string | null>(null);
-  const [imageUri, setImageUri] = useState<string | null>(null);
-  const [imageGatewayUrl, setImageGatewayUrl] = useState<string | null>(null);
-  const [uploadError, setUploadError] = useState<string | null>(null);
+  const [imageMetadataUri, setImageMetadataUri] = useState<string | null>(null);
+  const [nftMetadataUri, setNftMetadataUri] = useState<string | null>(null);
   const [submitting, setSubmitting] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [success, setSuccess] = useState<string | null>(null);
-  // SDG selection is managed by reusable component
 
-  const onImageChange = async (file: File | null) => {
-    setImageFile(file);
-    if (file) {
-      const url = URL.createObjectURL(file);
-      setImagePreview(url);
-      setUploadingImage(true);
-      setUploadError(null);
-      try {
-        const fd = new FormData();
-        fd.append("file", file);
-        const response = await axios.post("/api/pinata/upload", fd, {
-          headers: { "Content-Type": "multipart/form-data" },
-        });
-        console.log("Pinata upload response:", response);
-      } catch (err: any) {
-        setUploadError(err?.message || "Failed to upload to Pinata");
-        setMetadataUri(null);
-        setImageUri(null);
-        setImageGatewayUrl(null);
-      } finally {
-        setUploadingImage(false);
-      }
-    } else {
-      setImagePreview(null);
-      setMetadataUri(null);
-      setImageUri(null);
-      setImageGatewayUrl(null);
-    }
+  const handleImageUploaded = (r: {
+    cid: string;
+    metadataUri: string;
+    gatewayUrl: string;
+  }) => {
+    setImageMetadataUri(r.metadataUri);
+  };
+
+  const handleNFTImageUploaded = (r: {
+    cid: string;
+    metadataUri: string;
+    gatewayUrl: string;
+  }) => {
+    setNftMetadataUri(r.metadataUri);
+  };
+
+  const handleImageError = (msg: string) => {
+    setImageMetadataUri(null);
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -92,7 +76,8 @@ export default function BusinessDashboardPage() {
         description: description.trim(),
         target_amount: amount,
         sdg_goals: selectedGoals,
-        image_metadata_uri: metadataUri, // ipfs://CID or null
+        image_metadata_uri: imageMetadataUri,
+        nft_metadata_uri: nftMetadataUri,
       } as const;
 
       setSuccess("Proposal submitted successfully.");
@@ -101,11 +86,7 @@ export default function BusinessDashboardPage() {
       setDescription("");
       setTargetAmount("");
       setSelectedGoals([]);
-      setImageFile(null);
-      setImagePreview(null);
-      setMetadataUri(null);
-      setImageUri(null);
-      setImageGatewayUrl(null);
+      setImageMetadataUri(null);
     } catch (err: any) {
       setError(err?.message || "Failed to submit proposal. Please try again.");
     } finally {
@@ -176,62 +157,17 @@ export default function BusinessDashboardPage() {
 
           <SdgSelector selected={selectedGoals} onChange={setSelectedGoals} />
 
-          <div>
-            <label className="block text-sm font-medium text-gray-700 mb-2">
-              Project Image
-            </label>
-            <div className="flex items-center gap-4">
-              <label className="inline-flex items-center gap-2 cursor-pointer text-blue-700">
-                <input
-                  type="file"
-                  accept="image/*"
-                  className="hidden"
-                  onChange={(e) => onImageChange(e.target.files?.[0] || null)}
-                />
-                <span className="inline-flex items-center gap-2 rounded-md border border-blue-200 bg-blue-50 px-3 py-2 text-sm hover:bg-blue-100">
-                  <ImagePlus className="h-4 w-4" /> Upload image
-                </span>
-              </label>
-              {imagePreview && (
-                <img
-                  src={imagePreview}
-                  alt="Preview"
-                  className="h-16 w-16 object-cover rounded-md border"
-                />
-              )}
-              {uploadingImage && (
-                <span className="text-sm text-gray-600">
-                  Uploading to Pinata...
-                </span>
-              )}
-            </div>
-            {metadataUri && (
-              <div className="mt-2 text-xs text-gray-700 break-all">
-                metadata_uri: {metadataUri}
-              </div>
-            )}
-            {imageUri && (
-              <div className="mt-1 text-xs text-gray-700 break-all">
-                image_uri: {imageUri}
-              </div>
-            )}
-            {imageGatewayUrl && (
-              <div className="mt-1 text-xs text-gray-700 break-all">
-                image_gateway:{" "}
-                <a
-                  className="underline"
-                  href={imageGatewayUrl}
-                  target="_blank"
-                  rel="noreferrer"
-                >
-                  {imageGatewayUrl}
-                </a>
-              </div>
-            )}
-            {uploadError && (
-              <div className="mt-2 text-xs text-red-700">{uploadError}</div>
-            )}
-          </div>
+          <ImageUploader
+            label="Project Image"
+            onUploaded={handleImageUploaded}
+            onError={handleImageError}
+          />
+
+          <ImageUploader
+            label="NFT Image"
+            onUploaded={handleNFTImageUploaded}
+            onError={handleImageError}
+          />
 
           <div className="pt-2">
             <Button

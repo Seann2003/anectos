@@ -62,7 +62,6 @@ export default function ProjectsPage() {
                   key={p.id}
                   className="rounded-xl border border-blue-100 bg-white p-5 shadow-sm hover:shadow-md transition-shadow"
                 >
-                  {/* Project image */}
                   {p.imageUrl ? (
                     <img
                       src={p.imageUrl}
