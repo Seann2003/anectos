@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import { usePrivy } from "@privy-io/react-auth";
 import { useRouter } from "next/navigation";
 import { supabase } from "@/lib/supabaseClient";
+import { Button } from "@/components/ui/button";
 
 export default function ProfileEditPage() {
   const { authenticated, user, ready } = usePrivy();
@@ -84,20 +85,20 @@ export default function ProfileEditPage() {
             />
           </div>
           <div className="flex gap-3">
-            <button
+            <Button
               type="submit"
               disabled={saving || !username.trim()}
               className="bg-blue-500 hover:bg-blue-600 text-white font-semibold px-4 py-2 rounded disabled:opacity-50"
             >
               {saving ? "Saving…" : "Save"}
-            </button>
-            <button
+            </Button>
+            <Button
               type="button"
               onClick={() => router.back()}
               className="border border-gray-300 text-gray-700 px-4 py-2 rounded hover:bg-gray-50"
             >
               Cancel
-            </button>
+            </Button>
           </div>
         </form>
       </div>

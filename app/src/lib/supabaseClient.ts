@@ -10,12 +10,3 @@ if (!supabaseUrl || !supabaseAnonKey) {
 }
 
 export const supabase = createClient(supabaseUrl || "", supabaseAnonKey || "");
-
-export type ProfileRow = {
-  id: string; // uuid
-  wallet_address: string;
-  name: string | null;
-  email: string | null;
-  created_at: string;
-  updated_at: string;
-};

@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { useLoginWithEmail, usePrivy } from "@privy-io/react-auth";
+import { Button } from "./ui/button";
 
 interface LoginWithEmailProps {
   onSuccess?: () => void;
@@ -118,13 +119,13 @@ export default function LoginWithEmail({
               />
             </div>
 
-            <button
+            <Button
               onClick={handleSendCode}
               disabled={isLoading || !email.trim()}
               className="w-full bg-blue-500 text-white py-2 px-4 rounded-md hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
             >
               {isLoading ? "Sending..." : "Send Verification Code"}
-            </button>
+            </Button>
           </div>
         ) : (
           <div className="space-y-4">
@@ -154,24 +155,24 @@ export default function LoginWithEmail({
               />
             </div>
 
-            <button
+            <Button
               onClick={handleLoginWithCode}
               disabled={isLoading || code.length !== 6}
               className="w-full bg-blue-500 text-white py-2 px-4 rounded-md hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
             >
               {isLoading ? "Verifying..." : "Verify & Sign In"}
-            </button>
+            </Button>
 
             <div className="flex justify-between text-sm">
-              <button
+              <Button
                 onClick={resetForm}
                 className="text-blue-500 hover:text-blue-600 underline"
                 disabled={isLoading}
               >
                 Use different email
-              </button>
+              </Button>
 
-              <button
+              <Button
                 onClick={() => {
                   setCode("");
                   setError(null);
@@ -181,7 +182,7 @@ export default function LoginWithEmail({
                 disabled={isLoading}
               >
                 Resend code
-              </button>
+              </Button>
             </div>
           </div>
         )}

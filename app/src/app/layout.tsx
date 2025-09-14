@@ -27,7 +27,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={`${barlow.className} antialiased`}>
+      <body className={`${barlow.className} antialiased bg-blue-300`}>
         <Providers>
           <Navbar />
           {children}

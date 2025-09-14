@@ -3,12 +3,7 @@
 import { PrivyProvider, usePrivy } from "@privy-io/react-auth";
 import { useRouter, usePathname } from "next/navigation";
 import { useEffect, useRef } from "react";
-import { createClient } from "@supabase/supabase-js";
-
-const supabase = createClient(
-  process.env.NEXT_PUBLIC_SUPABASE_URL!,
-  process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
-);
+import { supabase } from "@/lib/supabaseClient";
 
 function AuthRedirectHandler() {
   const router = useRouter();
@@ -18,21 +13,34 @@ function AuthRedirectHandler() {
 
   useEffect(() => {
     if (!ready) return;
-    if (!authenticated || !user) return;
+    if (!authenticated || !user) {
+      document.cookie = `anectos_uid=; Path=/; Max-Age=0; SameSite=Lax`;
+      document.cookie = `anectos_role=; Path=/; Max-Age=0; SameSite=Lax`;
+      return;
+    }
     if (checkingRef.current) return;
 
     const run = async () => {
       checkingRef.current = true;
       try {
+        document.cookie = `anectos_uid=${user.id}; Path=/; Max-Age=${
+          60 * 60 * 24 * 30
+        }; SameSite=Lax`;
+
         const { data, error } = await supabase
-          .from("users")
-          .select("id")
+          .from("profiles")
+          .select("id, user_role")
           .eq("privy_user_id", user.id)
           .maybeSingle();
 
         if (error) {
           console.warn("Supabase redirect check error:", error);
         }
+
+        const role = (data?.user_role ?? 0) as number;
+        document.cookie = `anectos_role=${role}; Path=/; Max-Age=${
+          60 * 60 * 24 * 30
+        }; SameSite=Lax`;
 
         if (data) {
           if (pathname === "/signup") {
