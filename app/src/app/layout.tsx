@@ -3,6 +3,7 @@ import { Barlow_Condensed } from "next/font/google";
 import "./globals.css";
 import Navbar from "@/components/Navbar";
 import Providers from "@/providers/PrivyProvider";
+import { Toaster } from "sonner";
 
 const barlow = Barlow_Condensed({
   subsets: ["latin"],
@@ -33,6 +34,7 @@ export default function RootLayout({
         <Providers>
           <Navbar />
           {children}
+          <Toaster position="top-right" duration={2000} />
         </Providers>
       </body>
     </html>

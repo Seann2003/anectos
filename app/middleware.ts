@@ -10,10 +10,6 @@ const ROLE = {
 
 type Role = 0 | 1 | 2;
 
-// Exact allow-list per route prefix
-// - Admin (2) can only access /admin
-// - Owners (1) can access /business, /profile, /projects
-// - Users (0) can access /governance, /profile, /projects
 const ACL: Array<{ prefix: string; roles: Role[] }> = [
   { prefix: "/admin", roles: [ROLE.ADMIN] },
   { prefix: "/business", roles: [ROLE.OWNER] },
@@ -54,18 +50,15 @@ export function middleware(req: NextRequest) {
   const uid = getUidFromCookies(req);
   const role = getRoleFromCookies(req);
 
-  // If not authenticated (no uid), send to home (or / if you prefer /login)
   if (!uid) {
     const url = new URL("/", req.url);
     url.searchParams.set("redirect", pathname);
     return NextResponse.redirect(url);
   }
 
-  // If missing role, treat as lowest role (user)
   const userRole: Role = role ?? ROLE.USER;
 
   if (!allowed.includes(userRole)) {
-    // Not enough permissions; redirect to a safe page
     const url = new URL("/", req.url);
     url.searchParams.set("denied", pathname);
     return NextResponse.redirect(url);

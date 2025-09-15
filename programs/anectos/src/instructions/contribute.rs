@@ -10,7 +10,7 @@ pub struct Contribute<'info> {
 	pub funding_round: Account<'info, FundingRound>,
 	#[account(
         mut,
-        seeds = [b"project", funding_round.key().as_ref()],
+        seeds = [b"project", project.owner.key().as_ref()],
         bump
     )]
 	pub project: Account<'info, Project>,

@@ -13,6 +13,7 @@ pub struct Project {
 	pub has_withdrawn: bool,
     pub milestone_count: u8,
 	pub milestones: Vec<Milestone>,
+    pub bump: u8,
 }
 
 #[derive(
@@ -32,7 +33,8 @@ pub enum FundingStage {
     Planning,
     Active,
     Ongoing,
-    Completed
+    Completed,
+    Rejected,
 }
 
 #[derive(
@@ -76,6 +78,7 @@ pub struct ProjectMeta {
     pub image_metadata_uri: String,
     pub funding_stage: FundingStage,
     pub sdg_goals: Vec<SDGGoals>,
+    pub bump: u8,
 }
 
 #[account]
@@ -91,6 +94,7 @@ pub struct FundingRound {
 	pub vault_bump: u8,
 	pub is_active: bool,
 	pub fee: u64,
+    pub bump: u8,
 }
 
 #[account]

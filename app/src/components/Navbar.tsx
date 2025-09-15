@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 import Link from "next/link";
 import { usePrivy } from "@privy-io/react-auth";
 import { useRouter } from "next/navigation";
-import { User, Pencil, LayoutDashboard, LogOut } from "lucide-react";
+import { User, Pencil, LayoutDashboard, LogOut, Copy } from "lucide-react";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -15,10 +15,12 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { Button } from "./ui/button";
 import { supabase } from "@/lib/supabaseClient";
+import { toast, useSonner } from "sonner";
 
 export default function Navbar() {
   const [name, setName] = useState("");
   const { authenticated, user, logout, login } = usePrivy();
+  console.log("Navbar user:", user);
   const router = useRouter();
   const [role, setRole] = useState<0 | 1 | 2 | null>(null);
   const [displayName, setDisplayName] = useState<string>("");
@@ -201,11 +203,25 @@ export default function Navbar() {
                   </div>
                 </DropdownMenuLabel>
                 <DropdownMenuSeparator />
+                <DropdownMenuItem
+                  className="hover:bg-blue-50 focus:bg-blue-50"
+                  onSelect={() => {
+                    if (user?.wallet?.address) {
+                      navigator.clipboard.writeText(user.wallet.address);
+                      toast.success("Wallet address copied to clipboard!");
+                    }
+                  }}
+                >
+                  <Copy className="size-4 text-blue-600" />
+                  Copy wallet address
+                </DropdownMenuItem>
                 {role !== 2 && (
                   <>
                     <DropdownMenuItem
                       className="hover:bg-blue-50 focus:bg-blue-50"
-                      onSelect={() => router.push("/profile")}
+                      onSelect={() => {
+                        router.push("/profile");
+                      }}
                     >
                       <User className="size-4 text-blue-600" />
                       View profile

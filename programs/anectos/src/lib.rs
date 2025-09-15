@@ -31,6 +31,14 @@ pub mod anectos {
         create_project::handler(ctx, title, description, round, target_amount, milestone_count, sdg_goals, project_image_metadata_uri)
     }
 
+
+    pub fn change_project_funding_stage(
+        ctx: Context<ChangeProjectFundingStage>,
+        new_stage: FundingStage,
+    ) -> Result<()> {
+        change_project_funding_stage::handler(ctx, new_stage)
+    }
+
     pub fn complete_milestone(ctx: Context<CompleteMilestone>, milestone_index: u8, current_funding: u64) -> Result<()> {
         complete_milestone::handler(ctx, milestone_index, current_funding)
     }

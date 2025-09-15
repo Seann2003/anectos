@@ -15,7 +15,12 @@ pub struct DistributeFundsToOwner<'info> {
     )]
     pub vault: SystemAccount<'info>,
 
-	#[account(mut, has_one = owner)]
+    #[account(
+        mut,
+        has_one = owner,
+        seeds = [b"project", owner.key().as_ref()],
+        bump
+    )]
 	pub project: Account<'info, Project>,
     pub system_program: Program<'info, System>
 }

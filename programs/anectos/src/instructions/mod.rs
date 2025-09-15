@@ -1,3 +1,4 @@
+pub mod change_project_funding_stage;
 pub mod complete_milestone;
 pub mod contribute;
 pub mod create_project;
@@ -7,6 +8,7 @@ pub mod update_funding_stage_status;
 pub mod update_project_whitelist;
 pub mod close_round;
 
+pub use change_project_funding_stage::*;
 pub use complete_milestone::*;
 pub use contribute::*;
 pub use create_project::*;

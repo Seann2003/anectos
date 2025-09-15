@@ -1,5 +1,5 @@
 import { NextResponse, type NextRequest } from "next/server";
-import { pinata } from "@/lib/constants";
+import { pinata } from "@/lib/pinata";
 
 export const runtime = "nodejs";
 
@@ -25,7 +25,6 @@ export async function POST(request: NextRequest) {
       headers: {
         pinata_api_key: apiKey,
         pinata_secret_api_key: secret,
-        // Note: DO NOT set Content-Type; fetch will set proper multipart boundary.
       },
       body: data,
     });

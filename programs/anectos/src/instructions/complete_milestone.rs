@@ -5,7 +5,12 @@ use crate::{error::AnectosError, state::{Milestone, Project, MilestoneCompleted}
 pub struct CompleteMilestone<'info> {
 	#[account(mut)]
 	pub owner: Signer<'info>,
-	#[account(mut, has_one = owner)]
+	#[account(
+		mut,
+		has_one = owner,
+		seeds = [b"project", owner.key().as_ref()],
+		bump
+	)]
 	pub project: Account<'info, Project>,
 }
 
