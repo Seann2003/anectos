@@ -11,15 +11,19 @@ import { useSendTransaction } from "@privy-io/react-auth/solana";
 import { CONNECTION } from "@/lib/constants";
 import {
   distributeFundsToOwnerIx,
+  setAreaMaxIx,
   settleMatchingForProjectIx,
 } from "@/lib/instructions";
 import { projectPdaFromOwner, vaultPda, roundVaultPda } from "@/lib/pda";
 import { lamportsToSol, solToLamports, formatSol } from "@/lib/utils";
+import { Button } from "@/components/ui/button";
 
 export default function ProjectDashboardPage() {
   const [vaultBalance, setVaultBalance] = useState<number>(0);
   const [userWalletBalance, setUserWalletBalance] = useState<number>(0);
   const [currentFunding, setCurrentFunding] = useState<number>(0);
+  const [areaMaxStr, setAreaMaxStr] = useState("");
+
   // QF metrics
   const [matchingPoolSol, setMatchingPoolSol] = useState<number | null>(null);
   const [roundArea, setRoundArea] = useState<string | null>(null);
@@ -415,7 +419,9 @@ export default function ProjectDashboardPage() {
       {/* Balances */}
       <div className="mt-6 grid grid-cols-1 md:grid-cols-3 gap-4">
         <div className="rounded-lg border bg-white p-4">
-          <div className="text-xs text-gray-500">Vault Balance</div>
+          <div className="text-xs text-gray-500">
+            Total donated amount by organic users
+          </div>
           <div className="mt-1 font-mono">
             {formatSol(lamportsToSol(vaultBalance))}
           </div>
@@ -442,24 +448,6 @@ export default function ProjectDashboardPage() {
             {matchingPoolSol == null ? "-" : formatSol(matchingPoolSol)}
           </div>
         </div>
-        <div className="rounded-lg border bg-white p-4">
-          <div className="text-xs text-gray-500">
-            Pool Distributed (Project)
-          </div>
-          <div className="mt-1 font-mono">
-            {projectPoolDistributedSol == null
-              ? "-"
-              : formatSol(projectPoolDistributedSol)}
-          </div>
-        </div>
-        <div className="rounded-lg border bg-white p-4">
-          <div className="text-xs text-gray-500">Pool Remaining (Project)</div>
-          <div className="mt-1 font-mono">
-            {projectPoolRemainingSol == null
-              ? "-"
-              : formatSol(projectPoolRemainingSol)}
-          </div>
-        </div>
         <div className="rounded-lg border bg-white p-4 md:col-span-3">
           <div className="text-xs text-gray-500">
             Unlocked from Pool (Project)
@@ -473,12 +461,8 @@ export default function ProjectDashboardPage() {
           </div>
         </div>
         <div className="rounded-lg border bg-white p-4">
-          <div className="text-xs text-gray-500">QF Area (Project)</div>
+          <div className="text-xs text-gray-500">QF Area</div>
           <div className="mt-1 font-mono">{projectArea ?? "-"}</div>
-        </div>
-        <div className="rounded-lg border bg-white p-4">
-          <div className="text-xs text-gray-500">QF Area (Round)</div>
-          <div className="mt-1 font-mono">{roundArea ?? "-"}</div>
         </div>
       </div>
 
@@ -502,21 +486,65 @@ export default function ProjectDashboardPage() {
         </div>
       </div>
 
-      {/* Vault requirements */}
-      <div className="mt-6 rounded-lg border bg-white p-4">
-        <div className="font-medium mb-2">Vault Conditions</div>
-        <div className="flex items-center gap-2 text-sm">
-          {firstMilestoneAchieved ? (
-            <>
-              <ShieldCheck className="h-4 w-4 text-green-600" /> First milestone
-              is achieved
-            </>
-          ) : (
-            <>
-              <AlertTriangle className="h-4 w-4 text-yellow-600" /> First
-              milestone must be completed before withdrawal
-            </>
-          )}
+      <div className="pt-4 border-t">
+        <div className="text-sm font-medium">Target Area Scaling</div>
+        <div className="text-xs text-gray-600 mb-2">
+          Set a target total area (area_max). When actual round area is below
+          this target, matching allocation uses max(area, area_max) in the
+          denominator to avoid overspending.
+        </div>
+        <div className="grid gap-3 sm:grid-cols-2">
+          <label className="block">
+            <span className="text-sm text-gray-700">Target Area (u128)</span>
+            <input
+              className="mt-1 w-full rounded border px-3 py-2"
+              placeholder="e.g. 60000"
+              value={areaMaxStr}
+              onChange={(e) => setAreaMaxStr(e.target.value)}
+            />
+          </label>
+        </div>
+        <div className="mt-2">
+          <Button
+            onClick={async () => {
+              console.log("Hello");
+              if (!authenticated || !user?.wallet?.address) {
+                console.error("Please login with a Privy Solana wallet.");
+                return;
+              }
+              try {
+                const roundPk = new PublicKey(fundingRoundId!);
+                const ownerPk = new PublicKey(user.wallet.address);
+                const nStr = (areaMaxStr || "0").trim();
+                // basic numeric validation
+                if (!/^\d+$/.test(nStr))
+                  throw new Error("Area must be a non-negative integer");
+                const ix = await setAreaMaxIx({
+                  owner: ownerPk,
+                  fundingRound: roundPk,
+                  areaMax: new BN(nStr),
+                });
+                console.log("Ix:", ix);
+                const tx = new Transaction().add(ix);
+                tx.feePayer = ownerPk;
+                const { blockhash } = await CONNECTION.getLatestBlockhash();
+                tx.recentBlockhash = blockhash;
+                const r = await sendTransaction({
+                  transaction: tx,
+                  connection: CONNECTION,
+                  address: user.wallet.address,
+                });
+                toast.success(
+                  `Set target area (area_max). Sig: ${r.signature}`
+                );
+              } catch (e: any) {
+                console.error(e);
+              } finally {
+              }
+            }}
+          >
+            Set Target Area
+          </Button>
         </div>
       </div>
 

@@ -1,0 +1,29 @@
+[2025-09-17--03-49-16 INFO actix_server::builder] starting 5 workers
+[2025-09-17--03-49-16 INFO actix_server::server] Tokio runtime found; starting in existing Tokio runtime
+[2025-09-17--03-49-16 INFO actix_server::server] starting service: "actix-web-service-127.0.0.1:18488", workers: 5, listening on: 127.0.0.1:18488
+[2025-09-17--03-49-16 INFO parity_ws] Listening for new connections on 127.0.0.1:8900.
+[2025-09-17--03-49-17 INFO txtx::svm::deploy_program] Failure Recovery Info - An ephemeral authority account will be created and funded to write to the buffer account.
+[2025-09-17--03-49-17 INFO txtx::svm::deploy_program] Failure Recovery Info - Please save the following information in case the deployment fails and the account needs to be recovered:
+[2025-09-17--03-49-17 INFO txtx::svm::deploy_program] Failure Recovery Info - Ephemeral authority public key: DUbUwEf2c6BY72UjSNrMkY94ExZpmPpgg9qTnKC5a2HT
+[2025-09-17--03-49-17 INFO txtx::svm::deploy_program] Failure Recovery Info - Ephemeral authority secret key: Z74aufts6FwPztq68y6tpL4UCx1Ss2qWYHzgvvVtokzkgtYDRmq3DSxzGLnjFs6b3EGnBXygK5pbTErxa9MW5PK
+[2025-09-17--03-49-17 INFO parity_ws::io] Accepted a new tcp connection from 127.0.0.1:54434.
+[2025-09-17--03-49-17 INFO txtx::svm::deploy_program] Account Created - Ephemeral authority account created and funded to write to buffer
+[2025-09-17--03-49-17 INFO txtx::svm::deploy_program] Failure Recovery Info - Creating program buffer account at pubkey HaTvbqHuoSjYevz8k3r7rVA8onuFocdTXp1xMYawWG6m
+[2025-09-17--03-49-17 INFO txtx::svm::deploy_program] Account Created - Program buffer account created
+[2025-09-17--03-49-35 INFO txtx::svm::deploy_program] Buffer Ready - Writing to buffer account is complete
+[2025-09-17--03-49-35 INFO txtx::svm::deploy_program] Program Created - Program 4Tjq5Em4qauF9DjXjVN2WW6NkM49tScR47czXHekquBp has been deployed
+[2025-09-17--03-49-35 INFO txtx::svm::deploy_program] Complete - Ephemeral authority account closed and leftover funds returned to payer
+[2025-09-17--03-49-35 INFO txtx::svm::deploy_subgraph] Subgraph Deployed - Subgraph ContributionMade for program 4Tjq5Em4qauF9DjXjVN2WW6NkM49tScR47czXHekquBp has been deployed
+[2025-09-17--03-49-36 INFO txtx::svm::deploy_subgraph] Subgraph Deployed - Your subgraph can be reached at "http://127.0.0.1:18488/subgraphs"
+[2025-09-17--03-49-36 INFO txtx::svm::deploy_subgraph] Subgraph Deployed - Subgraph MilestoneCompleted for program 4Tjq5Em4qauF9DjXjVN2WW6NkM49tScR47czXHekquBp has been deployed
+[2025-09-17--03-49-36 INFO txtx::svm::deploy_subgraph] Subgraph Deployed - Your subgraph can be reached at "http://127.0.0.1:18488/subgraphs"
+[2025-09-17--03-49-36 INFO txtx::svm::deploy_subgraph] Subgraph Deployed - Subgraph ProjectCreated for program 4Tjq5Em4qauF9DjXjVN2WW6NkM49tScR47czXHekquBp has been deployed
+[2025-09-17--03-49-36 INFO txtx::svm::deploy_subgraph] Subgraph Deployed - Your subgraph can be reached at "http://127.0.0.1:18488/subgraphs"
+[2025-09-17--03-50-54 INFO parity_ws::io] Accepted a new tcp connection from 127.0.0.1:55848.
+[2025-09-17--04-02-14 ERROR litesvm] Payer account mdrejH3w3c45QoN15whJFvNEhcj2sx6r78xzx7b9y2z not found.
+[2025-09-17--04-02-14 ERROR litesvm] Payer account mdrejH3w3c45QoN15whJFvNEhcj2sx6r78xzx7b9y2z not found.
+[2025-09-17--04-02-59 ERROR litesvm] Payer account mdrejH3w3c45QoN15whJFvNEhcj2sx6r78xzx7b9y2z not found.
+[2025-09-17--04-02-59 ERROR litesvm] Payer account mdrejH3w3c45QoN15whJFvNEhcj2sx6r78xzx7b9y2z not found.
+[2025-09-17--04-17-07 INFO parity_ws::io] Accepted a new tcp connection from 127.0.0.1:63454.
+[2025-09-17--04-18-59 INFO parity_ws::io] Accepted a new tcp connection from 127.0.0.1:64060.
+[2025-09-17--04-19-14 INFO parity_ws::io] Accepted a new tcp connection from 127.0.0.1:64162.

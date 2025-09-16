@@ -106,7 +106,7 @@ export async function GET(request: Request) {
 
     // Round-level metrics we still need: total round area, contributor count
     const roundAreaBn: BN | undefined = (round as any)?.area;
-  const roundAreaMaxBn: BN | undefined = (round as any)?.areaMax;
+    const roundAreaMaxBn: BN | undefined = (round as any)?.areaMax;
     const contributorCount: number | null =
       (round as any)?.contributorCount ?? null;
 
@@ -150,7 +150,7 @@ export async function GET(request: Request) {
     // Use project-level pool totals for allocation
     const poolTotal = bi(projectMatchingPoolLamportsStr);
     const roundArea = bi(roundAreaStr);
-  const roundAreaMax = bi(roundAreaMaxStr);
+    const roundAreaMax = bi(roundAreaMaxStr);
     const projArea = bi(projectAreaStr);
     const already = bi(projectMatchingUnlockedStr);
     const rvBal = BigInt(roundVaultBalanceLamports);
@@ -161,10 +161,15 @@ export async function GET(request: Request) {
     if (
       poolTotal > BigInt(0) &&
       roundArea > BigInt(0) &&
-      projArea > BigInt(0) 
+      projArea > BigInt(0)
     ) {
       const num = projArea * projArea;
-      const denomArea = roundAreaMax > BigInt(0) ? (roundArea > roundAreaMax ? roundArea : roundAreaMax) : roundArea;
+      const denomArea =
+        roundAreaMax > BigInt(0)
+          ? roundArea > roundAreaMax
+            ? roundArea
+            : roundAreaMax
+          : roundArea;
       const den = denomArea * denomArea;
       if (den > BigInt(0)) {
         alloc = (poolTotal * num) / den;
@@ -201,7 +206,7 @@ export async function GET(request: Request) {
       roundArea: roundAreaStr,
       projectArea: projectAreaStr,
       contributorCount,
-  roundAreaMax: roundAreaMaxStr,
+      roundAreaMax: roundAreaMaxStr,
       projectMatchingUnlockedLamports: projectMatchingUnlockedStr,
       poolDistributedLamports: projectPoolDistributedLamportsStr, // kept name for compat
       // New explicit project pool fields

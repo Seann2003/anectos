@@ -85,6 +85,10 @@ export default function ProjectDetailPage() {
   const [sending, setSending] = useState(false);
   const [balanceLamports, setBalanceLamports] = useState<bigint | null>(null);
   const [isRoundOwner, setIsRoundOwner] = useState<boolean>(false);
+  const [settlementInfo, setSettlementInfo] = useState<{
+    expectedSettlementLamports: bigint;
+    poolTotalLamports: bigint;
+  } | null>(null);
 
   const { user, authenticated } = usePrivy();
   const { sendTransaction } = useSendTransaction();
@@ -155,6 +159,53 @@ export default function ProjectDetailPage() {
       cancelled = true;
     };
   }, [user?.wallet?.address]);
+
+  // Fetch expected settlement + pool total for this project
+  useEffect(() => {
+    let cancelled = false;
+    const fetchSettlement = async () => {
+      try {
+        if (!project?.id) return;
+        const res = await fetch(`/api/round?project=${project.id}`, {
+          cache: "no-store",
+        });
+        if (!res.ok) return;
+        const data = await res.json();
+        const expStr = data?.expectedSettlementLamports as string | undefined;
+        const poolStr = (data?.projectMatchingPoolLamports ||
+          data?.matchingPoolLamports) as string | undefined;
+        if (expStr && poolStr) {
+          const expectedSettlementLamports = (() => {
+            try {
+              return BigInt(expStr);
+            } catch {
+              return BigInt(0);
+            }
+          })();
+          const poolTotalLamports = (() => {
+            try {
+              return BigInt(poolStr);
+            } catch {
+              return BigInt(0);
+            }
+          })();
+          if (!cancelled)
+            setSettlementInfo({
+              expectedSettlementLamports,
+              poolTotalLamports,
+            });
+        } else if (!cancelled) {
+          setSettlementInfo(null);
+        }
+      } catch {
+        if (!cancelled) setSettlementInfo(null);
+      }
+    };
+    fetchSettlement();
+    return () => {
+      cancelled = true;
+    };
+  }, [project?.id]);
 
   // Admin gating: only round owner sees the fund project pool control
   useEffect(() => {
@@ -463,6 +514,32 @@ export default function ProjectDetailPage() {
                       Goal {formatUSD(project.fundingGoal)}
                     </span>
                   </div>
+                  {settlementInfo && (
+                    <div className="mt-2 text-xs text-blue-900/80 space-y-1">
+                      <div>
+                        Expected Settlement:{" "}
+                        {formatSol(
+                          lamportsToSol(
+                            Number(settlementInfo.expectedSettlementLamports)
+                          )
+                        )}{" "}
+                        SOL
+                      </div>
+                      <div>
+                        Project Matching Pool:{" "}
+                        {formatSol(
+                          lamportsToSol(
+                            Number(settlementInfo.poolTotalLamports)
+                          )
+                        )}{" "}
+                        SOL
+                      </div>
+                      <div className="text-[10px] text-blue-700/60">
+                        Settlement equals the currently estimated unlocked
+                        matching allocation if settled now.
+                      </div>
+                    </div>
+                  )}
                 </>
               ) : (
                 <div className="text-blue-900/70 text-sm">Loading…</div>

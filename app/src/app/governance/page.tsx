@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react";
 import { ChevronRight } from "lucide-react";
 import { Toaster } from "@/components/ui/sonner";
+import { lamportsToSol, formatSol } from "@/lib/utils";
 
 type UiProject = {
   id: string;
@@ -43,12 +44,12 @@ const sdgToNumber = (sdg: any): number | null => {
   }
   return null;
 };
-const formatUSD = (n: number) =>
-  new Intl.NumberFormat("en-US", {
-    style: "currency",
-    currency: "USD",
-    maximumFractionDigits: 0,
-  }).format(n);
+// Helper to format on-chain lamport integer values as SOL
+const formatSOLFromLamports = (lamports: number) =>
+  formatSol(lamportsToSol(lamports), {
+    minimumFractionDigits: 2,
+    maximumFractionDigits: 4,
+  });
 
 export default function GovernancePage() {
   const [items, setItems] = useState<UiProject[]>([]);
@@ -162,7 +163,7 @@ export default function GovernancePage() {
                           {p.description || "No description provided."}
                         </div>
                         <div className="mt-1 text-xs text-gray-500">
-                          Goal: {formatUSD(p.fundingGoal)}
+                          Goal: {formatSOLFromLamports(p.fundingGoal)}
                         </div>
                       </div>
                     </div>
@@ -198,7 +199,7 @@ export default function GovernancePage() {
                     {selected.description || "No description provided."}
                   </p>
                   <div className="text-sm text-gray-600 mt-1">
-                    Goal: {formatUSD(selected.fundingGoal)}
+                    Goal: {formatSOLFromLamports(selected.fundingGoal)}
                   </div>
                 </div>
               </div>
@@ -206,7 +207,7 @@ export default function GovernancePage() {
               <div className="mt-4">
                 <div className="flex items-center justify-between text-sm text-gray-700">
                   <div>Raised</div>
-                  <div>{formatUSD(selected.fundingRaised)}</div>
+                  <div>{formatSOLFromLamports(selected.fundingRaised)}</div>
                 </div>
                 <div className="mt-2 h-2 w-full overflow-hidden rounded-full bg-gray-200">
                   <div
@@ -239,7 +240,7 @@ export default function GovernancePage() {
                         key={idx}
                         className={reached ? "text-green-700" : "text-gray-700"}
                       >
-                        Milestone {idx + 1}: {formatUSD(m)}{" "}
+                        Milestone {idx + 1}: {formatSOLFromLamports(m)}{" "}
                         {reached ? "— Reached" : "— Pending"}
                       </li>
                     );

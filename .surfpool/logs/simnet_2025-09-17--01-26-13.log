@@ -27,3 +27,44 @@
 [2025-09-17--01-30-04 INFO parity_ws::io] Accepted a new tcp connection from 127.0.0.1:63768.
 [2025-09-17--01-30-20 INFO parity_ws::io] Accepted a new tcp connection from 127.0.0.1:63861.
 [2025-09-17--01-30-48 INFO parity_ws::io] Accepted a new tcp connection from 127.0.0.1:63998.
+[2025-09-17--02-00-01 INFO parity_ws::io] Accepted a new tcp connection from 127.0.0.1:55617.
+[2025-09-17--02-00-02 INFO parity_ws::io] Accepted a new tcp connection from 127.0.0.1:55624.
+[2025-09-17--02-04-59 INFO parity_ws::io] Accepted a new tcp connection from 127.0.0.1:57099.
+[2025-09-17--02-05-02 INFO parity_ws::io] Accepted a new tcp connection from 127.0.0.1:57116.
+[2025-09-17--02-05-03 INFO parity_ws::io] Accepted a new tcp connection from 127.0.0.1:57117.
+[2025-09-17--02-05-44 INFO parity_ws::io] Accepted a new tcp connection from 127.0.0.1:57314.
+[2025-09-17--02-05-45 INFO parity_ws::io] Accepted a new tcp connection from 127.0.0.1:57317.
+[2025-09-17--02-11-01 INFO parity_ws::io] Accepted a new tcp connection from 127.0.0.1:58789.
+[2025-09-17--02-11-02 INFO parity_ws::io] Accepted a new tcp connection from 127.0.0.1:58796.
+[2025-09-17--02-11-02 INFO parity_ws::io] Accepted a new tcp connection from 127.0.0.1:58801.
+[2025-09-17--02-23-37 INFO actix_web::middleware::logger] 127.0.0.1 "GET / HTTP/1.1" 200 6754 "-" "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/140.0.0.0 Safari/537.36" 0.072957
+[2025-09-17--02-23-37 INFO actix_web::middleware::logger] 127.0.0.1 "GET /assets/txtx.png HTTP/1.1" 200 4197 "http://127.0.0.1:18488/" "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/140.0.0.0 Safari/537.36" 0.001032
+[2025-09-17--02-23-37 INFO actix_web::middleware::logger] 127.0.0.1 "GET /_next/static/css/fd671620ab0cb221.css HTTP/1.1" 200 25057 "http://127.0.0.1:18488/" "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/140.0.0.0 Safari/537.36" 0.022473
+[2025-09-17--02-23-38 INFO actix_web::middleware::logger] 127.0.0.1 "GET /_next/static/chunks/c16f53c3-d20dab724af58680.js HTTP/1.1" 200 2698 "http://127.0.0.1:18488/" "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/140.0.0.0 Safari/537.36" 0.001280
+[2025-09-17--02-23-38 INFO actix_web::middleware::logger] 127.0.0.1 "GET /_next/static/chunks/main-app-3e881fb742a87abf.js HTTP/1.1" 200 219 "http://127.0.0.1:18488/" "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/140.0.0.0 Safari/537.36" 0.005393
+[2025-09-17--02-23-38 INFO actix_web::middleware::logger] 127.0.0.1 "GET /_next/static/chunks/webpack-137c9684d73de8de.js HTTP/1.1" 200 4665 "http://127.0.0.1:18488/" "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/140.0.0.0 Safari/537.36" 0.010796
+[2025-09-17--02-23-38 INFO actix_web::middleware::logger] 127.0.0.1 "GET /_next/static/chunks/809-ead11da64a319903.js HTTP/1.1" 200 15763 "http://127.0.0.1:18488/" "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/140.0.0.0 Safari/537.36" 0.006388
+[2025-09-17--02-23-38 INFO actix_web::middleware::logger] 127.0.0.1 "GET /_next/static/chunks/5964-bac2686a39d63815.js HTTP/1.1" 200 44320 "http://127.0.0.1:18488/" "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/140.0.0.0 Safari/537.36" 0.010051
+[2025-09-17--02-23-38 INFO actix_web::middleware::logger] 127.0.0.1 "GET /_next/static/chunks/4bd1b696-cc729d47eba2cee4.js HTTP/1.1" 200 55434 "http://127.0.0.1:18488/" "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/140.0.0.0 Safari/537.36" 0.025953
+[2025-09-17--02-23-38 INFO actix_web::middleware::logger] 127.0.0.1 "GET /_next/static/chunks/8480-59ad18cac05758cc.js HTTP/1.1" 200 10196 "http://127.0.0.1:18488/" "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/140.0.0.0 Safari/537.36" 0.004130
+[2025-09-17--02-23-38 INFO actix_web::middleware::logger] 127.0.0.1 "GET /_next/static/chunks/5697-ddf28cf287ee8cd2.js HTTP/1.1" 200 7606 "http://127.0.0.1:18488/" "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/140.0.0.0 Safari/537.36" 0.010857
+[2025-09-17--02-23-38 INFO actix_web::middleware::logger] 127.0.0.1 "GET /_next/static/chunks/5384-f8b44dae683dcd51.js HTTP/1.1" 200 13121 "http://127.0.0.1:18488/" "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/140.0.0.0 Safari/537.36" 0.020559
+[2025-09-17--02-23-38 INFO actix_web::middleware::logger] 127.0.0.1 "GET /_next/static/chunks/app/layout-c8715056220e1caf.js HTTP/1.1" 200 9274 "http://127.0.0.1:18488/" "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/140.0.0.0 Safari/537.36" 0.010317
+[2025-09-17--02-23-38 INFO actix_web::middleware::logger] 127.0.0.1 "GET /_next/static/chunks/1708-95ebc3a93bba3f4c.js HTTP/1.1" 200 39418 "http://127.0.0.1:18488/" "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/140.0.0.0 Safari/537.36" 0.017575
+[2025-09-17--02-23-38 INFO actix_web::middleware::logger] 127.0.0.1 "GET /favicon.ico HTTP/1.1" 200 1748 "http://127.0.0.1:18488/" "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/140.0.0.0 Safari/537.36" 0.000037
+[2025-09-17--02-23-38 INFO actix_web::middleware::logger] 127.0.0.1 "GET /_next/static/chunks/app/page-f3d1dfe24e6f7451.js HTTP/1.1" 200 9959 "http://127.0.0.1:18488/" "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/140.0.0.0 Safari/537.36" 0.005481
+[2025-09-17--02-23-38 INFO actix_web::middleware::logger] 127.0.0.1 "GET /_next/static/chunks/5108-4d8a2e695965c151.js HTTP/1.1" 200 18939 "http://127.0.0.1:18488/" "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/140.0.0.0 Safari/537.36" 0.005508
+[2025-09-17--02-23-38 INFO actix_web::middleware::logger] 127.0.0.1 "GET /_next/static/chunks/9618-315d73bc4be048dd.js HTTP/1.1" 200 13672 "http://127.0.0.1:18488/" "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/140.0.0.0 Safari/537.36" 0.008133
+[2025-09-17--02-23-38 INFO actix_web::middleware::logger] 127.0.0.1 "GET /_next/static/chunks/9641-55796bcb730cb70a.js HTTP/1.1" 200 7391 "http://127.0.0.1:18488/" "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/140.0.0.0 Safari/537.36" 0.020602
+[2025-09-17--02-23-38 INFO actix_web::middleware::logger] 127.0.0.1 "GET /_next/static/chunks/1591-1bc70b2a9bf1c8cb.js HTTP/1.1" 200 34782 "http://127.0.0.1:18488/" "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/140.0.0.0 Safari/537.36" 0.020393
+[2025-09-17--02-23-38 INFO actix_web::middleware::logger] 127.0.0.1 "GET /config HTTP/1.1" 200 166 "http://127.0.0.1:18488/" "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/140.0.0.0 Safari/537.36" 0.002115
+[2025-09-17--02-23-38 INFO parity_ws::io] Accepted a new tcp connection from 127.0.0.1:62232.
+[2025-09-17--02-23-38 INFO actix_web::middleware::logger] 127.0.0.1 "GET /subgraphs.txt?_rsc=3lb4g HTTP/1.1" 200 1671 "http://127.0.0.1:18488/" "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/140.0.0.0 Safari/537.36" 0.001790
+[2025-09-17--02-23-38 INFO actix_web::middleware::logger] 127.0.0.1 "GET /favicon.ico HTTP/1.1" 200 1748 "http://127.0.0.1:18488/" "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/140.0.0.0 Safari/537.36" 0.000196
+[2025-09-17--02-23-38 INFO actix_web::middleware::logger] 127.0.0.1 "GET /_next/static/chunks/app/subgraphs/page-c49510720f43689d.js HTTP/1.1" 200 1438 "http://127.0.0.1:18488/" "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/140.0.0.0 Safari/537.36" 0.000468
+[2025-09-17--03-07-02 INFO actix_server::worker] shutting down idle worker
+[2025-09-17--03-07-02 INFO actix_server::worker] shutting down idle worker
+[2025-09-17--03-07-02 INFO actix_server::worker] shutting down idle worker
+[2025-09-17--03-07-02 INFO actix_server::worker] shutting down idle worker
+[2025-09-17--03-07-02 INFO actix_server::worker] shutting down idle worker
+[2025-09-17--03-07-02 INFO actix_server::accept] accept thread stopped

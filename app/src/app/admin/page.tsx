@@ -23,6 +23,7 @@ export default function AdminPage() {
   const { sendTransaction } = useSendTransaction();
 
   const [roundStr, setRoundStr] = useState("");
+  console.log(roundStr);
   const [amountSol, setAmountSol] = useState("");
   const [areaMaxStr, setAreaMaxStr] = useState("");
   const [busy, setBusy] = useState(false);
@@ -350,7 +351,7 @@ export default function AdminPage() {
       <h1 className="text-3xl font-bold">Admin</h1>
       <Card>
         <CardHeader>
-          <CardTitle>Administrative Tools</CardTitle>
+          <CardTitle>Welcome back admin!</CardTitle>
         </CardHeader>
         <CardContent className="space-y-4">
           <p className="text-gray-600">
@@ -361,58 +362,6 @@ export default function AdminPage() {
             <Link href="/admin/proposals">
               <Button variant="default">Review Proposals</Button>
             </Link>
-          </div>
-          <div className="pt-4 border-t">
-            <div className="text-sm font-medium">Target Area Scaling</div>
-            <div className="text-xs text-gray-600 mb-2">
-              Set a target total area (area_max). When actual round area is below this target,
-              matching allocation uses max(area, area_max) in the denominator to avoid overspending.
-            </div>
-            <div className="grid gap-3 sm:grid-cols-2">
-              <label className="block">
-                <span className="text-sm text-gray-700">Target Area (u128)</span>
-                <input
-                  className="mt-1 w-full rounded border px-3 py-2"
-                  placeholder="e.g. 60000"
-                  value={areaMaxStr}
-                  onChange={(e) => setAreaMaxStr(e.target.value)}
-                />
-              </label>
-            </div>
-            <div className="mt-2">
-              <Button
-                onClick={async () => {
-                  setMsg(null);
-                  setErr(null);
-                  if (!authenticated || !user?.wallet?.address) {
-                    setErr("Please login with a Privy Solana wallet.");
-                    return;
-                  }
-                  try {
-                    setBusy(true);
-                    const roundPk = new PublicKey(roundStr);
-                    const ownerPk = new PublicKey(user.wallet.address);
-                    const nStr = (areaMaxStr || "0").trim();
-                    // basic numeric validation
-                    if (!/^\d+$/.test(nStr)) throw new Error("Area must be a non-negative integer");
-                    const ix = await setAreaMaxIx({ owner: ownerPk, fundingRound: roundPk, areaMax: new BN(nStr) });
-                    const tx = new Transaction().add(ix);
-                    tx.feePayer = ownerPk;
-                    const { blockhash } = await CONNECTION.getLatestBlockhash();
-                    tx.recentBlockhash = blockhash;
-                    const r = await sendTransaction({ transaction: tx, connection: CONNECTION, address: user.wallet.address });
-                    setMsg(`Set target area (area_max). Sig: ${r.signature}`);
-                  } catch (e: any) {
-                    setErr(e?.message || String(e));
-                  } finally {
-                    setBusy(false);
-                  }
-                }}
-                disabled={busy}
-              >
-                Set Target Area
-              </Button>
-            </div>
           </div>
         </CardContent>
       </Card>
@@ -472,69 +421,6 @@ export default function AdminPage() {
                 </div>
               </div>
             ))}
-          </div>
-        </CardContent>
-      </Card>
-
-      <Card>
-        <CardHeader>
-          <CardTitle>Matching Pool Funding</CardTitle>
-        </CardHeader>
-        <CardContent className="space-y-4">
-          <div className="text-xs text-gray-600">
-            Connected RPC: {SURFPOOL_RPC}
-          </div>
-          <div className="grid gap-3 sm:grid-cols-2">
-            <label className="block col-span-2">
-              <span className="text-sm text-gray-700">
-                Funding Round (Pubkey)
-              </span>
-              <input
-                className="mt-1 w-full rounded border px-3 py-2"
-                placeholder="Enter funding round address"
-                value={roundStr}
-                onChange={(e) => setRoundStr(e.target.value)}
-              />
-            </label>
-            <label className="block">
-              <span className="text-sm text-gray-700">Amount (SOL)</span>
-              <input
-                type="number"
-                min="0"
-                step="0.000001"
-                className="mt-1 w-full rounded border px-3 py-2"
-                placeholder="e.g. 10"
-                value={amountSol}
-                onChange={(e) => setAmountSol(e.target.value)}
-              />
-              <div className="mt-1 text-xs text-gray-600">
-                Your wallet: {lamportsToSol(walletLamports).toFixed(4)} SOL
-              </div>
-            </label>
-          </div>
-          {msg && <div className="text-green-700 break-all">{msg}</div>}
-          {err && <div className="text-red-600 break-all">{err}</div>}
-          <div className="flex gap-3">
-            <Button onClick={handleCreateRoundVault} disabled={busy}>
-              Create Round Vault
-            </Button>
-            <Button
-              onClick={handleFundMatchingPool}
-              disabled={busy}
-              variant="secondary"
-            >
-              Fund Matching Pool
-            </Button>
-            <Button onClick={handleAirdrop} disabled={busy} variant="outline">
-              Airdrop 2 SOL (local)
-            </Button>
-            <Button
-              onClick={handleSetPoolToVault}
-              disabled={busy}
-              variant="destructive"
-            >
-              Set Pool = Vault Balance
-            </Button>
           </div>
         </CardContent>
       </Card>

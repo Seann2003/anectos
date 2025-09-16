@@ -21,6 +21,7 @@ import { changeProjectFundingStageIx } from "@/lib/instructions";
 import { fundingRoundMetadataPda, projectMetadataPda } from "@/lib/pda";
 import { publicKeyFromBn } from "@/lib/helpers";
 import { Badge } from "@/components/ui/badge";
+import { lamportsToSol, formatSol } from "@/lib/utils";
 
 export default function AdminProposalsPage() {
   // On-chain projects state
@@ -66,12 +67,12 @@ export default function AdminProposalsPage() {
     }
     return null;
   };
-  const formatUSD = (n: number) =>
-    new Intl.NumberFormat("en-US", {
-      style: "currency",
-      currency: "USD",
-      maximumFractionDigits: 0,
-    }).format(n);
+  // Display helpers: convert lamports (on-chain integers) to SOL for UI
+  const formatSOLFromLamports = (lamports: number) =>
+    `${formatSol(lamportsToSol(lamports), {
+      minimumFractionDigits: 2,
+      maximumFractionDigits: 4,
+    })}`;
 
   const [projItems, setProjItems] = useState<UiProject[]>([]);
   const [projLoading, setProjLoading] = useState(false);
@@ -221,7 +222,7 @@ export default function AdminProposalsPage() {
                   <TableBody>
                     {projItems.map((p) => {
                       const reached = p.milestones.filter(
-                        (m) => p.fundingRaised >= m
+                        (m) => lamportsToSol(p.fundingRaised) >= m
                       ).length;
                       const status = (
                         p.fundingStage || "planning"
@@ -231,7 +232,7 @@ export default function AdminProposalsPage() {
                           ? "destructive"
                           : status === "active" || status === "ongoing"
                           ? "default"
-                          : "secondary"; // planning/completed -> secondary for neutrality
+                          : "secondary"; 
                       return (
                         <TableRow
                           key={p.id}
@@ -242,8 +243,10 @@ export default function AdminProposalsPage() {
                             {p.title}
                           </TableCell>
                           <TableCell>{p.sdgs.join(", ")}</TableCell>
-                          <TableCell>{formatUSD(p.fundingRaised)}</TableCell>
-                          <TableCell>{formatUSD(p.fundingGoal)}</TableCell>
+                          <TableCell>
+                            {formatSOLFromLamports(p.fundingRaised)}
+                          </TableCell>
+                          <TableCell>{p.fundingGoal}</TableCell>
                           <TableCell>
                             <Badge variant={statusVariant as any}>
                               {status.charAt(0).toUpperCase() + status.slice(1)}
@@ -308,10 +311,10 @@ export default function AdminProposalsPage() {
                 <div className="mb-3">
                   <div className="flex items-baseline justify-between text-sm">
                     <span className="text-gray-900 font-medium">
-                      {formatUSD(selected.fundingRaised)} raised
+                      {formatSOLFromLamports(selected.fundingRaised)} raised
                     </span>
                     <span className="text-gray-600">
-                      Goal {formatUSD(selected.fundingGoal)}
+                      Goal {selected.fundingGoal}
                     </span>
                   </div>
                   <div className="mt-2 h-2 w-full overflow-hidden rounded-full bg-gray-200">
@@ -344,7 +347,8 @@ export default function AdminProposalsPage() {
                   <h4 className="text-sm font-semibold mb-1">Milestones</h4>
                   <ul className="text-sm list-disc ml-5 space-y-1">
                     {selected.milestones.map((m, idx) => {
-                      const reached = selected.fundingRaised >= m;
+                      const reached =
+                        lamportsToSol(selected.fundingRaised) >= m;
                       return (
                         <li
                           key={idx}
@@ -352,7 +356,7 @@ export default function AdminProposalsPage() {
                             reached ? "text-green-700" : "text-gray-700"
                           }
                         >
-                          Milestone {idx + 1}: {formatUSD(m)}{" "}
+                          Milestone {idx + 1}: {m}{" "}
                           {reached ? "— Reached" : "— Pending"}
                         </li>
                       );

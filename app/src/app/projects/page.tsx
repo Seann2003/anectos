@@ -2,6 +2,7 @@
 
 import { useEffect, useMemo, useState } from "react";
 import SdgSelector from "@/components/sdg-selector";
+import { lamportsToSol, formatSol } from "@/lib/utils";
 
 type UiProject = {
   id: string; // projectPubkey
@@ -199,12 +200,18 @@ export default function ProjectsPage() {
                   <div className="mb-3">
                     <div className="flex items-baseline justify-between text-sm">
                       <span className="text-blue-900 font-medium">
-                        ${""}
-                        {p.fundingRaised.toLocaleString()} raised
+                        {formatSol(lamportsToSol(p.fundingRaised), {
+                          minimumFractionDigits: 2,
+                          maximumFractionDigits: 4,
+                        })}{" "}
+                        raised
                       </span>
                       <span className="text-blue-700/70">
-                        Goal ${""}
-                        {p.fundingGoal.toLocaleString()}
+                        Goal{" "}
+                        {formatSol(lamportsToSol(p.fundingGoal), {
+                          minimumFractionDigits: 2,
+                          maximumFractionDigits: 4,
+                        })}
                       </span>
                     </div>
                     <div className="mt-2 h-2 w-full overflow-hidden rounded-full bg-blue-100">
