@@ -17,6 +17,7 @@ import {
   projectMetadataPda,
   fundingRoundMetadataPda,
 } from "@/lib/pda";
+import { toSdgEnum } from "@/lib/helpers";
 
 export default function BusinessDashboardPage() {
   const { user, authenticated } = usePrivy();
@@ -61,8 +62,10 @@ export default function BusinessDashboardPage() {
     setError(null);
     setSuccess(null);
 
-    if (!authenticated && !user) {
-      setError("You must be logged in to submit a proposal.");
+    if (!authenticated || !user || !user.wallet?.address) {
+      setError(
+        "You must be logged in with a Privy Solana wallet to submit a proposal."
+      );
       return;
     }
 
@@ -101,7 +104,7 @@ export default function BusinessDashboardPage() {
     try {
       const insertPayload = {
         owner_privy_user_id: user.id,
-        wallet_address: user.wallet?.address ?? null,
+        wallet_address: user.wallet.address,
         title: title.trim(),
         description: description.trim(),
         target_amount: amount,
@@ -141,12 +144,10 @@ export default function BusinessDashboardPage() {
           const [projectPk] = projectPdaFromOwner(ownerPk);
           const [projectMetaPk] = projectMetadataPda(projectPk);
 
-          // Map SDG numeric ids to enum-like objects that Anchor expects
           const sdgGoals = selectedGoals
             .map((n) => toSdgEnum(n))
             .filter(Boolean) as any[];
 
-          // Build round initialization instruction from form times and NFT metadata
           const roundIx = await initializeFundingRoundIx({
             owner: ownerPk,
             fundingRound: roundPk,
@@ -157,7 +158,6 @@ export default function BusinessDashboardPage() {
             nftMetadataUri: nftMetadataUri || "",
           });
 
-          // Build project creation instruction linked to the new round
           const projectIx = await createProjectIx({
             owner: ownerPk,
             projectPda: projectPk,
@@ -173,16 +173,14 @@ export default function BusinessDashboardPage() {
           const tx = new Transaction().add(roundIx, projectIx);
 
           tx.feePayer = ownerPk;
+
           const { blockhash } = await CONNECTION.getLatestBlockhash();
           tx.recentBlockhash = blockhash;
-          // round account must sign because it's being initialized
           tx.partialSign(roundKp);
 
-          // Use Privy's embedded wallet to send the transaction
           const receipt = await sendTransaction({
             transaction: tx,
             connection: CONNECTION,
-            // optionally: transactionOptions: { skipPreflight: false },
             address: ownerAddr,
           });
 
@@ -223,48 +221,6 @@ export default function BusinessDashboardPage() {
       setSubmitting(false);
     }
   };
-
-  // Map numeric SDG goal id (1-17) to Anchor enum object expected by the program
-  function toSdgEnum(n: number): any | null {
-    switch (n) {
-      case 1:
-        return { noPoverty: {} };
-      case 2:
-        return { zeroHunger: {} };
-      case 3:
-        return { goodHealthAndWellBeing: {} };
-      case 4:
-        return { qualityEducation: {} };
-      case 5:
-        return { genderEquality: {} };
-      case 6:
-        return { cleanWaterAndSanitation: {} };
-      case 7:
-        return { affordableAndCleanEnergy: {} };
-      case 8:
-        return { decentWorkAndEconomicGrowth: {} };
-      case 9:
-        return { industryInnovationAndInfrastructure: {} };
-      case 10:
-        return { reducedInequalities: {} };
-      case 11:
-        return { sustainableCitiesAndCommunities: {} };
-      case 12:
-        return { responsibleConsumptionAndProduction: {} };
-      case 13:
-        return { climateAction: {} };
-      case 14:
-        return { lifeBelowWater: {} };
-      case 15:
-        return { lifeOnLand: {} };
-      case 16:
-        return { peaceJusticeAndStrongInstitutions: {} };
-      case 17:
-        return { partnershipsForTheGoals: {} };
-      default:
-        return null;
-    }
-  }
 
   return (
     <div className="container mx-auto px-4 py-8">

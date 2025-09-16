@@ -2,6 +2,7 @@ use anchor_lang::prelude::*;
 use num_derive::*;
 
 #[account]
+#[derive(InitSpace)]
 pub struct Project {
 	pub project_id: Pubkey,
 	pub round: Pubkey,
@@ -12,7 +13,8 @@ pub struct Project {
 	pub is_whitelisted: bool,
 	pub has_withdrawn: bool,
     pub milestone_count: u8,
-	pub milestones: Vec<Milestone>,
+    #[max_len(16)]
+    pub milestones: Vec<Milestone>,
     pub bump: u8,
 }
 
@@ -71,12 +73,17 @@ pub enum SDGGoals {
 }
 
 #[account]
+#[derive(InitSpace)]
 pub struct ProjectMeta {
     pub project: Pubkey,
+    #[max_len(64)]
     pub title: String,
+    #[max_len(512)]
     pub description: String,
+    #[max_len(200)]
     pub image_metadata_uri: String,
     pub funding_stage: FundingStage,
+    #[max_len(17)]
     pub sdg_goals: Vec<SDGGoals>,
     pub bump: u8,
 }
@@ -106,53 +113,18 @@ pub struct FundingRoundMeta {
 
 impl FundingRoundMeta {
     pub const INIT_SPACE: usize = 4 + 200 + 8 + 8;
-    // 4 bytes for String length prefix, 200 bytes for max String, 8 bytes for each i64
     pub fn space() -> usize {
-        8 + // discriminator
-        4 + 200 + // nft_metadata_uri String
-        8 + // start_time
-        8   // end_time
+        8 + 4 + 200 + 8 + 8
     }
 }
 
 
 #[derive(AnchorSerialize, AnchorDeserialize, InitSpace, Clone)]
 pub struct Milestone {
-    #[max_len(60)]
     pub amount: u64,       
     pub is_achieved: bool, 
 }
 
-impl Project {
-    pub const INIT_SPACE: usize = 4 + 60 + 8 + 1; 
-
-    pub fn space(max_milestones: usize) -> usize {
-        8 + // discriminator
-        32 + // project_id
-        32 + // round
-        32 + // owner
-        8 +  // target_amount
-        16 + // area
-        8 +  // current_funding
-        1 +  // is_whitelisted
-        1 +  // has_withdrawn
-        (Milestone::INIT_SPACE * max_milestones + 4) +
-        1    // milestone_count
-    }
-}
-
-impl ProjectMeta {
-    pub const INIT_SPACE: usize = 4 + 50 + 200 + 1 + (4 * 17);
-
-    pub fn space(max_sdg_goals: usize) -> usize {
-        8 + // discriminator
-        32 + // project
-        (50 + 4) + // title
-        (200 + 4) + // description
-        1 + // funding_stage
-        (ProjectMeta::INIT_SPACE * max_sdg_goals + 4) // sdg_goals
-    }
-}
 
 #[event]
 pub struct ContributionMade {

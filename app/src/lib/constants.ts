@@ -1,5 +1,5 @@
 import { AnchorProvider, Program } from "@coral-xyz/anchor";
-import { Connection } from "@solana/web3.js";
+import { Connection, Keypair } from "@solana/web3.js";
 import idl from "../../../target/idl/anectos.json";
 import { Anectos } from "../../../target/types/anectos";
 

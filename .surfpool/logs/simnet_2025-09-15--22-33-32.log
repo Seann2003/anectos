@@ -74,3 +74,9 @@
 [2025-09-15--22-45-33 INFO actix_web::middleware::logger] 127.0.0.1 "GET /_next/static/chunks/5528.044fff9015623e7e.js HTTP/1.1" 200 23707 "http://127.0.0.1:18488/_next/static/chunks/5387.22b41099c1bcc82f.js" "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/140.0.0.0 Safari/537.36" 0.003015
 [2025-09-15--22-45-34 INFO actix_web::middleware::logger] 127.0.0.1 "GET /_next/static/chunks/5083.d5e53186add8ff60.js HTTP/1.1" 200 41053 "http://127.0.0.1:18488/_next/static/chunks/5387.22b41099c1bcc82f.js" "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/140.0.0.0 Safari/537.36" 0.006893
 [2025-09-15--22-51-13 INFO parity_ws::io] Accepted a new tcp connection from 127.0.0.1:55730.
+[2025-09-15--22-59-14 INFO actix_server::accept] accept thread stopped
+[2025-09-15--22-59-14 INFO actix_server::worker] shutting down idle worker
+[2025-09-15--22-59-14 INFO actix_server::worker] shutting down idle worker
+[2025-09-15--22-59-14 INFO actix_server::worker] shutting down idle worker
+[2025-09-15--22-59-14 INFO actix_server::worker] shutting down idle worker
+[2025-09-15--22-59-14 INFO actix_server::worker] shutting down idle worker

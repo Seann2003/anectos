@@ -3,51 +3,53 @@ use crate::{state::{Milestone, Project, ProjectCreated}, FundingStage, ProjectMe
 
 #[derive(Accounts)]
 pub struct CreateProject<'info> {
-	#[account(mut)]
-	pub owner: Signer<'info>,
-	#[account(
-        init, 
-        payer = owner, 
-        space = Project::INIT_SPACE + Project::DISCRIMINATOR.len(),
-        seeds = [b"project", owner.key().as_ref()],
-        bump
-    )]
-	pub project: Account<'info, Project>,
+    #[account(mut)]
+    pub owner: Signer<'info>,
     #[account(
         init,
         payer = owner,
-        space = ProjectMeta::INIT_SPACE + ProjectMeta::DISCRIMINATOR.len(),
+        // 8 (discriminator) + Project::INIT_SPACE derived via InitSpace
+        space = 8 + Project::INIT_SPACE,
+        seeds = [b"project", owner.key().as_ref()],
+        bump
+    )]
+    pub project: Account<'info, Project>,
+    #[account(
+        init,
+        payer = owner,
+        // 8 (discriminator) + ProjectMeta::INIT_SPACE derived via InitSpace
+        space = 8 + ProjectMeta::INIT_SPACE,
         seeds = [b"project_metadata", project.key().as_ref()],
         bump
     )]
     pub project_metadata: Account<'info, ProjectMeta>,
-	pub system_program: Program<'info, System>,
+    pub system_program: Program<'info, System>,
 }
 
 impl <'info> CreateProject<'info> {
     pub fn calculate_milestones(target_amount: u64, milestone_count: u8) -> Vec<Milestone> {
         let n = milestone_count as u64;
-        let step = target_amount / (n * (n + 1) / 2);
+        let step = if n > 0 { target_amount / (n * (n + 1) / 2) } else { 0 };
         let mut milestones = Vec::new();
-        let mut sum = 0;
+        let mut sum: u64 = 0;
         for i in 1..=n {
-            let amount = step * i;
+            let amount = step.saturating_mul(i);
             milestones.push(Milestone {
                 amount,
                 is_achieved: false,
             });
-            sum += amount;
+            sum = sum.saturating_add(amount);
         }
 
         if sum != target_amount {
-            let diff = target_amount - sum;
+            let diff = target_amount.saturating_sub(sum);
             if let Some(last) = milestones.last_mut() {
-                last.amount += diff;
+                last.amount = last.amount.saturating_add(diff);
             }
         }
         milestones
     }
-} 
+}
 
 pub fn handler(
     ctx: Context<CreateProject>,
@@ -74,13 +76,15 @@ pub fn handler(
     project.has_withdrawn = false;
     project.milestone_count = milestone_count;
     project.milestones = milestones;
-    
+    project.bump = ctx.bumps.project;
+
     project_metadata.project = project.key();
     project_metadata.title = title;
     project_metadata.description = description;
     project_metadata.funding_stage = FundingStage::Planning;
     project_metadata.sdg_goals = sdg_goals;
     project_metadata.image_metadata_uri = project_image_metadata_uri;
+    project_metadata.bump = ctx.bumps.project_metadata;
 
     emit!(ProjectCreated {
         project: project.key(),

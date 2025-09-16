@@ -1,26 +1,120 @@
 "use client";
 
-import { useMemo, useState } from "react";
-import { PROJECTS } from "./data";
+import { useEffect, useMemo, useState } from "react";
 import SdgSelector from "@/components/sdg-selector";
-// Removed unused Button import and SDG_NUMBERS
+
+type UiProject = {
+  id: string; // projectPubkey
+  title: string;
+  imageUrl?: string | null;
+  sdgs: number[];
+  fundingGoal: number;
+  fundingRaised: number;
+  milestones: number[]; // amounts
+};
+
+const SDG_MAP: Record<string, number> = {
+  noPoverty: 1,
+  zeroHunger: 2,
+  goodHealthAndWellBeing: 3,
+  qualityEducation: 4,
+  genderEquality: 5,
+  cleanWaterAndSanitation: 6,
+  affordableAndCleanEnergy: 7,
+  decentWorkAndEconomicGrowth: 8,
+  industryInnovationAndInfrastructure: 9,
+  reducedInequalities: 10,
+  sustainableCitiesAndCommunities: 11,
+  responsibleConsumptionAndProduction: 12,
+  climateAction: 13,
+  lifeBelowWater: 14,
+  lifeOnLand: 15,
+  peaceJusticeAndStrongInstitutions: 16,
+  partnershipsForTheGoals: 17,
+};
+
+function sdgToNumber(sdg: any): number | null {
+  if (typeof sdg === "number") return sdg;
+  if (typeof sdg === "object" && sdg) {
+    const key = Object.keys(sdg)[0];
+    if (!key) return null;
+    return SDG_MAP[key] ?? null;
+  }
+  return null;
+}
 
 export default function ProjectsPage() {
   const [query, setQuery] = useState("");
   const [selectedSdgs, setSelectedSdgs] = useState<number[]>([]);
+  const [items, setItems] = useState<UiProject[]>([]);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+
+  useEffect(() => {
+    let cancelled = false;
+    const run = async () => {
+      setLoading(true);
+      setError(null);
+      try {
+        const res = await fetch("/api/project", { cache: "no-store" });
+        if (!res.ok) throw new Error(await res.text());
+        const data = await res.json();
+        let list: any[] = [];
+        if (Array.isArray(data?.items)) list = data.items;
+        else if (data && data.projectPubkey) list = [data];
+        const mapped: UiProject[] = (Array.isArray(list) ? list : [list])
+          .filter(Boolean)
+          .map((entry: any) => {
+            const project = entry.project ?? {};
+            const meta = entry.projectMeta ?? {};
+            const id = entry.projectPubkey as string;
+            const title = (meta.title as string) || "Untitled Project";
+            const imageUrl =
+              (meta.imageMetadataUri.replace("ipfs://", "") as string) || null;
+            const sdgGoalsRaw = (meta.sdgGoals as any[]) || [];
+            const sdgs = sdgGoalsRaw
+              .map((g) => sdgToNumber(g))
+              .filter((n): n is number => typeof n === "number");
+            const fundingGoal = parseInt(project.targetAmount ?? "0", 10) || 0;
+            const fundingRaised =
+              parseInt(project.currentFunding ?? "0", 10) || 0;
+            const milestonesRaw = (project.milestones as any[]) || [];
+            const milestones = milestonesRaw.map(
+              (m) => parseInt(m?.amount ?? "0", 10) || 0
+            );
+            return {
+              id,
+              title,
+              imageUrl,
+              sdgs,
+              fundingGoal,
+              fundingRaised,
+              milestones,
+            } as UiProject;
+          });
+        if (!cancelled) setItems(mapped);
+      } catch (e: any) {
+        if (!cancelled) setError(e?.message || "Failed to load projects");
+      } finally {
+        if (!cancelled) setLoading(false);
+      }
+    };
+    run();
+    return () => {
+      cancelled = true;
+    };
+  }, []);
 
   const filtered = useMemo(() => {
     const q = query.trim().toLowerCase();
-    return PROJECTS.filter((p) => {
+    return items.filter((p) => {
       const matchesQuery = q ? p.title.toLowerCase().includes(q) : true;
       const matchesSdgs = selectedSdgs.length
         ? p.sdgs.some((n) => selectedSdgs.includes(n))
         : true;
       return matchesQuery && matchesSdgs;
     });
-  }, [query, selectedSdgs]);
-
-  // Removed unused filter helpers
+  }, [items, query, selectedSdgs]);
 
   return (
     <div className="min-h-screen bg-gradient-to-b from-blue-50 to-white">
@@ -49,7 +143,12 @@ export default function ProjectsPage() {
             </div>
           </div>
         </div>
-
+        {loading && (
+          <div className="mt-6 text-center text-blue-700">
+            Loading projects…
+          </div>
+        )}
+        {error && <div className="mt-6 text-center text-red-600">{error}</div>}
         <div className="mt-6">
           <div className="grid gap-5 md:grid-cols-2 lg:grid-cols-3">
             {filtered.map((p) => {
@@ -64,7 +163,11 @@ export default function ProjectsPage() {
                 >
                   {p.imageUrl ? (
                     <img
-                      src={p.imageUrl}
+                      src={
+                        p.imageUrl.startsWith("https://")
+                          ? p.imageUrl
+                          : `https://ipfs.io/ipfs/${p.imageUrl}`
+                      }
                       alt={p.title}
                       className="mb-3 h-40 w-full object-cover rounded-md border border-blue-100"
                     />

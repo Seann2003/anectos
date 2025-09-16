@@ -53,26 +53,12 @@ pub mod anectos {
         initialize_funding_round::handler(ctx, matching_pool, start_time, end_time, nft_metadata_uri)
     }
 
-    pub fn update_project_whitelist(
-        ctx: Context<UpdateProjectWhitelist>,
-        is_whitelisted: bool,
-    ) -> Result<()> {
-        update_project_whitelist::handler(ctx, is_whitelisted)
-    }
-
     pub fn contribute(ctx: Context<Contribute>, amount: u64) -> Result<()> {
         contribute::handler(ctx, amount)
     }
 
     pub fn close_round(ctx: Context<CloseRound>) -> Result<()> {
         close_round::handler(ctx)
-    }
-
-    pub fn update_funding_stage_status(
-        ctx: Context<UpdateFundingStageStatus>,
-        is_active: bool,
-    ) -> Result<()> {
-        update_funding_stage_status::handler(ctx, is_active)
     }
 
 }
