@@ -124,29 +124,32 @@ export async function completeMilestoneIx(args: {
     .instruction();
 }
 
-// update_project_whitelist
-export async function updateProjectWhitelistIx(args: {
-  owner: PublicKey;
+export async function changeProjectFundingStageIx(args: {
+  user: PublicKey;
   projectPda: PublicKey;
-  isWhitelisted: boolean;
-}): Promise<TransactionInstruction> {
-  const { owner, projectPda, isWhitelisted } = args;
-  return ANECTOS_PROGRAM.methods
-    .updateProjectWhitelist(isWhitelisted)
-    .accountsPartial({ owner, project: projectPda })
-    .instruction();
-}
-
-// update_funding_stage_status
-export async function updateFundingStageStatusIx(args: {
-  owner: PublicKey;
+  projectMetadataPda: PublicKey;
   fundingRound: PublicKey;
-  isActive: boolean;
+  fundingRoundMetadataPda: PublicKey;
+  fundingStage: any; // Anchor enum variant object
 }): Promise<TransactionInstruction> {
-  const { owner, fundingRound, isActive } = args;
+  const {
+    user,
+    projectPda,
+    projectMetadataPda,
+    fundingRound,
+    fundingRoundMetadataPda,
+    fundingStage,
+  } = args;
+
   return ANECTOS_PROGRAM.methods
-    .updateFundingStageStatus(isActive)
-    .accountsPartial({ owner, fundingRound })
+    .changeProjectFundingStage(fundingStage)
+    .accountsPartial({
+      user,
+      projectMeta: projectMetadataPda,
+      project: projectPda,
+      fundingRound,
+      fundingRoundMetadata: fundingRoundMetadataPda,
+    })
     .instruction();
 }
 
