@@ -6,17 +6,16 @@ import {
   getOrCreateAssociatedTokenAccount,
   mintTo,
 } from "@solana/spl-token";
-import { createUmi } from "@metaplex-foundation/umi-bundle-defaults";
 import {
   createSignerFromKeypair,
   keypairIdentity,
   publicKey as umiPublicKey,
 } from "@metaplex-foundation/umi";
 import {
-  mplTokenMetadata,
   findMetadataPda,
   createMetadataAccountV3,
 } from "@metaplex-foundation/mpl-token-metadata";
+import { umi } from "@/lib/constants";
 
 type CreateTokenRequest = {
   cid?: string;
@@ -77,7 +76,6 @@ export async function POST(req: NextRequest) {
     );
 
     // 2) Create Metaplex token metadata account (Fungible) via Umi
-    const umi = createUmi(SURFPOOL_RPC).use(mplTokenMetadata());
     const umiKeypair = umi.eddsa.createKeypairFromSecretKey(payer.secretKey);
     const umiSigner = createSignerFromKeypair(umi, umiKeypair);
     umi.use(keypairIdentity(umiSigner));

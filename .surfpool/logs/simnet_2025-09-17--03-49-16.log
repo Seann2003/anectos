@@ -27,3 +27,8 @@
 [2025-09-17--04-17-07 INFO parity_ws::io] Accepted a new tcp connection from 127.0.0.1:63454.
 [2025-09-17--04-18-59 INFO parity_ws::io] Accepted a new tcp connection from 127.0.0.1:64060.
 [2025-09-17--04-19-14 INFO parity_ws::io] Accepted a new tcp connection from 127.0.0.1:64162.
+[2025-09-17--04-32-32 INFO parity_ws::io] Accepted a new tcp connection from 127.0.0.1:51641.
+[2025-09-17--04-32-34 INFO parity_ws::io] Accepted a new tcp connection from 127.0.0.1:51655.
+[2025-09-17--04-32-35 INFO parity_ws::io] Accepted a new tcp connection from 127.0.0.1:51656.
+[2025-09-17--04-36-29 ERROR litesvm] Payer account 3CD5zCzVBCgehLWhEApFWzBGBwCHULbXu625DCgQPpP4 not found.
+[2025-09-17--04-36-29 ERROR litesvm] Payer account 3CD5zCzVBCgehLWhEApFWzBGBwCHULbXu625DCgQPpP4 not found.

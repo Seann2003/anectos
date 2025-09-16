@@ -214,6 +214,7 @@ export default function ProjectDashboardPage() {
         );
         if (!res.ok) throw new Error(await res.text());
         const data = await res.json();
+        setAreaMaxStr(data?.roundAreaMax ?? "");
         console.log("Fetched round balances:", data);
         const vaultLamports = parseInt(data?.vaultBalanceLamports ?? "0", 10);
         const projLamports = parseInt(
@@ -495,11 +496,11 @@ export default function ProjectDashboardPage() {
         </div>
         <div className="grid gap-3 sm:grid-cols-2">
           <label className="block">
-            <span className="text-sm text-gray-700">Target Area (u128)</span>
+            <span className="text-sm text-gray-700">Target Area</span>
             <input
               className="mt-1 w-full rounded border px-3 py-2"
               placeholder="e.g. 60000"
-              value={areaMaxStr}
+            value={areaMaxStr}
               onChange={(e) => setAreaMaxStr(e.target.value)}
             />
           </label>
@@ -507,7 +508,6 @@ export default function ProjectDashboardPage() {
         <div className="mt-2">
           <Button
             onClick={async () => {
-              console.log("Hello");
               if (!authenticated || !user?.wallet?.address) {
                 console.error("Please login with a Privy Solana wallet.");
                 return;
