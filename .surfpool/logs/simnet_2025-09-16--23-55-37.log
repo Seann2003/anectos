@@ -1,0 +1,74 @@
+[2025-09-16--23-55-37 INFO actix_server::builder] starting 5 workers
+[2025-09-16--23-55-37 INFO actix_server::server] Tokio runtime found; starting in existing Tokio runtime
+[2025-09-16--23-55-37 INFO actix_server::server] starting service: "actix-web-service-127.0.0.1:18488", workers: 5, listening on: 127.0.0.1:18488
+[2025-09-16--23-55-37 INFO parity_ws] Listening for new connections on 127.0.0.1:8900.
+[2025-09-16--23-55-37 INFO txtx::svm::deploy_program] Failure Recovery Info - An ephemeral authority account will be created and funded to write to the buffer account.
+[2025-09-16--23-55-37 INFO txtx::svm::deploy_program] Failure Recovery Info - Please save the following information in case the deployment fails and the account needs to be recovered:
+[2025-09-16--23-55-37 INFO txtx::svm::deploy_program] Failure Recovery Info - Ephemeral authority public key: 4W6TWWRp51ii5mqTKcWT4qFWaPoPooMucQywQry5AVc1
+[2025-09-16--23-55-38 INFO txtx::svm::deploy_program] Failure Recovery Info - Ephemeral authority secret key: 3hyEgCgqvaS2Kb3r3T4KfT7CCZ8AfSs3oCUPUvRFxkddz7dKPVdMUq5T4wWqzaA3grthf4Nb6dNMpsYduxBKVSKo
+[2025-09-16--23-55-38 INFO txtx::svm::deploy_program] Account Created - Ephemeral authority account created and funded to write to buffer
+[2025-09-16--23-55-38 INFO txtx::svm::deploy_program] Failure Recovery Info - Creating program buffer account at pubkey 8NSxLYLA2vLLAPYgk9in5bQtdkSeLEdAg4ubYNTjizRL
+[2025-09-16--23-55-38 INFO txtx::svm::deploy_program] Account Created - Program buffer account created
+[2025-09-16--23-55-38 INFO parity_ws::io] Accepted a new tcp connection from 127.0.0.1:60420.
+[2025-09-16--23-55-54 INFO txtx::svm::deploy_program] Buffer Ready - Writing to buffer account is complete
+[2025-09-16--23-55-54 INFO txtx::svm::deploy_program] Program Created - Program 4Tjq5Em4qauF9DjXjVN2WW6NkM49tScR47czXHekquBp has been deployed
+[2025-09-16--23-55-55 INFO txtx::svm::deploy_program] Complete - Ephemeral authority account closed and leftover funds returned to payer
+[2025-09-16--23-55-55 INFO txtx::svm::deploy_subgraph] Subgraph Deployed - Subgraph MilestoneCompleted for program 4Tjq5Em4qauF9DjXjVN2WW6NkM49tScR47czXHekquBp has been deployed
+[2025-09-16--23-55-55 INFO txtx::svm::deploy_subgraph] Subgraph Deployed - Your subgraph can be reached at "http://127.0.0.1:18488/subgraphs"
+[2025-09-16--23-55-55 INFO txtx::svm::deploy_subgraph] Subgraph Deployed - Subgraph ContributionMade for program 4Tjq5Em4qauF9DjXjVN2WW6NkM49tScR47czXHekquBp has been deployed
+[2025-09-16--23-55-55 INFO txtx::svm::deploy_subgraph] Subgraph Deployed - Your subgraph can be reached at "http://127.0.0.1:18488/subgraphs"
+[2025-09-16--23-55-55 INFO txtx::svm::deploy_subgraph] Subgraph Deployed - Subgraph ProjectCreated for program 4Tjq5Em4qauF9DjXjVN2WW6NkM49tScR47czXHekquBp has been deployed
+[2025-09-16--23-55-55 INFO txtx::svm::deploy_subgraph] Subgraph Deployed - Your subgraph can be reached at "http://127.0.0.1:18488/subgraphs"
+[2025-09-16--23-56-33 INFO parity_ws::io] Accepted a new tcp connection from 127.0.0.1:61444.
+[2025-09-16--23-57-04 INFO parity_ws::io] Accepted a new tcp connection from 127.0.0.1:61609.
+[2025-09-16--23-57-13 INFO parity_ws::io] Accepted a new tcp connection from 127.0.0.1:61659.
+[2025-09-16--23-57-33 INFO parity_ws::io] Accepted a new tcp connection from 127.0.0.1:61776.
+[2025-09-16--23-58-14 INFO parity_ws::io] Accepted a new tcp connection from 127.0.0.1:62026.
+[2025-09-16--23-58-51 INFO parity_ws::io] Accepted a new tcp connection from 127.0.0.1:62216.
+[2025-09-16--23-59-15 INFO parity_ws::io] Accepted a new tcp connection from 127.0.0.1:62353.
+[2025-09-17--00-03-44 INFO parity_ws::io] Accepted a new tcp connection from 127.0.0.1:63502.
+[2025-09-17--00-07-03 INFO parity_ws::io] Accepted a new tcp connection from 127.0.0.1:64370.
+[2025-09-17--00-07-33 INFO txtx::svm::deploy_program] Failure Recovery Info - An ephemeral authority account will be created and funded to write to the buffer account.
+[2025-09-17--00-07-33 INFO txtx::svm::deploy_program] Failure Recovery Info - Please save the following information in case the deployment fails and the account needs to be recovered:
+[2025-09-17--00-07-33 INFO txtx::svm::deploy_program] Failure Recovery Info - Ephemeral authority public key: 6TuPGcBp5uB6KbwUKhZb8ccUsizeFV11hpSQ3zuWKC1m
+[2025-09-17--00-07-33 INFO txtx::svm::deploy_program] Failure Recovery Info - Ephemeral authority secret key: 2chZ1h21YeX8M5RsTMkJKkZa82ytvjk6zo9FFh3X1TMW4SFcPFfrsWpC4D4vS32q3821ZAMmnCVbn4PwSGe7iQSB
+[2025-09-17--00-07-33 INFO txtx::svm::deploy_program] Account Created - Ephemeral authority account created and funded to write to buffer
+[2025-09-17--00-07-33 INFO txtx::svm::deploy_program] Failure Recovery Info - Creating program buffer account at pubkey EAvvfoeNJ5ssov7JK7df5irCzKyfQs3K19Ky4UpU57ks
+[2025-09-17--00-07-33 INFO txtx::svm::deploy_program] Account Created - Program buffer account created
+[2025-09-17--00-07-50 INFO txtx::svm::deploy_program] Buffer Ready - Writing to buffer account is complete
+[2025-09-17--00-07-50 INFO txtx::svm::deploy_program] Buffer Authority Transferred - Buffer authority has been transferred to authority signer
+[2025-09-17--00-07-50 INFO txtx::svm::deploy_program] Program Upgraded - Program 4Tjq5Em4qauF9DjXjVN2WW6NkM49tScR47czXHekquBp has been upgraded
+[2025-09-17--00-07-50 INFO txtx::svm::deploy_program] Complete - Ephemeral authority account closed and leftover funds returned to payer
+[2025-09-17--00-07-50 INFO txtx::svm::deploy_subgraph] Subgraph Deployed - Subgraph ContributionMade for program 4Tjq5Em4qauF9DjXjVN2WW6NkM49tScR47czXHekquBp has been deployed
+[2025-09-17--00-07-50 INFO txtx::svm::deploy_subgraph] Subgraph Deployed - Your subgraph can be reached at "http://127.0.0.1:18488/subgraphs"
+[2025-09-17--00-07-50 INFO txtx::svm::deploy_subgraph] Subgraph Deployed - Subgraph MilestoneCompleted for program 4Tjq5Em4qauF9DjXjVN2WW6NkM49tScR47czXHekquBp has been deployed
+[2025-09-17--00-07-50 INFO txtx::svm::deploy_subgraph] Subgraph Deployed - Your subgraph can be reached at "http://127.0.0.1:18488/subgraphs"
+[2025-09-17--00-07-50 INFO txtx::svm::deploy_subgraph] Subgraph Deployed - Subgraph ProjectCreated for program 4Tjq5Em4qauF9DjXjVN2WW6NkM49tScR47czXHekquBp has been deployed
+[2025-09-17--00-07-50 INFO txtx::svm::deploy_subgraph] Subgraph Deployed - Your subgraph can be reached at "http://127.0.0.1:18488/subgraphs"
+[2025-09-17--00-08-16 INFO parity_ws::io] Accepted a new tcp connection from 127.0.0.1:49321.
+[2025-09-17--00-08-31 INFO parity_ws::io] Accepted a new tcp connection from 127.0.0.1:49403.
+[2025-09-17--00-08-56 INFO parity_ws::io] Accepted a new tcp connection from 127.0.0.1:49550.
+[2025-09-17--00-09-24 INFO parity_ws::io] Accepted a new tcp connection from 127.0.0.1:49711.
+[2025-09-17--00-09-51 INFO parity_ws::io] Accepted a new tcp connection from 127.0.0.1:49873.
+[2025-09-17--00-10-06 INFO parity_ws::io] Accepted a new tcp connection from 127.0.0.1:49963.
+[2025-09-17--00-10-21 INFO parity_ws::io] Accepted a new tcp connection from 127.0.0.1:50046.
+[2025-09-17--00-16-07 INFO parity_ws::io] Accepted a new tcp connection from 127.0.0.1:51598.
+[2025-09-17--00-18-35 INFO txtx::svm::deploy_program] Failure Recovery Info - An ephemeral authority account will be created and funded to write to the buffer account.
+[2025-09-17--00-18-35 INFO txtx::svm::deploy_program] Failure Recovery Info - Please save the following information in case the deployment fails and the account needs to be recovered:
+[2025-09-17--00-18-35 INFO txtx::svm::deploy_program] Failure Recovery Info - Ephemeral authority public key: 8yJ9KM2vGctfBgdydNpZh3KXWWHMC9VJLZnpVFJx8DNv
+[2025-09-17--00-18-35 INFO txtx::svm::deploy_program] Failure Recovery Info - Ephemeral authority secret key: 3rFP43wYfLhpPEvquGPPHJxbTNViHt4CEXxFezoCZrkzictP8uSW35Eqh5CsGZfHchiFVyDezC7LUa5Y8LDvpbYS
+[2025-09-17--00-18-36 INFO txtx::svm::deploy_program] Account Created - Ephemeral authority account created and funded to write to buffer
+[2025-09-17--00-18-36 INFO txtx::svm::deploy_program] Failure Recovery Info - Creating program buffer account at pubkey EnYvvsxqQhwP4YhTkaJqMiUXWxtDAKe6zz2izQDLaWeY
+[2025-09-17--00-19-48 INFO txtx::svm::deploy_program] Buffer Ready - Writing to buffer account is complete
+[2025-09-17--00-19-48 INFO txtx::svm::deploy_program] Buffer Authority Transferred - Buffer authority has been transferred to authority signer
+[2025-09-17--00-19-48 INFO txtx::svm::deploy_program] Program Upgraded - Program 4Tjq5Em4qauF9DjXjVN2WW6NkM49tScR47czXHekquBp has been upgraded
+[2025-09-17--00-19-48 INFO txtx::svm::deploy_program] Complete - Ephemeral authority account closed and leftover funds returned to payer
+[2025-09-17--00-19-48 INFO txtx::svm::deploy_subgraph] Subgraph Deployed - Subgraph MilestoneCompleted for program 4Tjq5Em4qauF9DjXjVN2WW6NkM49tScR47czXHekquBp has been deployed
+[2025-09-17--00-19-48 INFO txtx::svm::deploy_subgraph] Subgraph Deployed - Your subgraph can be reached at "http://127.0.0.1:18488/subgraphs"
+[2025-09-17--00-19-49 INFO txtx::svm::deploy_subgraph] Subgraph Deployed - Subgraph ContributionMade for program 4Tjq5Em4qauF9DjXjVN2WW6NkM49tScR47czXHekquBp has been deployed
+[2025-09-17--00-28-03 INFO actix_server::worker] shutting down idle worker
+[2025-09-17--00-28-03 INFO actix_server::worker] shutting down idle worker
+[2025-09-17--00-28-03 INFO actix_server::worker] shutting down idle worker
+[2025-09-17--00-28-03 INFO actix_server::worker] shutting down idle worker
+[2025-09-17--00-28-03 INFO actix_server::worker] shutting down idle worker
+[2025-09-17--00-28-03 INFO actix_server::accept] accept thread stopped

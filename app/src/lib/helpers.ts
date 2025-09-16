@@ -1,3 +1,18 @@
+import BN from "bn.js";
+import {
+  PublicKey,
+  sendAndConfirmTransaction,
+  Transaction,
+  TransactionInstruction,
+} from "@solana/web3.js";
+import { CONNECTION, SPL_GOVERNANCE } from "./constants";
+
+export const publicKeyFromBn = (feePayer: any) => {
+  const bigNumber = new BN(feePayer._bn, 16);
+  const decoded = { _bn: bigNumber };
+  return new PublicKey(decoded);
+};
+
 export const toSdgEnum = (n: number) => {
   switch (n) {
     case 1:
@@ -38,3 +53,9 @@ export const toSdgEnum = (n: number) => {
       return null;
   }
 };
+
+export async function getDraftProposalPubkey(tokenOwnerRecord: PublicKey) {
+  return (
+    await SPL_GOVERNANCE.getProposalsByTokenOwnerRecord(tokenOwnerRecord)
+  ).filter((proposal) => proposal.state.draft !== undefined)[0].publicKey;
+}

@@ -5,6 +5,24 @@ import { useParams } from "next/navigation";
 import Link from "next/link";
 import { ArrowLeft } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import {
+  Popover,
+  PopoverTrigger,
+  PopoverContent,
+} from "@/components/ui/popover";
+import { Input } from "@/components/ui/input";
+import { usePrivy } from "@privy-io/react-auth";
+import { useSendTransaction } from "@privy-io/react-auth/solana";
+import { PublicKey, Transaction } from "@solana/web3.js";
+import { CONNECTION } from "@/lib/constants";
+import {
+  contributeIx,
+  fundProjectPoolIx,
+  createRoundVaultIx,
+} from "@/lib/instructions";
+import { projectMetadataPda, vaultPda, roundVaultPda } from "@/lib/pda";
+import { lamportsToSol, solToLamports, formatSol } from "@/lib/utils";
+import { BN } from "@coral-xyz/anchor";
 
 type UiProject = {
   id: string;
@@ -50,7 +68,7 @@ function sdgToNumber(sdg: any): number | null {
 function formatUSD(n: number): string {
   return new Intl.NumberFormat("en-US", {
     style: "currency",
-    currency: "USD",
+    currency: "SOL",
     maximumFractionDigits: 0,
   }).format(n);
 }
@@ -62,6 +80,16 @@ export default function ProjectDetailPage() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [project, setProject] = useState<UiProject | null>(null);
+  const [donateOpen, setDonateOpen] = useState(false);
+  const [amountSol, setAmountSol] = useState<string>("");
+  const [sending, setSending] = useState(false);
+  const [balanceLamports, setBalanceLamports] = useState<bigint | null>(null);
+  const [isRoundOwner, setIsRoundOwner] = useState<boolean>(false);
+
+  const { user, authenticated } = usePrivy();
+  const { sendTransaction } = useSendTransaction();
+  const [adminAmountSol, setAdminAmountSol] = useState<string>("");
+  const [adminBusy, setAdminBusy] = useState<boolean>(false);
 
   useEffect(() => {
     if (!id) return;
@@ -108,6 +136,55 @@ export default function ProjectDetailPage() {
       cancelled = true;
     };
   }, [id]);
+
+  // Fetch SOL balance when wallet available
+  useEffect(() => {
+    let cancelled = false;
+    const run = async () => {
+      try {
+        if (!user?.wallet?.address) return;
+        const pk = new PublicKey(user.wallet.address);
+        const lamports = await CONNECTION.getBalance(pk, "confirmed");
+        if (!cancelled) setBalanceLamports(BigInt(lamports));
+      } catch (e) {
+        // ignore
+      }
+    };
+    run();
+    return () => {
+      cancelled = true;
+    };
+  }, [user?.wallet?.address]);
+
+  // Admin gating: only round owner sees the fund project pool control
+  useEffect(() => {
+    let cancelled = false;
+    const run = async () => {
+      try {
+        if (!project?.id || !user?.wallet?.address) {
+          if (!cancelled) setIsRoundOwner(false);
+          return;
+        }
+        const res = await fetch(`/api/round?project=${project.id}`, {
+          cache: "no-store",
+        });
+        if (!res.ok) {
+          if (!cancelled) setIsRoundOwner(false);
+          return;
+        }
+        const data = await res.json();
+        const ro = (data?.roundOwner as string) || null;
+        if (!cancelled)
+          setIsRoundOwner(Boolean(ro && ro === user.wallet.address));
+      } catch {
+        if (!cancelled) setIsRoundOwner(false);
+      }
+    };
+    run();
+    return () => {
+      cancelled = true;
+    };
+  }, [project?.id, user?.wallet?.address]);
 
   const percent = useMemo(() => {
     if (!project) return 0;
@@ -206,7 +283,12 @@ export default function ProjectDetailPage() {
             </h2>
             <ul className="space-y-3">
               {project.milestones.map((threshold, idx) => {
-                const reached = project.fundingRaised >= threshold;
+                console.log(
+                  "project.fundingRaised",
+                  project.fundingRaised,
+                  threshold
+                );
+                const reached = project.fundingRaised / 1000000000 >= threshold;
                 return (
                   <li
                     key={idx}
@@ -261,6 +343,108 @@ export default function ProjectDetailPage() {
               ) : (
                 <p className="text-blue-900/60 leading-relaxed">Loading…</p>
               )}
+              {/* Admin: Fund this project's matching pool */}
+              {isRoundOwner && (
+                <div className="mt-6 rounded-lg border border-blue-100 bg-blue-50 p-4">
+                  <div className="text-sm font-medium text-blue-900 mb-2">
+                    Admin: Fund Project Matching Pool
+                  </div>
+                  <div className="grid grid-cols-1 md:grid-cols-3 gap-3 items-end">
+                    <label className="block">
+                      <span className="text-xs text-blue-900">
+                        Amount (SOL)
+                      </span>
+                      <Input
+                        type="number"
+                        min="0"
+                        step="0.000001"
+                        placeholder="e.g. 5"
+                        value={adminAmountSol}
+                        onChange={(e) => setAdminAmountSol(e.target.value)}
+                      />
+                    </label>
+                    <div className="md:col-span-2 flex gap-2">
+                      <Button
+                        type="button"
+                        disabled={
+                          !authenticated || !user?.wallet?.address || adminBusy
+                        }
+                        onClick={async () => {
+                          if (
+                            !authenticated ||
+                            !user?.wallet?.address ||
+                            !project
+                          )
+                            return;
+                          const sol = parseFloat(adminAmountSol || "0");
+                          if (!isFinite(sol) || sol <= 0) return;
+                          setAdminBusy(true);
+                          try {
+                            const me = new PublicKey(user.wallet.address);
+                            const projectPk = new PublicKey(project.id);
+                            // Need round and round vault PDA
+                            const res = await fetch(
+                              `/api/project?id=${project.id}`,
+                              { cache: "no-store" }
+                            );
+                            const json = await res.json();
+                            const roundStr = json?.project?.round as string;
+                            if (!roundStr)
+                              throw new Error("Missing round for project");
+                            const roundPk = new PublicKey(roundStr);
+                            const [rvPk] = roundVaultPda(roundPk);
+
+                            const tx = new Transaction();
+                            // Ensure round vault exists
+                            const info = await CONNECTION.getAccountInfo(
+                              rvPk,
+                              "confirmed"
+                            );
+                            if (!info) {
+                              const createIx = await createRoundVaultIx({
+                                owner: me,
+                                fundingRound: roundPk,
+                                roundVault: rvPk,
+                              });
+                              tx.add(createIx);
+                            }
+
+                            const lamports = solToLamports(sol);
+                            const ix = await fundProjectPoolIx({
+                              funder: me,
+                              fundingRound: roundPk,
+                              project: projectPk,
+                              roundVault: rvPk,
+                              amount: new BN(lamports.toString()),
+                            });
+                            tx.add(ix);
+                            tx.feePayer = me;
+                            const { blockhash } =
+                              await CONNECTION.getLatestBlockhash();
+                            tx.recentBlockhash = blockhash;
+                            await sendTransaction({
+                              transaction: tx,
+                              connection: CONNECTION,
+                              address: user.wallet.address,
+                            });
+                            setAdminAmountSol("");
+                          } catch (e) {
+                            console.error("fundProjectPool failed:", e);
+                          } finally {
+                            setAdminBusy(false);
+                          }
+                        }}
+                      >
+                        {adminBusy ? "Processing…" : "Fund Project Pool"}
+                      </Button>
+                    </div>
+                  </div>
+                  <div className="text-[11px] text-blue-700/70 mt-2">
+                    Deposits SOL into the round vault and increments this
+                    project's matching pool budget.
+                  </div>
+                </div>
+              )}
             </div>
           </div>
 
@@ -273,31 +457,130 @@ export default function ProjectDetailPage() {
                 <>
                   <div className="flex items-baseline justify-between text-sm">
                     <span className="text-blue-900 font-medium">
-                      {formatUSD(project.fundingRaised)} raised
+                      {lamportsToSol(project.fundingRaised)} SOL raised
                     </span>
                     <span className="text-blue-700/70">
                       Goal {formatUSD(project.fundingGoal)}
                     </span>
                   </div>
-                  <div className="mt-2 h-2 w-full overflow-hidden rounded-full bg-blue-100">
-                    <div
-                      className="h-full rounded-full bg-blue-600"
-                      style={{ width: `${percent}%` }}
-                    />
-                  </div>
-                  <div className="mt-1 text-right text-xs text-blue-700/70">
-                    {percent}% funded
-                  </div>
                 </>
               ) : (
                 <div className="text-blue-900/70 text-sm">Loading…</div>
               )}
-              <Button
-                type="button"
-                className="mt-4 w-full rounded-lg bg-blue-600 hover:bg-blue-700 text-white py-2 text-sm font-medium"
-              >
-                Support project
-              </Button>
+              {!isRoundOwner && (
+                <Popover open={donateOpen} onOpenChange={setDonateOpen}>
+                  <PopoverTrigger asChild>
+                    <Button
+                      type="button"
+                      className="mt-4 w-full rounded-lg bg-blue-600 hover:bg-blue-700 text-white py-2 text-sm font-medium"
+                    >
+                      Support project
+                    </Button>
+                  </PopoverTrigger>
+                  <PopoverContent className="w-80">
+                    <div className="space-y-3">
+                      <div className="text-sm font-medium text-blue-900">
+                        Donate to this project
+                      </div>
+                      <div className="text-xs text-blue-700/70">
+                        {authenticated && user?.wallet?.address ? (
+                          <>
+                            Wallet:{" "}
+                            <span className="font-mono">
+                              {user.wallet.address}
+                            </span>
+                            <br />
+                            Balance:{" "}
+                            {balanceLamports !== null
+                              ? formatSol(lamportsToSol(balanceLamports))
+                              : "—"}
+                          </>
+                        ) : (
+                          <>Connect wallet to donate.</>
+                        )}
+                      </div>
+                      <div className="space-y-1">
+                        <label className="text-xs text-blue-900">
+                          Amount (SOL)
+                        </label>
+                        <Input
+                          type="number"
+                          min="0"
+                          step="0.0001"
+                          placeholder="0.1"
+                          value={amountSol}
+                          onChange={(e) => setAmountSol(e.target.value)}
+                        />
+                      </div>
+                      <Button
+                        type="button"
+                        disabled={
+                          sending ||
+                          !authenticated ||
+                          !user?.wallet?.address ||
+                          !project
+                        }
+                        onClick={async () => {
+                          if (
+                            !project ||
+                            !authenticated ||
+                            !user?.wallet?.address
+                          )
+                            return;
+                          const sol = parseFloat(amountSol || "0");
+                          if (!isFinite(sol) || sol <= 0) return;
+                          try {
+                            setSending(true);
+                            const adminPk = new PublicKey(user.wallet.address);
+                            const projectPk = new PublicKey(project.id);
+                            // Derive PDAs: project vault is based on owner, but we don't have owner here.
+                            // However, the on-chain contribute expects `vault` PDA seeded by project.owner.
+                            // We don't have owner in UiProject, so fetch project account quickly.
+                            const res = await fetch(
+                              `/api/project?id=${project.id}`,
+                              { cache: "no-store" }
+                            );
+                            const json = await res.json();
+                            const ownerStr = json?.project?.owner as string;
+                            const roundStr = json?.project?.round as string;
+                            if (!ownerStr || !roundStr)
+                              throw new Error("Missing owner or round");
+                            const ownerPk = new PublicKey(ownerStr);
+                            const roundPk = new PublicKey(roundStr);
+                            const [vaultPk] = vaultPda(ownerPk);
+
+                            const ix = await contributeIx({
+                              fundingRound: roundPk,
+                              projectPda: projectPk,
+                              vaultPda: vaultPk,
+                              user: adminPk,
+                              amount: Number(solToLamports(sol)), // lamports
+                            });
+                            const tx = new Transaction().add(ix);
+                            tx.feePayer = adminPk;
+                            const { blockhash } =
+                              await CONNECTION.getLatestBlockhash();
+                            tx.recentBlockhash = blockhash;
+                            await sendTransaction({
+                              transaction: tx,
+                              connection: CONNECTION,
+                              address: user.wallet.address,
+                            });
+                            setDonateOpen(false);
+                            setAmountSol("");
+                          } catch (e) {
+                            console.error("contribute failed:", e);
+                          } finally {
+                            setSending(false);
+                          }
+                        }}
+                      >
+                        {sending ? "Processing…" : "Donate"}
+                      </Button>
+                    </div>
+                  </PopoverContent>
+                </Popover>
+              )}
             </div>
           </div>
         </div>

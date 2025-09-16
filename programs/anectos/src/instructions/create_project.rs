@@ -72,6 +72,9 @@ pub fn handler(
     project.target_amount = target_amount;
     project.area = 0;
     project.current_funding = 0;
+    project.matching_unlocked = 0;
+    project.matching_pool = 0;
+    project.pool_distributed = 0;
     project.is_whitelisted = false;
     project.has_withdrawn = false;
     project.milestone_count = milestone_count;

@@ -1,0 +1,130 @@
+[2025-09-16--17-39-52 INFO actix_server::builder] starting 5 workers
+[2025-09-16--17-39-52 INFO actix_server::server] Tokio runtime found; starting in existing Tokio runtime
+[2025-09-16--17-39-52 INFO actix_server::server] starting service: "actix-web-service-127.0.0.1:18488", workers: 5, listening on: 127.0.0.1:18488
+[2025-09-16--17-39-52 INFO parity_ws] Listening for new connections on 127.0.0.1:8900.
+[2025-09-16--17-39-52 INFO parity_ws::io] Accepted a new tcp connection from 127.0.0.1:63274.
+[2025-09-16--17-39-53 INFO txtx::svm::deploy_program] Failure Recovery Info - An ephemeral authority account will be created and funded to write to the buffer account.
+[2025-09-16--17-39-53 INFO txtx::svm::deploy_program] Failure Recovery Info - Please save the following information in case the deployment fails and the account needs to be recovered:
+[2025-09-16--17-39-53 INFO txtx::svm::deploy_program] Failure Recovery Info - Ephemeral authority public key: 68TbN2gsqhGTxmwbfhxHntVx9b7PacC7ffmegJHFfymd
+[2025-09-16--17-39-53 INFO txtx::svm::deploy_program] Failure Recovery Info - Ephemeral authority secret key: ahdGZcnk7sZm4wq7RLWaVmwSSfyeDnmZXhvhREo1jWEtnV9KQz3Lv4cxDDguXjvvtovmme5UcZCgkneDAZ3R64B
+[2025-09-16--17-39-53 INFO txtx::svm::deploy_program] Account Created - Ephemeral authority account created and funded to write to buffer
+[2025-09-16--17-39-53 INFO txtx::svm::deploy_program] Failure Recovery Info - Creating program buffer account at pubkey 2rHgWPVsSLwFLDkZqtPLsweksQWS27JJwBeMB98gt8ks
+[2025-09-16--17-39-54 INFO txtx::svm::deploy_program] Account Created - Program buffer account created
+[2025-09-16--17-40-09 INFO txtx::svm::deploy_program] Buffer Ready - Writing to buffer account is complete
+[2025-09-16--17-40-09 INFO txtx::svm::deploy_program] Program Created - Program 4Tjq5Em4qauF9DjXjVN2WW6NkM49tScR47czXHekquBp has been deployed
+[2025-09-16--17-40-09 INFO txtx::svm::deploy_program] Complete - Ephemeral authority account closed and leftover funds returned to payer
+[2025-09-16--17-40-09 INFO txtx::svm::deploy_subgraph] Subgraph Deployed - Subgraph MilestoneCompleted for program 4Tjq5Em4qauF9DjXjVN2WW6NkM49tScR47czXHekquBp has been deployed
+[2025-09-16--17-40-09 INFO txtx::svm::deploy_subgraph] Subgraph Deployed - Your subgraph can be reached at "http://127.0.0.1:18488/subgraphs"
+[2025-09-16--17-40-09 INFO txtx::svm::deploy_subgraph] Subgraph Deployed - Subgraph ContributionMade for program 4Tjq5Em4qauF9DjXjVN2WW6NkM49tScR47czXHekquBp has been deployed
+[2025-09-16--17-40-09 INFO txtx::svm::deploy_subgraph] Subgraph Deployed - Your subgraph can be reached at "http://127.0.0.1:18488/subgraphs"
+[2025-09-16--17-40-09 INFO txtx::svm::deploy_subgraph] Subgraph Deployed - Subgraph ProjectCreated for program 4Tjq5Em4qauF9DjXjVN2WW6NkM49tScR47czXHekquBp has been deployed
+[2025-09-16--17-40-09 INFO txtx::svm::deploy_subgraph] Subgraph Deployed - Your subgraph can be reached at "http://127.0.0.1:18488/subgraphs"
+[2025-09-16--17-40-32 ERROR litesvm] Payer account 28TcfQzL6juAVwAVpUz85UCwh15xYKf6Wz6fstT51UJF not found.
+[2025-09-16--17-40-32 ERROR litesvm] Payer account 28TcfQzL6juAVwAVpUz85UCwh15xYKf6Wz6fstT51UJF not found.
+[2025-09-16--17-41-03 INFO parity_ws::io] Accepted a new tcp connection from 127.0.0.1:64214.
+[2025-09-16--17-41-43 INFO parity_ws::io] Accepted a new tcp connection from 127.0.0.1:64227.
+[2025-09-16--17-42-10 INFO parity_ws::io] Accepted a new tcp connection from 127.0.0.1:64256.
+[2025-09-16--18-20-00 INFO txtx::svm::deploy_program] Failure Recovery Info - An ephemeral authority account will be created and funded to write to the buffer account.
+[2025-09-16--18-20-00 INFO txtx::svm::deploy_program] Failure Recovery Info - Please save the following information in case the deployment fails and the account needs to be recovered:
+[2025-09-16--18-20-01 INFO txtx::svm::deploy_program] Failure Recovery Info - Ephemeral authority public key: 2W8hyCUGs6GHBnkZGWp7Je5DFsUmUZGmPHyYHdnqPeBB
+[2025-09-16--18-20-01 INFO txtx::svm::deploy_program] Failure Recovery Info - Ephemeral authority secret key: 2DeRSEMrnfD9vs9nWPRE4sYdywKaRK7E8KXCq2uVjR7MGxByFAe7mXRNti2TUM3UrCsDBGHz1HhBWKxf55kYN6FT
+[2025-09-16--18-20-01 INFO txtx::svm::deploy_program] Account Created - Ephemeral authority account created and funded to write to buffer
+[2025-09-16--18-20-01 INFO txtx::svm::deploy_program] Failure Recovery Info - Creating program buffer account at pubkey 4BVJXhz4bMJgF5bTicYPmHE8Gd7vhJ6pVbt8zHd9wiof
+[2025-09-16--18-20-21 INFO txtx::svm::deploy_program] Buffer Ready - Writing to buffer account is complete
+[2025-09-16--18-20-21 INFO txtx::svm::deploy_program] Buffer Authority Transferred - Buffer authority has been transferred to authority signer
+[2025-09-16--18-20-21 INFO txtx::svm::deploy_program] Program Upgraded - Program 4Tjq5Em4qauF9DjXjVN2WW6NkM49tScR47czXHekquBp has been upgraded
+[2025-09-16--18-21-36 INFO txtx::svm::deploy_program] Complete - Ephemeral authority account closed and leftover funds returned to payer
+[2025-09-16--18-21-36 INFO txtx::svm::deploy_subgraph] Subgraph Deployed - Subgraph ContributionMade for program 4Tjq5Em4qauF9DjXjVN2WW6NkM49tScR47czXHekquBp has been deployed
+[2025-09-16--18-21-36 INFO txtx::svm::deploy_subgraph] Subgraph Deployed - Your subgraph can be reached at "http://127.0.0.1:18488/subgraphs"
+[2025-09-16--18-21-36 INFO txtx::svm::deploy_subgraph] Subgraph Deployed - Subgraph ProjectCreated for program 4Tjq5Em4qauF9DjXjVN2WW6NkM49tScR47czXHekquBp has been deployed
+[2025-09-16--18-21-36 INFO txtx::svm::deploy_subgraph] Subgraph Deployed - Your subgraph can be reached at "http://127.0.0.1:18488/subgraphs"
+[2025-09-16--18-21-36 INFO txtx::svm::deploy_subgraph] Subgraph Deployed - Subgraph MilestoneCompleted for program 4Tjq5Em4qauF9DjXjVN2WW6NkM49tScR47czXHekquBp has been deployed
+[2025-09-16--18-21-36 INFO txtx::svm::deploy_subgraph] Subgraph Deployed - Your subgraph can be reached at "http://127.0.0.1:18488/subgraphs"
+[2025-09-16--18-21-36 INFO txtx::svm::deploy_program] Failure Recovery Info - An ephemeral authority account will be created and funded to write to the buffer account.
+[2025-09-16--18-21-36 INFO txtx::svm::deploy_program] Failure Recovery Info - Please save the following information in case the deployment fails and the account needs to be recovered:
+[2025-09-16--18-21-36 INFO txtx::svm::deploy_program] Failure Recovery Info - Ephemeral authority public key: A9UWkodJ7naviAUUw3KADYvnqSjiog6jkLdYUZj624Bs
+[2025-09-16--18-21-36 INFO txtx::svm::deploy_program] Failure Recovery Info - Ephemeral authority secret key: 3xV84itHpjHZZnXeUMS39PnT7Mqc27UwMFFcYJc6JSge7CC31Bv1ysDxVFq6rYcX1FmL5qUzf8MLyVM5V8PTLqrh
+[2025-09-16--18-21-37 INFO txtx::svm::deploy_program] Account Created - Ephemeral authority account created and funded to write to buffer
+[2025-09-16--18-21-37 INFO txtx::svm::deploy_program] Failure Recovery Info - Creating program buffer account at pubkey 83AH1TTgkBp9imFUGoVdaM2qLmyf7hDFPtbCH7Fa5aZZ
+[2025-09-16--18-22-01 INFO txtx::svm::deploy_program] Buffer Ready - Writing to buffer account is complete
+[2025-09-16--18-22-01 INFO txtx::svm::deploy_program] Buffer Authority Transferred - Buffer authority has been transferred to authority signer
+[2025-09-16--18-22-01 INFO txtx::svm::deploy_program] Program Upgraded - Program 4Tjq5Em4qauF9DjXjVN2WW6NkM49tScR47czXHekquBp has been upgraded
+[2025-09-16--18-22-01 INFO txtx::svm::deploy_program] Complete - Ephemeral authority account closed and leftover funds returned to payer
+[2025-09-16--18-22-01 INFO txtx::svm::deploy_subgraph] Subgraph Deployed - Subgraph MilestoneCompleted for program 4Tjq5Em4qauF9DjXjVN2WW6NkM49tScR47czXHekquBp has been deployed
+[2025-09-16--18-22-01 INFO txtx::svm::deploy_subgraph] Subgraph Deployed - Your subgraph can be reached at "http://127.0.0.1:18488/subgraphs"
+[2025-09-16--18-22-01 INFO txtx::svm::deploy_subgraph] Subgraph Deployed - Subgraph ContributionMade for program 4Tjq5Em4qauF9DjXjVN2WW6NkM49tScR47czXHekquBp has been deployed
+[2025-09-16--18-22-01 INFO txtx::svm::deploy_subgraph] Subgraph Deployed - Your subgraph can be reached at "http://127.0.0.1:18488/subgraphs"
+[2025-09-16--18-22-01 INFO txtx::svm::deploy_subgraph] Subgraph Deployed - Subgraph ProjectCreated for program 4Tjq5Em4qauF9DjXjVN2WW6NkM49tScR47czXHekquBp has been deployed
+[2025-09-16--18-22-02 INFO txtx::svm::deploy_subgraph] Subgraph Deployed - Your subgraph can be reached at "http://127.0.0.1:18488/subgraphs"
+[2025-09-16--18-22-02 INFO txtx::svm::deploy_program] Failure Recovery Info - An ephemeral authority account will be created and funded to write to the buffer account.
+[2025-09-16--18-22-02 INFO txtx::svm::deploy_program] Failure Recovery Info - Please save the following information in case the deployment fails and the account needs to be recovered:
+[2025-09-16--18-22-02 INFO txtx::svm::deploy_program] Failure Recovery Info - Ephemeral authority public key: AR6dkVwyVePJotrnVnbez1Zj9QHBcDz6RfMmq63VkYPj
+[2025-09-16--18-22-02 INFO txtx::svm::deploy_program] Failure Recovery Info - Ephemeral authority secret key: 643NhyNiFJrn4FCa18Ht1miqVpX33FtjKUSJBhqbj2AXDeLWWGi6WVwecJhjw19MK9hc4ASYsAwQWiE7QSzHjoEZ
+[2025-09-16--18-22-02 INFO txtx::svm::deploy_program] Account Created - Ephemeral authority account created and funded to write to buffer
+[2025-09-16--18-22-02 INFO txtx::svm::deploy_program] Failure Recovery Info - Creating program buffer account at pubkey HbWwn2C4GoxP7VTy8MLuHEtyJxiNfNisHghFdeWE5Zd8
+[2025-09-16--18-22-04 INFO txtx::svm::deploy_program] Account Created - Program buffer account created
+[2025-09-16--18-22-35 INFO txtx::svm::deploy_program] Buffer Ready - Writing to buffer account is complete
+[2025-09-16--18-22-35 INFO txtx::svm::deploy_program] Buffer Authority Transferred - Buffer authority has been transferred to authority signer
+[2025-09-16--18-22-36 INFO txtx::svm::deploy_program] Program Upgraded - Program 4Tjq5Em4qauF9DjXjVN2WW6NkM49tScR47czXHekquBp has been upgraded
+[2025-09-16--18-22-36 INFO txtx::svm::deploy_program] Complete - Ephemeral authority account closed and leftover funds returned to payer
+[2025-09-16--18-32-16 INFO parity_ws::io] Accepted a new tcp connection from 127.0.0.1:52259.
+[2025-09-16--18-55-37 INFO parity_ws::io] Accepted a new tcp connection from 127.0.0.1:52918.
+[2025-09-16--21-55-03 INFO actix_web::middleware::logger] 127.0.0.1 "GET / HTTP/1.1" 200 6754 "-" "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/140.0.0.0 Safari/537.36" 0.095971
+[2025-09-16--21-55-03 INFO actix_web::middleware::logger] 127.0.0.1 "GET /assets/txtx.png HTTP/1.1" 200 4197 "http://127.0.0.1:18488/" "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/140.0.0.0 Safari/537.36" 0.000768
+[2025-09-16--21-55-03 INFO actix_web::middleware::logger] 127.0.0.1 "GET /_next/static/css/fd671620ab0cb221.css HTTP/1.1" 200 25057 "http://127.0.0.1:18488/" "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/140.0.0.0 Safari/537.36" 0.007227
+[2025-09-16--21-55-03 INFO actix_web::middleware::logger] 127.0.0.1 "GET /_next/static/chunks/webpack-137c9684d73de8de.js HTTP/1.1" 200 4665 "http://127.0.0.1:18488/" "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/140.0.0.0 Safari/537.36" 0.001160
+[2025-09-16--21-55-03 INFO actix_web::middleware::logger] 127.0.0.1 "GET /_next/static/chunks/main-app-3e881fb742a87abf.js HTTP/1.1" 200 219 "http://127.0.0.1:18488/" "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/140.0.0.0 Safari/537.36" 0.002066
+[2025-09-16--21-55-03 INFO actix_web::middleware::logger] 127.0.0.1 "GET /_next/static/chunks/c16f53c3-d20dab724af58680.js HTTP/1.1" 200 2698 "http://127.0.0.1:18488/" "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/140.0.0.0 Safari/537.36" 0.002819
+[2025-09-16--21-55-03 INFO actix_web::middleware::logger] 127.0.0.1 "GET /_next/static/chunks/809-ead11da64a319903.js HTTP/1.1" 200 15763 "http://127.0.0.1:18488/" "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/140.0.0.0 Safari/537.36" 0.003623
+[2025-09-16--21-55-03 INFO actix_web::middleware::logger] 127.0.0.1 "GET /_next/static/chunks/8480-59ad18cac05758cc.js HTTP/1.1" 200 10196 "http://127.0.0.1:18488/" "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/140.0.0.0 Safari/537.36" 0.008538
+[2025-09-16--21-55-03 INFO actix_web::middleware::logger] 127.0.0.1 "GET /_next/static/chunks/5964-bac2686a39d63815.js HTTP/1.1" 200 44320 "http://127.0.0.1:18488/" "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/140.0.0.0 Safari/537.36" 0.016369
+[2025-09-16--21-55-03 INFO actix_web::middleware::logger] 127.0.0.1 "GET /_next/static/chunks/4bd1b696-cc729d47eba2cee4.js HTTP/1.1" 200 55434 "http://127.0.0.1:18488/" "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/140.0.0.0 Safari/537.36" 0.017374
+[2025-09-16--21-55-03 INFO actix_web::middleware::logger] 127.0.0.1 "GET /_next/static/chunks/5384-f8b44dae683dcd51.js HTTP/1.1" 200 13121 "http://127.0.0.1:18488/" "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/140.0.0.0 Safari/537.36" 0.013686
+[2025-09-16--21-55-03 INFO actix_web::middleware::logger] 127.0.0.1 "GET /_next/static/chunks/app/layout-c8715056220e1caf.js HTTP/1.1" 200 9274 "http://127.0.0.1:18488/" "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/140.0.0.0 Safari/537.36" 0.004450
+[2025-09-16--21-55-03 INFO actix_web::middleware::logger] 127.0.0.1 "GET /_next/static/chunks/1708-95ebc3a93bba3f4c.js HTTP/1.1" 200 39418 "http://127.0.0.1:18488/" "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/140.0.0.0 Safari/537.36" 0.015292
+[2025-09-16--21-55-03 INFO actix_web::middleware::logger] 127.0.0.1 "GET /_next/static/chunks/9641-55796bcb730cb70a.js HTTP/1.1" 200 7391 "http://127.0.0.1:18488/" "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/140.0.0.0 Safari/537.36" 0.003830
+[2025-09-16--21-55-03 INFO actix_web::middleware::logger] 127.0.0.1 "GET /_next/static/chunks/5697-ddf28cf287ee8cd2.js HTTP/1.1" 200 7606 "http://127.0.0.1:18488/" "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/140.0.0.0 Safari/537.36" 0.015057
+[2025-09-16--21-55-03 INFO actix_web::middleware::logger] 127.0.0.1 "GET /_next/static/chunks/9618-315d73bc4be048dd.js HTTP/1.1" 200 13672 "http://127.0.0.1:18488/" "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/140.0.0.0 Safari/537.36" 0.001906
+[2025-09-16--21-55-03 INFO actix_web::middleware::logger] 127.0.0.1 "GET /_next/static/chunks/5108-4d8a2e695965c151.js HTTP/1.1" 200 18939 "http://127.0.0.1:18488/" "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/140.0.0.0 Safari/537.36" 0.002530
+[2025-09-16--21-55-03 INFO actix_web::middleware::logger] 127.0.0.1 "GET /_next/static/chunks/app/page-f3d1dfe24e6f7451.js HTTP/1.1" 200 9959 "http://127.0.0.1:18488/" "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/140.0.0.0 Safari/537.36" 0.001429
+[2025-09-16--21-55-03 INFO actix_web::middleware::logger] 127.0.0.1 "GET /_next/static/chunks/1591-1bc70b2a9bf1c8cb.js HTTP/1.1" 200 34782 "http://127.0.0.1:18488/" "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/140.0.0.0 Safari/537.36" 0.005403
+[2025-09-16--21-55-03 INFO actix_web::middleware::logger] 127.0.0.1 "GET /favicon.ico HTTP/1.1" 200 1748 "http://127.0.0.1:18488/" "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/140.0.0.0 Safari/537.36" 0.000112
+[2025-09-16--21-55-03 INFO parity_ws::io] Accepted a new tcp connection from 127.0.0.1:58047.
+[2025-09-16--21-55-03 INFO actix_web::middleware::logger] 127.0.0.1 "GET /favicon.ico HTTP/1.1" 200 1748 "http://127.0.0.1:18488/" "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/140.0.0.0 Safari/537.36" 0.000435
+[2025-09-16--21-55-03 INFO actix_web::middleware::logger] 127.0.0.1 "GET /config HTTP/1.1" 200 166 "http://127.0.0.1:18488/" "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/140.0.0.0 Safari/537.36" 0.017245
+[2025-09-16--21-55-03 INFO actix_web::middleware::logger] 127.0.0.1 "GET /subgraphs.txt?_rsc=3lb4g HTTP/1.1" 200 1671 "http://127.0.0.1:18488/" "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/140.0.0.0 Safari/537.36" 0.000227
+[2025-09-16--21-55-03 INFO actix_web::middleware::logger] 127.0.0.1 "GET /_next/static/chunks/app/subgraphs/page-c49510720f43689d.js HTTP/1.1" 200 1438 "http://127.0.0.1:18488/" "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/140.0.0.0 Safari/537.36" 0.000436
+[2025-09-16--22-03-49 INFO actix_web::middleware::logger] 127.0.0.1 "GET /subgraphs.txt?_rsc=3lb4g HTTP/1.1" 200 1671 "http://127.0.0.1:18488/" "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/140.0.0.0 Safari/537.36" 0.000380
+[2025-09-16--22-30-43 ERROR litesvm] Payer account mdrejH3w3c45QoN15whJFvNEhcj2sx6r78xzx7b9y2z not found.
+[2025-09-16--22-30-43 ERROR litesvm] Payer account mdrejH3w3c45QoN15whJFvNEhcj2sx6r78xzx7b9y2z not found.
+[2025-09-16--22-31-54 INFO parity_ws::io] Accepted a new tcp connection from 127.0.0.1:50581.
+[2025-09-16--22-32-43 INFO txtx::svm::deploy_subgraph] Subgraph Deployed - Subgraph ContributionMade for program 4Tjq5Em4qauF9DjXjVN2WW6NkM49tScR47czXHekquBp has been deployed
+[2025-09-16--22-32-43 INFO txtx::svm::deploy_subgraph] Subgraph Deployed - Your subgraph can be reached at "http://127.0.0.1:18488/subgraphs"
+[2025-09-16--22-32-43 INFO txtx::svm::deploy_subgraph] Subgraph Deployed - Subgraph MilestoneCompleted for program 4Tjq5Em4qauF9DjXjVN2WW6NkM49tScR47czXHekquBp has been deployed
+[2025-09-16--22-32-43 INFO txtx::svm::deploy_subgraph] Subgraph Deployed - Your subgraph can be reached at "http://127.0.0.1:18488/subgraphs"
+[2025-09-16--22-32-43 INFO txtx::svm::deploy_subgraph] Subgraph Deployed - Subgraph ProjectCreated for program 4Tjq5Em4qauF9DjXjVN2WW6NkM49tScR47czXHekquBp has been deployed
+[2025-09-16--22-32-43 INFO txtx::svm::deploy_subgraph] Subgraph Deployed - Your subgraph can be reached at "http://127.0.0.1:18488/subgraphs"
+[2025-09-16--22-32-43 INFO txtx::svm::deploy_program] Failure Recovery Info - An ephemeral authority account will be created and funded to write to the buffer account.
+[2025-09-16--22-32-43 INFO txtx::svm::deploy_program] Failure Recovery Info - Please save the following information in case the deployment fails and the account needs to be recovered:
+[2025-09-16--22-32-43 INFO txtx::svm::deploy_program] Failure Recovery Info - Ephemeral authority public key: 2xFtket4KJXVTL8383RzTprTQ3DXfVTcPzujGnEguDmL
+[2025-09-16--22-32-43 INFO txtx::svm::deploy_program] Failure Recovery Info - Ephemeral authority secret key: u72pTcmiXdj1RyF13JRF6SArFwcepMKP2KQi1EsRiXT7kEQfqaGTT3gWym3DJaQes5Pf4uk3i6oipEDTGKBFCHp
+[2025-09-16--22-32-46 INFO txtx::svm::deploy_program] Account Created - Ephemeral authority account created and funded to write to buffer
+[2025-09-16--22-32-46 INFO txtx::svm::deploy_program] Failure Recovery Info - Creating program buffer account at pubkey EuQae8atipSYKTBKr2d63zx5vGs5uYEMxLFwEzzRbUrR
+[2025-09-16--22-32-48 INFO txtx::svm::deploy_program] Account Created - Program buffer account created
+[2025-09-16--22-39-51 INFO txtx::svm::deploy_program] Buffer Ready - Writing to buffer account is complete
+[2025-09-16--22-39-51 INFO txtx::svm::deploy_program] Buffer Authority Transferred - Buffer authority has been transferred to authority signer
+[2025-09-16--22-39-51 INFO txtx::svm::deploy_program] Program Upgraded - Program 4Tjq5Em4qauF9DjXjVN2WW6NkM49tScR47czXHekquBp has been upgraded
+[2025-09-16--22-39-52 INFO txtx::svm::deploy_program] Complete - Ephemeral authority account closed and leftover funds returned to payer
+[2025-09-16--22-39-52 INFO txtx::svm::deploy_subgraph] Subgraph Deployed - Subgraph MilestoneCompleted for program 4Tjq5Em4qauF9DjXjVN2WW6NkM49tScR47czXHekquBp has been deployed
+[2025-09-16--22-39-52 INFO txtx::svm::deploy_subgraph] Subgraph Deployed - Your subgraph can be reached at "http://127.0.0.1:18488/subgraphs"
+[2025-09-16--22-39-52 INFO txtx::svm::deploy_subgraph] Subgraph Deployed - Subgraph ContributionMade for program 4Tjq5Em4qauF9DjXjVN2WW6NkM49tScR47czXHekquBp has been deployed
+[2025-09-16--22-39-52 INFO txtx::svm::deploy_subgraph] Subgraph Deployed - Your subgraph can be reached at "http://127.0.0.1:18488/subgraphs"
+[2025-09-16--22-39-52 INFO txtx::svm::deploy_subgraph] Subgraph Deployed - Subgraph ProjectCreated for program 4Tjq5Em4qauF9DjXjVN2WW6NkM49tScR47czXHekquBp has been deployed
+[2025-09-16--22-39-52 INFO txtx::svm::deploy_subgraph] Subgraph Deployed - Your subgraph can be reached at "http://127.0.0.1:18488/subgraphs"
+[2025-09-16--23-08-10 INFO parity_ws::io] Accepted a new tcp connection from 127.0.0.1:61589.
+[2025-09-16--23-17-27 INFO actix_server::worker] shutting down idle worker
+[2025-09-16--23-17-27 INFO actix_server::worker] shutting down idle worker
+[2025-09-16--23-17-27 INFO actix_server::worker] shutting down idle worker
+[2025-09-16--23-17-27 INFO actix_server::worker] shutting down idle worker
+[2025-09-16--23-17-27 INFO actix_server::accept] accept thread stopped
+[2025-09-16--23-17-27 INFO actix_server::worker] shutting down idle worker

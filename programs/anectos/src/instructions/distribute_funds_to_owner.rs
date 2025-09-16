@@ -28,9 +28,12 @@ pub struct DistributeFundsToOwner<'info> {
 pub fn handler(ctx: Context<DistributeFundsToOwner>, amount: u64) -> Result<()> {
     let project = &mut ctx.accounts.project;
     require!(project.owner == ctx.accounts.owner.key(), AnectosError::Unauthorized);
-    require!(project.current_funding > 0, AnectosError::InsufficientProjectVaultFunds);
+    // Total withdrawable is contribution funds + unlocked matching
+    let total_withdrawable = (project.current_funding as u128)
+        .saturating_add(project.matching_unlocked as u128) as u64;
+    require!(total_withdrawable >= amount, AnectosError::InsufficientProjectVaultFunds);
 
-    if project.milestones.get(0).map_or(false, |m| m.is_achieved) {
+    // if project.milestones.get(0).map_or(false, |m| m.is_achieved) {
         let bindings = ctx.accounts.owner.key();
         let signer_seeds = [b"vault", bindings.as_ref(), &[ctx.bumps.vault]];
 
@@ -48,6 +51,16 @@ pub fn handler(ctx: Context<DistributeFundsToOwner>, amount: u64) -> Result<()> 
             ),
             amount,
         )?;
-    }
+        // Deduct from current_funding first, then from matching_unlocked
+        let mut remaining = amount;
+        let take_from_current = remaining.min(project.current_funding);
+        project.current_funding = project.current_funding.saturating_sub(take_from_current);
+        remaining = remaining.saturating_sub(take_from_current);
+        if remaining > 0 {
+            // remaining must be <= matching_unlocked due to earlier require
+            project.matching_unlocked = project.matching_unlocked
+                .saturating_sub(remaining);
+        }
+    // }
     Ok(())
 }

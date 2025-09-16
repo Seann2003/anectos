@@ -10,11 +10,24 @@ type ProjectWithMeta = {
   projectMeta?: any | null;
 };
 
+function isPublicKeyLike(v: any): v is PublicKey {
+  return (
+    v &&
+    typeof v === "object" &&
+    typeof (v as any).toBase58 === "function" &&
+    // one of these should exist on PublicKey across versions
+    (typeof (v as any).toBuffer === "function" ||
+      typeof (v as any).toBytes === "function")
+  );
+}
+
 function sanitize<T = any>(data: any): T {
   if (data === null || data === undefined) return data as T;
   if (BN.isBN?.(data)) return (data as BN).toString() as unknown as T;
   if (typeof data === "bigint") return data.toString() as unknown as T;
-  if (data instanceof PublicKey) return data.toBase58() as unknown as T;
+  // Avoid relying on instanceof due to potential duplicate module instances
+  if (data instanceof PublicKey || isPublicKeyLike(data))
+    return (data as PublicKey).toBase58() as unknown as T;
   if (Array.isArray(data)) return data.map((v) => sanitize(v)) as unknown as T;
   if (typeof data === "object") {
     const out: any = {};

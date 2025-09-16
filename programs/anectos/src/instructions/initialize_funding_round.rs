@@ -42,6 +42,7 @@ pub fn handler(
 	round.vault_bump = 0;
 	round.is_active = true;
 	round.fee = 0;
+    round.pool_distributed = 0;
 
 	round_meta.nft_metadata_uri = nft_metadata_uri;
 	round_meta.start_time = start_time;

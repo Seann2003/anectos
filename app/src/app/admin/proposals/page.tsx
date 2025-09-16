@@ -1,6 +1,8 @@
 "use client";
 
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useState } from "react";
+import { usePrivy } from "@privy-io/react-auth";
+import { useSendTransaction } from "@privy-io/react-auth/solana";
 import { Toaster } from "@/components/ui/sonner";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -13,72 +15,14 @@ import {
   TableRow,
   TableCell,
 } from "@/components/ui/table";
-
-type Proposal = {
-  id: string;
-  owner_privy_user_id: string;
-  title: string;
-  description: string;
-  target_amount: number;
-  sdg_goals: number[];
-  image_metadata_uri?: string | null;
-  status: "pending" | "approved" | "rejected";
-  created_at: number; // unix ms
-};
-
-// Seed a few fake proposals based on the create/proposal fields
-const SEED: Proposal[] = [
-  {
-    id: "p1",
-    owner_privy_user_id: "user_abc",
-    title: "Solar Water Purification for Rural Communities",
-    description: "Deploy solar purification units for 10 villages.",
-    target_amount: 50000,
-    sdg_goals: [6, 7, 13],
-    image_metadata_uri: null,
-    status: "pending",
-    created_at: Date.now() - 1000 * 60 * 60 * 6,
-  },
-  {
-    id: "p2",
-    owner_privy_user_id: "user_xyz",
-    title: "Regenerative Agriculture Training Program",
-    description: "Train 100 farmers on regenerative practices.",
-    target_amount: 30000,
-    sdg_goals: [2, 12, 15],
-    image_metadata_uri: null,
-    status: "pending",
-    created_at: Date.now() - 1000 * 60 * 60 * 24,
-  },
-  {
-    id: "p3",
-    owner_privy_user_id: "user_mno",
-    title: "Ocean Plastic Cleanup Technology",
-    description: "Pilot coastal cleanup with AI sorting.",
-    target_amount: 75000,
-    sdg_goals: [14, 9, 13],
-    image_metadata_uri: null,
-    status: "pending",
-    created_at: Date.now() - 1000 * 60 * 60 * 2,
-  },
-];
-
-const STORAGE_KEY = "admin.proposals.v1";
-
-function loadProposals(): Proposal[] {
-  if (typeof window === "undefined") return SEED;
-  const raw = localStorage.getItem(STORAGE_KEY);
-  if (!raw) return SEED;
-  try {
-    const parsed = JSON.parse(raw) as Proposal[];
-    return parsed.length ? parsed : SEED;
-  } catch {
-    return SEED;
-  }
-}
+import { PublicKey, Transaction } from "@solana/web3.js";
+import { CONNECTION, SPL_GOVERNANCE } from "@/lib/constants";
+import { changeProjectFundingStageIx } from "@/lib/instructions";
+import { fundingRoundMetadataPda, projectMetadataPda } from "@/lib/pda";
+import { publicKeyFromBn } from "@/lib/helpers";
+import { Badge } from "@/components/ui/badge";
 
 export default function AdminProposalsPage() {
-  const [items, setItems] = useState<Proposal[]>([]);
   // On-chain projects state
   type UiProject = {
     id: string;
@@ -89,6 +33,9 @@ export default function AdminProposalsPage() {
     fundingRaised: number;
     milestones: number[];
     description?: string;
+    projectMetaPubkey?: string | null;
+    round?: string | null;
+    fundingStage?: string | null;
   };
 
   const SDG_MAP: Record<string, number> = {
@@ -130,10 +77,13 @@ export default function AdminProposalsPage() {
   const [projLoading, setProjLoading] = useState(false);
   const [projError, setProjError] = useState<string | null>(null);
   const [selected, setSelected] = useState<UiProject | null>(null);
+  const [actionLoading, setActionLoading] = useState<
+    "approve" | "reject" | null
+  >(null);
 
-  useEffect(() => {
-    setItems(loadProposals());
-  }, []);
+  const { user, authenticated } = usePrivy();
+  const { sendTransaction } = useSendTransaction();
+  console.log("Selecting project:", selected);
 
   useEffect(() => {
     let cancelled = false;
@@ -149,6 +99,21 @@ export default function AdminProposalsPage() {
           : data && data.projectPubkey
           ? [data]
           : [];
+        const normalizeRoundToString = (roundVal: any): string | null => {
+          try {
+            if (!roundVal) return null;
+            if (typeof roundVal === "string") return roundVal;
+            // BN-like from Anchor account
+            if (typeof roundVal === "object" && "_bn" in roundVal) {
+              return publicKeyFromBn(roundVal).toBase58();
+            }
+            if (roundVal instanceof PublicKey) return roundVal.toBase58();
+            // Fallback attempt
+            return new PublicKey(roundVal).toBase58();
+          } catch {
+            return null;
+          }
+        };
         const mapped: UiProject[] = list.map((entry: any) => {
           const project = entry.project ?? {};
           const meta = entry.projectMeta ?? {};
@@ -167,6 +132,28 @@ export default function AdminProposalsPage() {
             (m) => parseInt(m?.amount ?? "0", 10) || 0
           );
           const description = (meta.description as string) || "";
+          const projectMetaPubkey = (entry.projectMetaPubkey as string) || null;
+          const round = normalizeRoundToString(project?.round);
+          const fundingStage = (() => {
+            const fs: any = meta.fundingStage;
+            if (!fs) return null;
+            if (typeof fs === "string") return fs.toLowerCase();
+            if (typeof fs === "number") {
+              const arr = [
+                "planning",
+                "active",
+                "ongoing",
+                "completed",
+                "rejected",
+              ];
+              return arr[fs] ?? null;
+            }
+            if (typeof fs === "object") {
+              const key = Object.keys(fs)[0];
+              return key ? key.toLowerCase() : null;
+            }
+            return null;
+          })();
           return {
             id,
             title,
@@ -176,6 +163,9 @@ export default function AdminProposalsPage() {
             fundingRaised,
             milestones,
             description,
+            projectMetaPubkey,
+            round,
+            fundingStage,
           } as UiProject;
         });
         if (!cancelled) setProjItems(mapped);
@@ -190,11 +180,6 @@ export default function AdminProposalsPage() {
       cancelled = true;
     };
   }, []);
-
-  const pending = useMemo(
-    () => items.filter((p) => p.status === "pending"),
-    [items]
-  );
 
   return (
     <div className="container mx-auto px-4 py-8 space-y-6">
@@ -228,6 +213,7 @@ export default function AdminProposalsPage() {
                       <TableHead>SDGs</TableHead>
                       <TableHead>Raised</TableHead>
                       <TableHead>Goal</TableHead>
+                      <TableHead>Status</TableHead>
                       <TableHead>Milestones</TableHead>
                       <TableHead></TableHead>
                     </TableRow>
@@ -237,6 +223,15 @@ export default function AdminProposalsPage() {
                       const reached = p.milestones.filter(
                         (m) => p.fundingRaised >= m
                       ).length;
+                      const status = (
+                        p.fundingStage || "planning"
+                      ).toLowerCase();
+                      const statusVariant =
+                        status === "rejected"
+                          ? "destructive"
+                          : status === "active" || status === "ongoing"
+                          ? "default"
+                          : "secondary"; // planning/completed -> secondary for neutrality
                       return (
                         <TableRow
                           key={p.id}
@@ -249,6 +244,11 @@ export default function AdminProposalsPage() {
                           <TableCell>{p.sdgs.join(", ")}</TableCell>
                           <TableCell>{formatUSD(p.fundingRaised)}</TableCell>
                           <TableCell>{formatUSD(p.fundingGoal)}</TableCell>
+                          <TableCell>
+                            <Badge variant={statusVariant as any}>
+                              {status.charAt(0).toUpperCase() + status.slice(1)}
+                            </Badge>
+                          </TableCell>
                           <TableCell>
                             {reached}/{p.milestones.length}
                           </TableCell>
@@ -361,21 +361,103 @@ export default function AdminProposalsPage() {
                 </div>
               </div>
             </div>
-            <div className="px-5 py-4 border-t flex items-center justify-end gap-2">
-              <Link
-                href={`/projects/${selected.id}`}
-                className="text-sm text-blue-700 hover:underline"
-                onClick={() => setSelected(null)}
-              >
-                Open project page →
-              </Link>
-              <Button
-                onClick={() => setSelected(null)}
-                variant="outline"
-                size="sm"
-              >
-                Close
-              </Button>
+            <div className="px-5 py-4 border-t flex items-center justify-between gap-2">
+              <div className="text-xs text-gray-500">
+                Project: <span className="font-mono">{selected.id}</span>
+              </div>
+              {(selected.fundingStage ?? "planning").toLowerCase() ===
+                "planning" && (
+                <div className="flex items-center gap-2">
+                  <Button
+                    variant="destructive"
+                    size="sm"
+                    disabled={actionLoading !== null}
+                    onClick={async () => {
+                      if (!authenticated || !user?.wallet?.address) return;
+                      try {
+                        setActionLoading("reject");
+                        const adminPk = new PublicKey(user.wallet.address);
+                        const projectPk = new PublicKey(selected.id);
+                        const [projectMetaPk] = projectMetadataPda(projectPk);
+                        if (!selected.round)
+                          throw new Error("Missing funding round");
+                        const roundPk = new PublicKey(selected.round);
+                        const [roundMetaPda] = fundingRoundMetadataPda(roundPk);
+
+                        const ix = await changeProjectFundingStageIx({
+                          user: adminPk,
+                          projectPda: projectPk,
+                          projectMetadataPda: projectMetaPk,
+                          fundingRound: roundPk,
+                          fundingRoundMetadataPda: roundMetaPda,
+                          fundingStage: { rejected: {} },
+                        });
+                        const tx = new Transaction().add(ix);
+                        tx.feePayer = adminPk;
+                        const { blockhash } =
+                          await CONNECTION.getLatestBlockhash();
+                        tx.recentBlockhash = blockhash;
+                        await sendTransaction({
+                          transaction: tx,
+                          connection: CONNECTION,
+                          address: user.wallet.address,
+                        });
+                        setSelected(null);
+                      } catch (err) {
+                        console.error("reject project stage failed:", err);
+                      } finally {
+                        setActionLoading(null);
+                      }
+                    }}
+                  >
+                    {actionLoading === "reject" ? "Rejecting…" : "Reject"}
+                  </Button>
+                  <Button
+                    variant="default"
+                    size="sm"
+                    disabled={actionLoading !== null}
+                    onClick={async () => {
+                      if (!authenticated || !user?.wallet?.address) return;
+                      try {
+                        setActionLoading("approve");
+                        const adminPk = new PublicKey(user.wallet.address);
+                        const projectPk = new PublicKey(selected.id);
+                        const [projectMetaPk] = projectMetadataPda(projectPk);
+                        if (!selected.round)
+                          throw new Error("Missing funding round");
+                        const roundPk = new PublicKey(selected.round);
+                        const [roundMetaPda] = fundingRoundMetadataPda(roundPk);
+
+                        const ix = await changeProjectFundingStageIx({
+                          user: adminPk,
+                          projectPda: projectPk,
+                          projectMetadataPda: projectMetaPk,
+                          fundingRound: roundPk,
+                          fundingRoundMetadataPda: roundMetaPda,
+                          fundingStage: { active: {} },
+                        });
+                        const tx = new Transaction().add(ix);
+                        tx.feePayer = adminPk;
+                        const { blockhash } =
+                          await CONNECTION.getLatestBlockhash();
+                        tx.recentBlockhash = blockhash;
+                        await sendTransaction({
+                          transaction: tx,
+                          connection: CONNECTION,
+                          address: user.wallet.address,
+                        });
+                        setSelected(null);
+                      } catch (err) {
+                        console.error("approve project stage failed:", err);
+                      } finally {
+                        setActionLoading(null);
+                      }
+                    }}
+                  >
+                    {actionLoading === "approve" ? "Approving…" : "Approve"}
+                  </Button>
+                </div>
+              )}
             </div>
           </div>
         </div>

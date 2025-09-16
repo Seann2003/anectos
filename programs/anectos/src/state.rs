@@ -10,6 +10,9 @@ pub struct Project {
 	pub target_amount: u64,
 	pub area: u128,
 	pub current_funding: u64,
+    pub matching_unlocked: u64,
+    pub matching_pool: u64,
+    pub pool_distributed: u64,
 	pub is_whitelisted: bool,
 	pub has_withdrawn: bool,
     pub milestone_count: u8,
@@ -97,10 +100,11 @@ pub struct FundingRound {
 	pub area: u128,
 	pub area_max: u128,
 	pub contributor_count: u32,
-	pub project_vault: Pubkey,
+    pub project_vault: Pubkey, // used as round_vault
 	pub vault_bump: u8,
 	pub is_active: bool,
 	pub fee: u64,
+    pub pool_distributed: u64,
     pub bump: u8,
 }
 
@@ -123,6 +127,15 @@ impl FundingRoundMeta {
 pub struct Milestone {
     pub amount: u64,       
     pub is_achieved: bool, 
+}
+
+#[account]
+#[derive(InitSpace)]
+pub struct Contribution {
+    pub project: Pubkey,
+    pub contributor: Pubkey,
+    pub total_contributed: u64,
+    pub bump: u8,
 }
 
 

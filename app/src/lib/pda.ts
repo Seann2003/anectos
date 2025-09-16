@@ -44,6 +44,14 @@ export function vaultPda(owner: PublicKey): [PublicKey, number] {
   );
 }
 
+// Round vault PDA: seeds = [b"round_vault", fundingRound]
+export function roundVaultPda(fundingRound: PublicKey): [PublicKey, number] {
+  return PublicKey.findProgramAddressSync(
+    [Buffer.from("round_vault"), fundingRound.toBuffer()],
+    PROGRAM_ID
+  );
+}
+
 // Convenience helpers to return only the address when bump isn't needed
 export const projectAddressFromOwner = (owner: PublicKey) =>
   projectPdaFromOwner(owner)[0];
@@ -54,3 +62,5 @@ export const projectMetadataAddress = (project: PublicKey) =>
 export const fundingRoundMetadataAddress = (fundingRound: PublicKey) =>
   fundingRoundMetadataPda(fundingRound)[0];
 export const vaultAddress = (owner: PublicKey) => vaultPda(owner)[0];
+export const roundVaultAddress = (fundingRound: PublicKey) =>
+  roundVaultPda(fundingRound)[0];

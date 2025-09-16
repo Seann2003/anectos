@@ -3,7 +3,7 @@
 import { useEffect, useState } from "react";
 import Link from "next/link";
 import { usePrivy } from "@privy-io/react-auth";
-import { useRouter } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import { User, Pencil, LayoutDashboard, LogOut, Copy } from "lucide-react";
 import {
   DropdownMenu,
@@ -22,6 +22,7 @@ export default function Navbar() {
   const { authenticated, user, logout, login } = usePrivy();
   console.log("Navbar user:", user);
   const router = useRouter();
+  const pathname = usePathname();
   const [role, setRole] = useState<0 | 1 | 2 | null>(null);
   const [displayName, setDisplayName] = useState<string>("");
 
@@ -63,6 +64,10 @@ export default function Navbar() {
 
       const profileName = data?.name ?? "";
       setName(profileName);
+
+      if (authenticated && !data && pathname !== "/signup") {
+        router.push("/signup");
+      }
 
       if (profileName) {
         setDisplayName(profileName);

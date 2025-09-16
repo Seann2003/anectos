@@ -1,0 +1,29 @@
+[2025-09-17--01-26-13 INFO actix_server::builder] starting 5 workers
+[2025-09-17--01-26-13 INFO actix_server::server] Tokio runtime found; starting in existing Tokio runtime
+[2025-09-17--01-26-13 INFO actix_server::server] starting service: "actix-web-service-127.0.0.1:18488", workers: 5, listening on: 127.0.0.1:18488
+[2025-09-17--01-26-14 INFO parity_ws] Listening for new connections on 127.0.0.1:8900.
+[2025-09-17--01-26-14 INFO parity_ws::io] Accepted a new tcp connection from 127.0.0.1:61540.
+[2025-09-17--01-26-14 INFO txtx::svm::deploy_program] Failure Recovery Info - An ephemeral authority account will be created and funded to write to the buffer account.
+[2025-09-17--01-26-14 INFO txtx::svm::deploy_program] Failure Recovery Info - Please save the following information in case the deployment fails and the account needs to be recovered:
+[2025-09-17--01-26-14 INFO txtx::svm::deploy_program] Failure Recovery Info - Ephemeral authority public key: B41yrp8g5QtrgYBDdB8sve1CiQVCywNKqkf3t9opCp8i
+[2025-09-17--01-26-14 INFO txtx::svm::deploy_program] Failure Recovery Info - Ephemeral authority secret key: 39ZJZ3cdiPc5PXjpbxb4yjadpzyASySQxh2JZkvbH1taYAhUx8VknGgpgkDQxgL7PxgVWB5WRfo5Jgzzc9n2q5ea
+[2025-09-17--01-26-14 INFO txtx::svm::deploy_program] Account Created - Ephemeral authority account created and funded to write to buffer
+[2025-09-17--01-26-14 INFO txtx::svm::deploy_program] Failure Recovery Info - Creating program buffer account at pubkey Qj3aYmBKNeJHx9H4J4yTerLzwMwpNPuRxYAmY4sgMAr
+[2025-09-17--01-26-15 INFO txtx::svm::deploy_program] Account Created - Program buffer account created
+[2025-09-17--01-26-33 INFO txtx::svm::deploy_program] Buffer Ready - Writing to buffer account is complete
+[2025-09-17--01-26-33 INFO txtx::svm::deploy_program] Program Created - Program 4Tjq5Em4qauF9DjXjVN2WW6NkM49tScR47czXHekquBp has been deployed
+[2025-09-17--01-26-33 INFO txtx::svm::deploy_program] Complete - Ephemeral authority account closed and leftover funds returned to payer
+[2025-09-17--01-26-33 INFO txtx::svm::deploy_subgraph] Subgraph Deployed - Subgraph ProjectCreated for program 4Tjq5Em4qauF9DjXjVN2WW6NkM49tScR47czXHekquBp has been deployed
+[2025-09-17--01-26-33 INFO txtx::svm::deploy_subgraph] Subgraph Deployed - Your subgraph can be reached at "http://127.0.0.1:18488/subgraphs"
+[2025-09-17--01-26-33 INFO txtx::svm::deploy_subgraph] Subgraph Deployed - Subgraph ContributionMade for program 4Tjq5Em4qauF9DjXjVN2WW6NkM49tScR47czXHekquBp has been deployed
+[2025-09-17--01-26-33 INFO txtx::svm::deploy_subgraph] Subgraph Deployed - Your subgraph can be reached at "http://127.0.0.1:18488/subgraphs"
+[2025-09-17--01-26-33 INFO txtx::svm::deploy_subgraph] Subgraph Deployed - Subgraph MilestoneCompleted for program 4Tjq5Em4qauF9DjXjVN2WW6NkM49tScR47czXHekquBp has been deployed
+[2025-09-17--01-26-33 INFO txtx::svm::deploy_subgraph] Subgraph Deployed - Your subgraph can be reached at "http://127.0.0.1:18488/subgraphs"
+[2025-09-17--01-27-47 INFO parity_ws::io] Accepted a new tcp connection from 127.0.0.1:63036.
+[2025-09-17--01-28-43 INFO parity_ws::io] Accepted a new tcp connection from 127.0.0.1:63323.
+[2025-09-17--01-28-59 INFO parity_ws::io] Accepted a new tcp connection from 127.0.0.1:63408.
+[2025-09-17--01-29-21 INFO parity_ws::io] Accepted a new tcp connection from 127.0.0.1:63525.
+[2025-09-17--01-29-59 INFO parity_ws::io] Accepted a new tcp connection from 127.0.0.1:63736.
+[2025-09-17--01-30-04 INFO parity_ws::io] Accepted a new tcp connection from 127.0.0.1:63768.
+[2025-09-17--01-30-20 INFO parity_ws::io] Accepted a new tcp connection from 127.0.0.1:63861.
+[2025-09-17--01-30-48 INFO parity_ws::io] Accepted a new tcp connection from 127.0.0.1:63998.

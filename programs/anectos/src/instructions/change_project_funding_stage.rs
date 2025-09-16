@@ -1,6 +1,6 @@
 use anchor_lang::prelude::*;
 use crate::state::{ProjectMeta, Project, FundingRound};
-use crate::{FundingRoundMeta, FundingStage};
+use crate::{error::AnectosError, FundingRoundMeta, FundingStage};
 
 #[derive(Accounts)]
 pub struct ChangeProjectFundingStage<'info> {
@@ -13,9 +13,11 @@ pub struct ChangeProjectFundingStage<'info> {
         bump
     )]
     pub project_meta: Account<'info, ProjectMeta>,
+    // Project PDA derived from the project's owner (not the caller),
+    // so an authorized admin can act on behalf of the project owner.
     #[account(
         mut,
-        seeds = [b"project", user.key().as_ref()],
+        seeds = [b"project", project.owner.key().as_ref()],
         bump
     )]
     pub project: Account<'info, Project>,

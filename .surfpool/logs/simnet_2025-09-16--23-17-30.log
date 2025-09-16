@@ -1,0 +1,106 @@
+[2025-09-16--23-17-30 INFO actix_server::builder] starting 5 workers
+[2025-09-16--23-17-30 INFO actix_server::server] Tokio runtime found; starting in existing Tokio runtime
+[2025-09-16--23-17-30 INFO actix_server::server] starting service: "actix-web-service-127.0.0.1:18488", workers: 5, listening on: 127.0.0.1:18488
+[2025-09-16--23-17-30 INFO parity_ws] Listening for new connections on 127.0.0.1:8900.
+[2025-09-16--23-17-31 INFO txtx::svm::deploy_program] Failure Recovery Info - An ephemeral authority account will be created and funded to write to the buffer account.
+[2025-09-16--23-17-31 INFO txtx::svm::deploy_program] Failure Recovery Info - Please save the following information in case the deployment fails and the account needs to be recovered:
+[2025-09-16--23-17-31 INFO txtx::svm::deploy_program] Failure Recovery Info - Ephemeral authority public key: DLAstYsnM3DtzpBHf54CdbdNVCMtuYnyo8tR2vMMoC9S
+[2025-09-16--23-17-31 INFO txtx::svm::deploy_program] Failure Recovery Info - Ephemeral authority secret key: 51jXfzdTZ8Z6PJDi6KHJ6FeDE6pGiRr5CcWj8y3VjMBeswnhvpMxGH8cA9C2t1Qkf35iE6feNCkphgJ3auREHouN
+[2025-09-16--23-17-31 INFO txtx::svm::deploy_program] Account Created - Ephemeral authority account created and funded to write to buffer
+[2025-09-16--23-17-31 INFO txtx::svm::deploy_program] Failure Recovery Info - Creating program buffer account at pubkey 7MYxeTtJrE2DQ32nWPamBw8ntXPt9138DACX4R9KFiTW
+[2025-09-16--23-17-31 INFO txtx::svm::deploy_program] Account Created - Program buffer account created
+[2025-09-16--23-17-32 INFO parity_ws::io] Accepted a new tcp connection from 127.0.0.1:64467.
+[2025-09-16--23-17-47 INFO txtx::svm::deploy_program] Buffer Ready - Writing to buffer account is complete
+[2025-09-16--23-17-48 INFO txtx::svm::deploy_program] Program Created - Program 4Tjq5Em4qauF9DjXjVN2WW6NkM49tScR47czXHekquBp has been deployed
+[2025-09-16--23-17-48 INFO txtx::svm::deploy_program] Complete - Ephemeral authority account closed and leftover funds returned to payer
+[2025-09-16--23-17-48 INFO txtx::svm::deploy_subgraph] Subgraph Deployed - Subgraph ContributionMade for program 4Tjq5Em4qauF9DjXjVN2WW6NkM49tScR47czXHekquBp has been deployed
+[2025-09-16--23-17-48 INFO txtx::svm::deploy_subgraph] Subgraph Deployed - Your subgraph can be reached at "http://127.0.0.1:18488/subgraphs"
+[2025-09-16--23-17-48 INFO txtx::svm::deploy_subgraph] Subgraph Deployed - Subgraph ProjectCreated for program 4Tjq5Em4qauF9DjXjVN2WW6NkM49tScR47czXHekquBp has been deployed
+[2025-09-16--23-17-48 INFO txtx::svm::deploy_subgraph] Subgraph Deployed - Your subgraph can be reached at "http://127.0.0.1:18488/subgraphs"
+[2025-09-16--23-17-48 INFO txtx::svm::deploy_subgraph] Subgraph Deployed - Subgraph MilestoneCompleted for program 4Tjq5Em4qauF9DjXjVN2WW6NkM49tScR47czXHekquBp has been deployed
+[2025-09-16--23-17-48 INFO txtx::svm::deploy_subgraph] Subgraph Deployed - Your subgraph can be reached at "http://127.0.0.1:18488/subgraphs"
+[2025-09-16--23-19-00 INFO actix_web::middleware::logger] 127.0.0.1 "GET / HTTP/1.1" 200 6754 "-" "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/140.0.0.0 Safari/537.36" 0.103440
+[2025-09-16--23-19-00 INFO actix_web::middleware::logger] 127.0.0.1 "GET /assets/txtx.png HTTP/1.1" 200 4197 "http://127.0.0.1:18488/" "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/140.0.0.0 Safari/537.36" 0.002488
+[2025-09-16--23-19-00 INFO actix_web::middleware::logger] 127.0.0.1 "GET /_next/static/css/fd671620ab0cb221.css HTTP/1.1" 200 25057 "http://127.0.0.1:18488/" "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/140.0.0.0 Safari/537.36" 0.005263
+[2025-09-16--23-19-00 INFO actix_web::middleware::logger] 127.0.0.1 "GET /_next/static/chunks/webpack-137c9684d73de8de.js HTTP/1.1" 200 4665 "http://127.0.0.1:18488/" "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/140.0.0.0 Safari/537.36" 0.000454
+[2025-09-16--23-19-00 INFO actix_web::middleware::logger] 127.0.0.1 "GET /_next/static/chunks/main-app-3e881fb742a87abf.js HTTP/1.1" 200 219 "http://127.0.0.1:18488/" "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/140.0.0.0 Safari/537.36" 0.000243
+[2025-09-16--23-19-00 INFO actix_web::middleware::logger] 127.0.0.1 "GET /_next/static/chunks/c16f53c3-d20dab724af58680.js HTTP/1.1" 200 2698 "http://127.0.0.1:18488/" "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/140.0.0.0 Safari/537.36" 0.000402
+[2025-09-16--23-19-00 INFO actix_web::middleware::logger] 127.0.0.1 "GET /_next/static/chunks/809-ead11da64a319903.js HTTP/1.1" 200 15763 "http://127.0.0.1:18488/" "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/140.0.0.0 Safari/537.36" 0.003347
+[2025-09-16--23-19-00 INFO actix_web::middleware::logger] 127.0.0.1 "GET /_next/static/chunks/4bd1b696-cc729d47eba2cee4.js HTTP/1.1" 200 55434 "http://127.0.0.1:18488/" "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/140.0.0.0 Safari/537.36" 0.009229
+[2025-09-16--23-19-00 INFO actix_web::middleware::logger] 127.0.0.1 "GET /_next/static/chunks/5964-bac2686a39d63815.js HTTP/1.1" 200 44320 "http://127.0.0.1:18488/" "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/140.0.0.0 Safari/537.36" 0.008281
+[2025-09-16--23-19-00 INFO actix_web::middleware::logger] 127.0.0.1 "GET /_next/static/chunks/8480-59ad18cac05758cc.js HTTP/1.1" 200 10196 "http://127.0.0.1:18488/" "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/140.0.0.0 Safari/537.36" 0.002185
+[2025-09-16--23-19-00 INFO actix_web::middleware::logger] 127.0.0.1 "GET /_next/static/chunks/5384-f8b44dae683dcd51.js HTTP/1.1" 200 13121 "http://127.0.0.1:18488/" "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/140.0.0.0 Safari/537.36" 0.002251
+[2025-09-16--23-19-00 INFO actix_web::middleware::logger] 127.0.0.1 "GET /_next/static/chunks/9641-55796bcb730cb70a.js HTTP/1.1" 200 7391 "http://127.0.0.1:18488/" "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/140.0.0.0 Safari/537.36" 0.001423
+[2025-09-16--23-19-00 INFO actix_web::middleware::logger] 127.0.0.1 "GET /_next/static/chunks/5697-ddf28cf287ee8cd2.js HTTP/1.1" 200 7606 "http://127.0.0.1:18488/" "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/140.0.0.0 Safari/537.36" 0.004213
+[2025-09-16--23-19-00 INFO actix_web::middleware::logger] 127.0.0.1 "GET /_next/static/chunks/app/layout-c8715056220e1caf.js HTTP/1.1" 200 9274 "http://127.0.0.1:18488/" "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/140.0.0.0 Safari/537.36" 0.003835
+[2025-09-16--23-19-00 INFO actix_web::middleware::logger] 127.0.0.1 "GET /_next/static/chunks/9618-315d73bc4be048dd.js HTTP/1.1" 200 13672 "http://127.0.0.1:18488/" "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/140.0.0.0 Safari/537.36" 0.001460
+[2025-09-16--23-19-00 INFO actix_web::middleware::logger] 127.0.0.1 "GET /_next/static/chunks/1708-95ebc3a93bba3f4c.js HTTP/1.1" 200 39418 "http://127.0.0.1:18488/" "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/140.0.0.0 Safari/537.36" 0.006262
+[2025-09-16--23-19-00 INFO actix_web::middleware::logger] 127.0.0.1 "GET /_next/static/chunks/app/page-f3d1dfe24e6f7451.js HTTP/1.1" 200 9959 "http://127.0.0.1:18488/" "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/140.0.0.0 Safari/537.36" 0.002918
+[2025-09-16--23-19-00 INFO actix_web::middleware::logger] 127.0.0.1 "GET /_next/static/chunks/5108-4d8a2e695965c151.js HTTP/1.1" 200 18939 "http://127.0.0.1:18488/" "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/140.0.0.0 Safari/537.36" 0.003646
+[2025-09-16--23-19-00 INFO actix_web::middleware::logger] 127.0.0.1 "GET /_next/static/chunks/1591-1bc70b2a9bf1c8cb.js HTTP/1.1" 200 34782 "http://127.0.0.1:18488/" "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/140.0.0.0 Safari/537.36" 0.007169
+[2025-09-16--23-19-00 INFO actix_web::middleware::logger] 127.0.0.1 "GET /_next/static/chunks/webpack-137c9684d73de8de.js HTTP/1.1" 200 4665 "-" "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/140.0.0.0 Safari/537.36" 0.000180
+[2025-09-16--23-19-00 INFO actix_web::middleware::logger] 127.0.0.1 "GET /_next/static/chunks/main-app-3e881fb742a87abf.js HTTP/1.1" 200 219 "-" "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/140.0.0.0 Safari/537.36" 0.000110
+[2025-09-16--23-19-00 INFO actix_web::middleware::logger] 127.0.0.1 "GET /_next/static/chunks/c16f53c3-d20dab724af58680.js HTTP/1.1" 200 2698 "-" "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/140.0.0.0 Safari/537.36" 0.000244
+[2025-09-16--23-19-00 INFO actix_web::middleware::logger] 127.0.0.1 "GET /_next/static/chunks/809-ead11da64a319903.js HTTP/1.1" 200 15763 "-" "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/140.0.0.0 Safari/537.36" 0.001099
+[2025-09-16--23-19-00 INFO actix_web::middleware::logger] 127.0.0.1 "GET /_next/static/chunks/5964-bac2686a39d63815.js HTTP/1.1" 200 44320 "-" "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/140.0.0.0 Safari/537.36" 0.002645
+[2025-09-16--23-19-00 INFO actix_web::middleware::logger] 127.0.0.1 "GET /_next/static/chunks/4bd1b696-cc729d47eba2cee4.js HTTP/1.1" 200 55434 "-" "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/140.0.0.0 Safari/537.36" 0.002961
+[2025-09-16--23-19-00 INFO actix_web::middleware::logger] 127.0.0.1 "GET /_next/static/chunks/5384-f8b44dae683dcd51.js HTTP/1.1" 200 13121 "-" "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/140.0.0.0 Safari/537.36" 0.002155
+[2025-09-16--23-19-00 INFO actix_web::middleware::logger] 127.0.0.1 "GET /_next/static/chunks/8480-59ad18cac05758cc.js HTTP/1.1" 200 10196 "-" "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/140.0.0.0 Safari/537.36" 0.002109
+[2025-09-16--23-19-00 INFO actix_web::middleware::logger] 127.0.0.1 "GET /_next/static/chunks/5697-ddf28cf287ee8cd2.js HTTP/1.1" 200 7606 "-" "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/140.0.0.0 Safari/537.36" 0.000665
+[2025-09-16--23-19-00 INFO actix_web::middleware::logger] 127.0.0.1 "GET /_next/static/chunks/app/layout-c8715056220e1caf.js HTTP/1.1" 200 9274 "-" "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/140.0.0.0 Safari/537.36" 0.002078
+[2025-09-16--23-19-00 INFO actix_web::middleware::logger] 127.0.0.1 "GET /_next/static/chunks/9641-55796bcb730cb70a.js HTTP/1.1" 200 7391 "-" "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/140.0.0.0 Safari/537.36" 0.001990
+[2025-09-16--23-19-00 INFO actix_web::middleware::logger] 127.0.0.1 "GET /_next/static/chunks/1591-1bc70b2a9bf1c8cb.js HTTP/1.1" 200 34782 "-" "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/140.0.0.0 Safari/537.36" 0.002539
+[2025-09-16--23-19-00 INFO actix_web::middleware::logger] 127.0.0.1 "GET /_next/static/chunks/1708-95ebc3a93bba3f4c.js HTTP/1.1" 200 39418 "-" "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/140.0.0.0 Safari/537.36" 0.003420
+[2025-09-16--23-19-00 INFO actix_web::middleware::logger] 127.0.0.1 "GET /favicon.ico HTTP/1.1" 200 1748 "http://127.0.0.1:18488/" "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/140.0.0.0 Safari/537.36" 0.000193
+[2025-09-16--23-19-00 INFO parity_ws::io] Accepted a new tcp connection from 127.0.0.1:65503.
+[2025-09-16--23-19-00 INFO actix_web::middleware::logger] 127.0.0.1 "GET /favicon.ico HTTP/1.1" 200 1748 "http://127.0.0.1:18488/" "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/140.0.0.0 Safari/537.36" 0.000095
+[2025-09-16--23-19-00 INFO actix_web::middleware::logger] 127.0.0.1 "GET /config HTTP/1.1" 200 166 "http://127.0.0.1:18488/" "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/140.0.0.0 Safari/537.36" 0.001488
+[2025-09-16--23-19-00 INFO actix_web::middleware::logger] 127.0.0.1 "GET /subgraphs.txt?_rsc=3lb4g HTTP/1.1" 200 1671 "http://127.0.0.1:18488/" "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/140.0.0.0 Safari/537.36" 0.002245
+[2025-09-16--23-19-00 INFO actix_web::middleware::logger] 127.0.0.1 "GET /_next/static/chunks/app/subgraphs/page-c49510720f43689d.js HTTP/1.1" 200 1438 "http://127.0.0.1:18488/" "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/140.0.0.0 Safari/537.36" 0.000546
+[2025-09-16--23-20-22 INFO parity_ws::io] Accepted a new tcp connection from 127.0.0.1:49481.
+[2025-09-16--23-21-48 INFO parity_ws::io] Accepted a new tcp connection from 127.0.0.1:49901.
+[2025-09-16--23-22-29 INFO parity_ws::io] Accepted a new tcp connection from 127.0.0.1:50115.
+[2025-09-16--23-24-38 INFO parity_ws::io] Accepted a new tcp connection from 127.0.0.1:50723.
+[2025-09-16--23-25-55 INFO parity_ws::io] Accepted a new tcp connection from 127.0.0.1:51093.
+[2025-09-16--23-26-18 INFO parity_ws::io] Accepted a new tcp connection from 127.0.0.1:51211.
+[2025-09-16--23-36-22 INFO txtx::svm::deploy_program] Failure Recovery Info - An ephemeral authority account will be created and funded to write to the buffer account.
+[2025-09-16--23-36-22 INFO txtx::svm::deploy_program] Failure Recovery Info - Please save the following information in case the deployment fails and the account needs to be recovered:
+[2025-09-16--23-36-22 INFO txtx::svm::deploy_program] Failure Recovery Info - Ephemeral authority public key: 3fJ4W77qWbFdEMx3CRpRoAr1YUn4My3dnfMbRevCnLea
+[2025-09-16--23-36-22 INFO txtx::svm::deploy_program] Failure Recovery Info - Ephemeral authority secret key: 3roQDzdYfubC2KbvfSDWoL74jZM4gDLrL9nZ7cNEtz4yYamNvhaTmkEwnHC8FHA53CDyueCycTiYyNpwiYDepSQe
+[2025-09-16--23-36-24 INFO txtx::svm::deploy_program] Account Created - Ephemeral authority account created and funded to write to buffer
+[2025-09-16--23-36-24 INFO txtx::svm::deploy_program] Failure Recovery Info - Creating program buffer account at pubkey UH7UFJK4S7HGpDYMDXKd2VLUWr4hBDBNie1So9dnXtc
+[2025-09-16--23-38-11 INFO txtx::svm::deploy_program] Buffer Ready - Writing to buffer account is complete
+[2025-09-16--23-38-11 INFO txtx::svm::deploy_program] Buffer Authority Transferred - Buffer authority has been transferred to authority signer
+[2025-09-16--23-38-12 INFO txtx::svm::deploy_program] Program Upgraded - Program 4Tjq5Em4qauF9DjXjVN2WW6NkM49tScR47czXHekquBp has been upgraded
+[2025-09-16--23-38-13 INFO txtx::svm::deploy_program] Complete - Ephemeral authority account closed and leftover funds returned to payer
+[2025-09-16--23-38-13 INFO txtx::svm::deploy_subgraph] Subgraph Deployed - Subgraph MilestoneCompleted for program 4Tjq5Em4qauF9DjXjVN2WW6NkM49tScR47czXHekquBp has been deployed
+[2025-09-16--23-38-13 INFO txtx::svm::deploy_subgraph] Subgraph Deployed - Your subgraph can be reached at "http://127.0.0.1:18488/subgraphs"
+[2025-09-16--23-38-13 INFO txtx::svm::deploy_subgraph] Subgraph Deployed - Subgraph ContributionMade for program 4Tjq5Em4qauF9DjXjVN2WW6NkM49tScR47czXHekquBp has been deployed
+[2025-09-16--23-38-13 INFO txtx::svm::deploy_subgraph] Subgraph Deployed - Your subgraph can be reached at "http://127.0.0.1:18488/subgraphs"
+[2025-09-16--23-38-13 INFO txtx::svm::deploy_subgraph] Subgraph Deployed - Subgraph ProjectCreated for program 4Tjq5Em4qauF9DjXjVN2WW6NkM49tScR47czXHekquBp has been deployed
+[2025-09-16--23-41-13 INFO parity_ws::io] Accepted a new tcp connection from 127.0.0.1:56112.
+[2025-09-16--23-41-23 INFO parity_ws::io] Accepted a new tcp connection from 127.0.0.1:56158.
+[2025-09-16--23-41-38 INFO parity_ws::io] Accepted a new tcp connection from 127.0.0.1:56229.
+[2025-09-16--23-41-56 INFO parity_ws::io] Accepted a new tcp connection from 127.0.0.1:56312.
+[2025-09-16--23-44-51 INFO parity_ws::io] Accepted a new tcp connection from 127.0.0.1:57157.
+[2025-09-16--23-45-17 INFO parity_ws::io] Accepted a new tcp connection from 127.0.0.1:57274.
+[2025-09-16--23-45-46 INFO parity_ws::io] Accepted a new tcp connection from 127.0.0.1:57405.
+[2025-09-16--23-46-15 INFO parity_ws::io] Accepted a new tcp connection from 127.0.0.1:57540.
+[2025-09-16--23-46-34 INFO parity_ws::io] Accepted a new tcp connection from 127.0.0.1:57628.
+[2025-09-16--23-46-39 INFO parity_ws::io] Accepted a new tcp connection from 127.0.0.1:57655.
+[2025-09-16--23-47-17 INFO parity_ws::io] Accepted a new tcp connection from 127.0.0.1:57865.
+[2025-09-16--23-48-25 INFO parity_ws::io] Accepted a new tcp connection from 127.0.0.1:58186.
+[2025-09-16--23-48-48 INFO parity_ws::io] Accepted a new tcp connection from 127.0.0.1:58304.
+[2025-09-16--23-49-01 INFO parity_ws::io] Accepted a new tcp connection from 127.0.0.1:58391.
+[2025-09-16--23-52-19 INFO parity_ws::io] Accepted a new tcp connection from 127.0.0.1:59277.
+[2025-09-16--23-53-18 INFO parity_ws::io] Accepted a new tcp connection from 127.0.0.1:59543.
+[2025-09-16--23-53-33 INFO parity_ws::io] Accepted a new tcp connection from 127.0.0.1:59618.
+[2025-09-16--23-54-05 INFO parity_ws::io] Accepted a new tcp connection from 127.0.0.1:59774.
+[2025-09-16--23-54-46 INFO parity_ws::io] Accepted a new tcp connection from 127.0.0.1:59979.
+[2025-09-16--23-55-10 INFO parity_ws::io] Accepted a new tcp connection from 127.0.0.1:60096.
+[2025-09-16--23-55-36 INFO actix_server::worker] shutting down idle worker
+[2025-09-16--23-55-36 INFO actix_server::worker] shutting down idle worker
+[2025-09-16--23-55-36 INFO actix_server::worker] shutting down idle worker
+[2025-09-16--23-55-36 INFO actix_server::worker] shutting down idle worker
+[2025-09-16--23-55-36 INFO actix_server::worker] shutting down idle worker
+[2025-09-16--23-55-36 INFO actix_server::accept] accept thread stopped
