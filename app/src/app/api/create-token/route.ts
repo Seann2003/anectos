@@ -152,14 +152,12 @@ export async function POST(req: NextRequest) {
 }
 
 export async function GET(req: NextRequest) {
-  // Convenience: allow GET with ?cid=...&name=...&symbol=... for quick testing.
   const { searchParams } = new URL(req.url);
   const cid = searchParams.get("cid") || undefined;
   const name = searchParams.get("name") || undefined;
   const symbol = searchParams.get("symbol") || undefined;
   const decimals = searchParams.get("decimals");
   const initialSupply = searchParams.get("initialSupply");
-  // Proxy to POST
   const body: CreateTokenRequest = {
     cid,
     name,

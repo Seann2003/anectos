@@ -11,7 +11,6 @@ pub struct FundProjectPool<'info> {
     pub funding_round: Account<'info, FundingRound>,
     #[account(mut)]
     pub project: Account<'info, Project>,
-    /// Round vault PDA for deposit: seeds = [b"round_vault", funding_round]
     #[account(mut)]
     pub round_vault: SystemAccount<'info>,
     pub system_program: Program<'info, System>,

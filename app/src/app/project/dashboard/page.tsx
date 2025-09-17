@@ -3,7 +3,7 @@
 import { useEffect, useState } from "react";
 import { Toaster } from "@/components/ui/sonner";
 import { toast } from "sonner";
-import { Loader2, Wallet, ShieldCheck, AlertTriangle } from "lucide-react";
+import { Loader2, Wallet } from "lucide-react";
 import { usePrivy } from "@privy-io/react-auth";
 import { PublicKey, Transaction } from "@solana/web3.js";
 import { BN } from "@coral-xyz/anchor";
@@ -113,6 +113,7 @@ export default function ProjectDashboardPage() {
           )}&wallet=${encodeURIComponent(user.wallet.address)}`,
           { cache: "no-store" }
         );
+
         if (res.ok) {
           const data = await res.json();
           const vaultLamports = parseInt(data?.vaultBalanceLamports ?? "0", 10);
@@ -398,6 +399,7 @@ export default function ProjectDashboardPage() {
             : null
         );
       }
+
       setActivity((a) => ["Settled matching funds", ...a].slice(0, 6));
       toast.success("Matching settled");
     } catch (e: any) {
@@ -414,15 +416,13 @@ export default function ProjectDashboardPage() {
       <Toaster position="top-right" richColors closeButton />
       <h1 className="text-2xl font-semibold">Project Dashboard</h1>
       <p className="text-gray-600 mt-2">
-        Distribute funds from project vault to owner wallet.
+        Withdraw funds from project vault to owner wallet.
       </p>
 
       {/* Balances */}
       <div className="mt-6 grid grid-cols-1 md:grid-cols-3 gap-4">
         <div className="rounded-lg border bg-white p-4">
-          <div className="text-xs text-gray-500">
-            Total donated amount by organic users
-          </div>
+          <div className="text-xs text-gray-500">Project Vault</div>
           <div className="mt-1 font-mono">
             {formatSol(lamportsToSol(vaultBalance))}
           </div>
@@ -500,7 +500,7 @@ export default function ProjectDashboardPage() {
             <input
               className="mt-1 w-full rounded border px-3 py-2"
               placeholder="e.g. 60000"
-            value={areaMaxStr}
+              value={areaMaxStr}
               onChange={(e) => setAreaMaxStr(e.target.value)}
             />
           </label>
@@ -548,7 +548,7 @@ export default function ProjectDashboardPage() {
         </div>
       </div>
 
-      {/* Distribute funds control */}
+      {/* Withdraw funds control */}
       <div className="mt-6 rounded-lg border bg-white p-4">
         <div className="font-medium">Withdraw Funds</div>
         <div className="mt-3 grid grid-cols-1 md:grid-cols-3 gap-4">
@@ -585,7 +585,7 @@ export default function ProjectDashboardPage() {
                 </>
               ) : (
                 <>
-                  <Wallet className="h-4 w-4" /> Distribute Funds
+                  <Wallet className="h-4 w-4" /> Withdraw Funds
                 </>
               )}
             </button>
@@ -630,20 +630,6 @@ export default function ProjectDashboardPage() {
             Settles your project’s proportional share from the matching pool.
           </span>
         </div>
-      </div>
-
-      {/* Activity */}
-      <div className="mt-6 rounded-lg border bg-white p-4">
-        <div className="font-medium mb-2">Recent Activity</div>
-        {activity.length === 0 ? (
-          <div className="text-sm text-gray-600">No activity yet.</div>
-        ) : (
-          <ul className="text-sm list-disc ml-5 space-y-1">
-            {activity.map((a, i) => (
-              <li key={i}>{a}</li>
-            ))}
-          </ul>
-        )}
       </div>
     </div>
   );

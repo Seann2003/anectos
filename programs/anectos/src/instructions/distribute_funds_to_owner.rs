@@ -1,5 +1,5 @@
 use anchor_lang::{prelude::*};
-use crate::{error::AnectosError, state::{Milestone, Project}};
+use crate::{error::AnectosError, state::{Milestone, Project}, FundingRound};
 use anchor_lang::system_program::{transfer, Transfer};
 
 
@@ -22,11 +22,20 @@ pub struct DistributeFundsToOwner<'info> {
         bump
     )]
 	pub project: Account<'info, Project>,
+
+    #[account(
+        mut,
+        has_one = owner,
+    )]
+    pub funding_round: Account<'info, FundingRound>,
+
+
     pub system_program: Program<'info, System>
 }
 
 pub fn handler(ctx: Context<DistributeFundsToOwner>, amount: u64) -> Result<()> {
     let project = &mut ctx.accounts.project;
+    let funding_round = &mut ctx.accounts.funding_round;
     require!(project.owner == ctx.accounts.owner.key(), AnectosError::Unauthorized);
     // Total withdrawable is contribution funds + unlocked matching
     let total_withdrawable = (project.current_funding as u128)
@@ -55,6 +64,8 @@ pub fn handler(ctx: Context<DistributeFundsToOwner>, amount: u64) -> Result<()> 
         let mut remaining = amount;
         let take_from_current = remaining.min(project.current_funding);
         project.current_funding = project.current_funding.saturating_sub(take_from_current);
+        funding_round.matching_pool = funding_round.matching_pool
+            .saturating_sub(take_from_current);
         remaining = remaining.saturating_sub(take_from_current);
         if remaining > 0 {
             // remaining must be <= matching_unlocked due to earlier require

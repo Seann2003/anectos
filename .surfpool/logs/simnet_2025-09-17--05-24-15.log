@@ -1,0 +1,39 @@
+[2025-09-17--05-24-15 INFO actix_server::builder] starting 5 workers
+[2025-09-17--05-24-15 INFO actix_server::server] Tokio runtime found; starting in existing Tokio runtime
+[2025-09-17--05-24-15 INFO actix_server::server] starting service: "actix-web-service-127.0.0.1:18488", workers: 5, listening on: 127.0.0.1:18488
+[2025-09-17--05-24-15 INFO parity_ws] Listening for new connections on 127.0.0.1:8900.
+[2025-09-17--05-24-16 INFO parity_ws::io] Accepted a new tcp connection from 127.0.0.1:51019.
+[2025-09-17--05-24-16 INFO txtx::svm::deploy_program] Failure Recovery Info - An ephemeral authority account will be created and funded to write to the buffer account.
+[2025-09-17--05-24-16 INFO txtx::svm::deploy_program] Failure Recovery Info - Please save the following information in case the deployment fails and the account needs to be recovered:
+[2025-09-17--05-24-16 INFO txtx::svm::deploy_program] Failure Recovery Info - Ephemeral authority public key: 8wiQiosK6AhWBGLnK69jd1fQVGcPZoKh33qwU9hd57KM
+[2025-09-17--05-24-17 INFO txtx::svm::deploy_program] Failure Recovery Info - Ephemeral authority secret key: ymPkSdzHoMH1jrGZimhSRptcJ97jb2KnUs5cuso53qAw2GW6VpSJpsdLJPmMBCTvaVHLudV2fXA3wKTyyxBcAxo
+[2025-09-17--05-24-17 INFO txtx::svm::deploy_program] Account Created - Ephemeral authority account created and funded to write to buffer
+[2025-09-17--05-24-17 INFO txtx::svm::deploy_program] Failure Recovery Info - Creating program buffer account at pubkey 2da1y6WVckRoe9nqxitUcdB4tpj5xg6rhZ7EeiepVD8M
+[2025-09-17--05-24-17 INFO txtx::svm::deploy_program] Account Created - Program buffer account created
+[2025-09-17--05-24-35 INFO txtx::svm::deploy_program] Buffer Ready - Writing to buffer account is complete
+[2025-09-17--05-24-35 INFO txtx::svm::deploy_program] Program Created - Program 4Tjq5Em4qauF9DjXjVN2WW6NkM49tScR47czXHekquBp has been deployed
+[2025-09-17--05-24-35 INFO txtx::svm::deploy_program] Complete - Ephemeral authority account closed and leftover funds returned to payer
+[2025-09-17--05-24-35 INFO txtx::svm::deploy_subgraph] Subgraph Deployed - Subgraph ContributionMade for program 4Tjq5Em4qauF9DjXjVN2WW6NkM49tScR47czXHekquBp has been deployed
+[2025-09-17--05-24-35 INFO txtx::svm::deploy_subgraph] Subgraph Deployed - Your subgraph can be reached at "http://127.0.0.1:18488/subgraphs"
+[2025-09-17--05-24-35 INFO txtx::svm::deploy_subgraph] Subgraph Deployed - Subgraph MilestoneCompleted for program 4Tjq5Em4qauF9DjXjVN2WW6NkM49tScR47czXHekquBp has been deployed
+[2025-09-17--05-24-35 INFO txtx::svm::deploy_subgraph] Subgraph Deployed - Your subgraph can be reached at "http://127.0.0.1:18488/subgraphs"
+[2025-09-17--05-24-35 INFO txtx::svm::deploy_subgraph] Subgraph Deployed - Subgraph ProjectCreated for program 4Tjq5Em4qauF9DjXjVN2WW6NkM49tScR47czXHekquBp has been deployed
+[2025-09-17--05-24-35 INFO txtx::svm::deploy_subgraph] Subgraph Deployed - Your subgraph can be reached at "http://127.0.0.1:18488/subgraphs"
+[2025-09-17--05-28-48 INFO parity_ws::io] Accepted a new tcp connection from 127.0.0.1:53388.
+[2025-09-17--05-28-51 INFO parity_ws::io] Accepted a new tcp connection from 127.0.0.1:53403.
+[2025-09-17--05-28-51 INFO parity_ws::io] Accepted a new tcp connection from 127.0.0.1:53405.
+[2025-09-17--05-28-52 ERROR litesvm] Payer account 28TcfQzL6juAVwAVpUz85UCwh15xYKf6Wz6fstT51UJF not found.
+[2025-09-17--05-28-52 ERROR litesvm] Payer account 28TcfQzL6juAVwAVpUz85UCwh15xYKf6Wz6fstT51UJF not found.
+[2025-09-17--05-31-48 INFO parity_ws::io] Accepted a new tcp connection from 127.0.0.1:54242.
+[2025-09-17--05-31-50 INFO parity_ws::io] Accepted a new tcp connection from 127.0.0.1:54253.
+[2025-09-17--05-31-50 INFO parity_ws::io] Accepted a new tcp connection from 127.0.0.1:54254.
+[2025-09-17--05-31-54 INFO parity_ws::io] Accepted a new tcp connection from 127.0.0.1:54285.
+[2025-09-17--05-35-12 INFO parity_ws::io] Accepted a new tcp connection from 127.0.0.1:55282.
+[2025-09-17--05-35-15 INFO parity_ws::io] Accepted a new tcp connection from 127.0.0.1:55295.
+[2025-09-17--05-35-15 INFO parity_ws::io] Accepted a new tcp connection from 127.0.0.1:55296.
+[2025-09-17--05-36-36 INFO actix_server::worker] shutting down idle worker
+[2025-09-17--05-36-36 INFO actix_server::worker] shutting down idle worker
+[2025-09-17--05-36-36 INFO actix_server::worker] shutting down idle worker
+[2025-09-17--05-36-36 INFO actix_server::accept] accept thread stopped
+[2025-09-17--05-36-36 INFO actix_server::worker] shutting down idle worker
+[2025-09-17--05-36-36 INFO actix_server::worker] shutting down idle worker

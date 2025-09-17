@@ -1,0 +1,48 @@
+[2025-09-17--05-52-31 INFO actix_server::builder] starting 5 workers
+[2025-09-17--05-52-31 INFO actix_server::server] Tokio runtime found; starting in existing Tokio runtime
+[2025-09-17--05-52-31 INFO actix_server::server] starting service: "actix-web-service-127.0.0.1:18488", workers: 5, listening on: 127.0.0.1:18488
+[2025-09-17--05-52-31 INFO parity_ws] Listening for new connections on 127.0.0.1:8900.
+[2025-09-17--05-52-32 INFO txtx::svm::deploy_program] Failure Recovery Info - An ephemeral authority account will be created and funded to write to the buffer account.
+[2025-09-17--05-52-32 INFO parity_ws::io] Accepted a new tcp connection from 127.0.0.1:62278.
+[2025-09-17--05-52-32 INFO txtx::svm::deploy_program] Failure Recovery Info - Please save the following information in case the deployment fails and the account needs to be recovered:
+[2025-09-17--05-52-32 INFO txtx::svm::deploy_program] Failure Recovery Info - Ephemeral authority public key: BbtiECLMpmdTxzMFWWDycfgGvagqcLCQk2H7KvQ4n4Wk
+[2025-09-17--05-52-32 INFO txtx::svm::deploy_program] Failure Recovery Info - Ephemeral authority secret key: 2o4aoNoLRMDauacDC1UqT8LePh2igpqXRBiFu9wczjJYDTJvww4yewXLhiincfsfLRAdzm6KET6mrBD7KogwqTRi
+[2025-09-17--05-52-32 INFO txtx::svm::deploy_program] Account Created - Ephemeral authority account created and funded to write to buffer
+[2025-09-17--05-52-32 INFO txtx::svm::deploy_program] Failure Recovery Info - Creating program buffer account at pubkey Aorua7EWY2Co1WCgEkYSEEASxgVu2dgrHxq7g3J1Wdft
+[2025-09-17--05-52-32 INFO txtx::svm::deploy_program] Account Created - Program buffer account created
+[2025-09-17--05-52-51 INFO txtx::svm::deploy_program] Buffer Ready - Writing to buffer account is complete
+[2025-09-17--05-52-51 INFO txtx::svm::deploy_program] Program Created - Program 4Tjq5Em4qauF9DjXjVN2WW6NkM49tScR47czXHekquBp has been deployed
+[2025-09-17--05-52-51 INFO txtx::svm::deploy_program] Complete - Ephemeral authority account closed and leftover funds returned to payer
+[2025-09-17--05-52-51 INFO txtx::svm::deploy_subgraph] Subgraph Deployed - Subgraph MilestoneCompleted for program 4Tjq5Em4qauF9DjXjVN2WW6NkM49tScR47czXHekquBp has been deployed
+[2025-09-17--05-52-51 INFO txtx::svm::deploy_subgraph] Subgraph Deployed - Your subgraph can be reached at "http://127.0.0.1:18488/subgraphs"
+[2025-09-17--05-52-51 INFO txtx::svm::deploy_subgraph] Subgraph Deployed - Subgraph ContributionMade for program 4Tjq5Em4qauF9DjXjVN2WW6NkM49tScR47czXHekquBp has been deployed
+[2025-09-17--05-52-51 INFO txtx::svm::deploy_subgraph] Subgraph Deployed - Your subgraph can be reached at "http://127.0.0.1:18488/subgraphs"
+[2025-09-17--05-52-51 INFO txtx::svm::deploy_subgraph] Subgraph Deployed - Subgraph ProjectCreated for program 4Tjq5Em4qauF9DjXjVN2WW6NkM49tScR47czXHekquBp has been deployed
+[2025-09-17--05-52-51 INFO txtx::svm::deploy_subgraph] Subgraph Deployed - Your subgraph can be reached at "http://127.0.0.1:18488/subgraphs"
+[2025-09-17--05-54-02 INFO parity_ws::io] Accepted a new tcp connection from 127.0.0.1:63679.
+[2025-09-17--05-54-04 INFO parity_ws::io] Accepted a new tcp connection from 127.0.0.1:63690.
+[2025-09-17--05-54-04 INFO parity_ws::io] Accepted a new tcp connection from 127.0.0.1:63692.
+[2025-09-17--05-54-08 INFO parity_ws::io] Accepted a new tcp connection from 127.0.0.1:63722.
+[2025-09-17--05-56-08 INFO parity_ws::io] Accepted a new tcp connection from 127.0.0.1:64535.
+[2025-09-17--05-56-09 INFO parity_ws::io] Accepted a new tcp connection from 127.0.0.1:64542.
+[2025-09-17--05-56-09 INFO parity_ws::io] Accepted a new tcp connection from 127.0.0.1:64543.
+[2025-09-17--05-57-16 INFO parity_ws::io] Accepted a new tcp connection from 127.0.0.1:64897.
+[2025-09-17--05-57-16 INFO parity_ws::io] Accepted a new tcp connection from 127.0.0.1:64900.
+[2025-09-17--05-57-17 ERROR litesvm] Payer account mdrejH3w3c45QoN15whJFvNEhcj2sx6r78xzx7b9y2z not found.
+[2025-09-17--05-57-17 ERROR litesvm] Payer account mdrejH3w3c45QoN15whJFvNEhcj2sx6r78xzx7b9y2z not found.
+[2025-09-17--05-58-11 INFO parity_ws::io] Accepted a new tcp connection from 127.0.0.1:65193.
+[2025-09-17--05-58-11 INFO parity_ws::io] Accepted a new tcp connection from 127.0.0.1:65197.
+[2025-09-17--05-58-14 INFO parity_ws::io] Accepted a new tcp connection from 127.0.0.1:65220.
+[2025-09-17--06-18-10 INFO parity_ws::io] Accepted a new tcp connection from 127.0.0.1:54481.
+[2025-09-17--06-18-37 INFO parity_ws::io] Accepted a new tcp connection from 127.0.0.1:54608.
+[2025-09-17--06-28-32 INFO parity_ws::io] Accepted a new tcp connection from 127.0.0.1:57611.
+[2025-09-17--06-28-46 INFO parity_ws::io] Accepted a new tcp connection from 127.0.0.1:57694.
+[2025-09-17--06-30-15 INFO parity_ws::io] Accepted a new tcp connection from 127.0.0.1:58138.
+[2025-09-17--06-37-50 INFO parity_ws::io] Accepted a new tcp connection from 127.0.0.1:60243.
+[2025-09-17--06-42-47 INFO parity_ws::io] Accepted a new tcp connection from 127.0.0.1:61729.
+[2025-09-17--06-43-14 INFO actix_server::worker] shutting down idle worker
+[2025-09-17--06-43-14 INFO actix_server::worker] shutting down idle worker
+[2025-09-17--06-43-14 INFO actix_server::worker] shutting down idle worker
+[2025-09-17--06-43-14 INFO actix_server::accept] accept thread stopped
+[2025-09-17--06-43-14 INFO actix_server::worker] shutting down idle worker
+[2025-09-17--06-43-14 INFO actix_server::worker] shutting down idle worker

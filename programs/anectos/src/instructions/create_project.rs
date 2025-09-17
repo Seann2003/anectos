@@ -8,7 +8,6 @@ pub struct CreateProject<'info> {
     #[account(
         init,
         payer = owner,
-        // 8 (discriminator) + Project::INIT_SPACE derived via InitSpace
         space = 8 + Project::INIT_SPACE,
         seeds = [b"project", owner.key().as_ref()],
         bump

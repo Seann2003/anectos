@@ -1,0 +1,29 @@
+[2025-09-17--23-52-44 INFO actix_server::builder] starting 5 workers
+[2025-09-17--23-52-44 INFO actix_server::server] Tokio runtime found; starting in existing Tokio runtime
+[2025-09-17--23-52-44 INFO actix_server::server] starting service: "actix-web-service-127.0.0.1:18488", workers: 5, listening on: 127.0.0.1:18488
+[2025-09-17--23-52-45 INFO parity_ws] Listening for new connections on 127.0.0.1:8900.
+[2025-09-17--23-52-46 INFO txtx::svm::deploy_program] Failure Recovery Info - An ephemeral authority account will be created and funded to write to the buffer account.
+[2025-09-17--23-52-46 INFO txtx::svm::deploy_program] Failure Recovery Info - Please save the following information in case the deployment fails and the account needs to be recovered:
+[2025-09-17--23-52-46 INFO txtx::svm::deploy_program] Failure Recovery Info - Ephemeral authority public key: DtYseoHBFc5jmPp871UJ97Y8R1EzBFXV9smTDkiJafGi
+[2025-09-17--23-52-47 INFO txtx::svm::deploy_program] Failure Recovery Info - Ephemeral authority secret key: 2LhKZiSnBPn1DGnwmzY1Guxq5DxBqdrNPHcFizQwUsxqezYxacZVAiuu47pK3xNK81bUdopa6UXQp8dkkwB4zn94
+[2025-09-17--23-52-47 INFO txtx::svm::deploy_program] Account Created - Ephemeral authority account created and funded to write to buffer
+[2025-09-17--23-52-47 INFO txtx::svm::deploy_program] Failure Recovery Info - Creating program buffer account at pubkey AyJd4x5Cq6R5zbwrvvuVehHnfsW3A8t59bshq8TT7GZU
+[2025-09-17--23-52-47 INFO txtx::svm::deploy_program] Account Created - Program buffer account created
+[2025-09-17--23-52-47 INFO parity_ws::io] Accepted a new tcp connection from 127.0.0.1:57106.
+[2025-09-17--23-53-28 INFO txtx::svm::deploy_program] Buffer Ready - Writing to buffer account is complete
+[2025-09-17--23-53-29 INFO txtx::svm::deploy_program] Program Created - Program 4Tjq5Em4qauF9DjXjVN2WW6NkM49tScR47czXHekquBp has been deployed
+[2025-09-17--23-53-29 INFO txtx::svm::deploy_program] Complete - Ephemeral authority account closed and leftover funds returned to payer
+[2025-09-17--23-56-33 INFO parity_ws::io] Accepted a new tcp connection from 127.0.0.1:58337.
+[2025-09-17--23-56-36 INFO parity_ws::io] Accepted a new tcp connection from 127.0.0.1:58341.
+[2025-09-17--23-56-36 INFO parity_ws::io] Accepted a new tcp connection from 127.0.0.1:58342.
+[2025-09-17--23-56-37 INFO parity_ws::io] Accepted a new tcp connection from 127.0.0.1:58344.
+[2025-09-17--23-56-37 ERROR litesvm] Payer account 28TcfQzL6juAVwAVpUz85UCwh15xYKf6Wz6fstT51UJF not found.
+[2025-09-17--23-56-37 ERROR litesvm] Payer account 28TcfQzL6juAVwAVpUz85UCwh15xYKf6Wz6fstT51UJF not found.
+[2025-09-17--23-57-16 INFO parity_ws::io] Accepted a new tcp connection from 127.0.0.1:58397.
+[2025-09-17--23-57-17 INFO parity_ws::io] Accepted a new tcp connection from 127.0.0.1:58400.
+[2025-09-17--23-57-19 INFO parity_ws::io] Accepted a new tcp connection from 127.0.0.1:58412.
+[2025-09-17--23-59-48 ERROR litesvm] Payer account mdrejH3w3c45QoN15whJFvNEhcj2sx6r78xzx7b9y2z not found.
+[2025-09-17--23-59-48 ERROR litesvm] Payer account mdrejH3w3c45QoN15whJFvNEhcj2sx6r78xzx7b9y2z not found.
+[2025-09-18--00-00-20 INFO parity_ws::io] Accepted a new tcp connection from 127.0.0.1:58603.
+[2025-09-18--00-01-46 INFO parity_ws::io] Accepted a new tcp connection from 127.0.0.1:58678.
+[2025-09-18--00-02-02 INFO parity_ws::io] Accepted a new tcp connection from 127.0.0.1:58699.

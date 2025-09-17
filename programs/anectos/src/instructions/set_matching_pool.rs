@@ -18,7 +18,7 @@ pub struct SetMatchingPool<'info> {
 /// This does NOT move any funds; it only updates program state so settlement logic
 /// uses the declared pool size. Admin/owner-only.
 pub fn handler(ctx: Context<SetMatchingPool>) -> Result<()> {
-    let round = &mut ctx.accounts.funding_round;
+    let round: &mut Account<'_, FundingRound> = &mut ctx.accounts.funding_round;
 
     // Validate round_vault is the expected PDA for this round
     let (expected, _bump) = Pubkey::find_program_address(

@@ -32,3 +32,9 @@
 [2025-09-17--04-32-35 INFO parity_ws::io] Accepted a new tcp connection from 127.0.0.1:51656.
 [2025-09-17--04-36-29 ERROR litesvm] Payer account 3CD5zCzVBCgehLWhEApFWzBGBwCHULbXu625DCgQPpP4 not found.
 [2025-09-17--04-36-29 ERROR litesvm] Payer account 3CD5zCzVBCgehLWhEApFWzBGBwCHULbXu625DCgQPpP4 not found.
+[2025-09-17--05-24-14 INFO actix_server::worker] shutting down idle worker
+[2025-09-17--05-24-14 INFO actix_server::worker] shutting down idle worker
+[2025-09-17--05-24-14 INFO actix_server::worker] shutting down idle worker
+[2025-09-17--05-24-14 INFO actix_server::worker] shutting down idle worker
+[2025-09-17--05-24-14 INFO actix_server::worker] shutting down idle worker
+[2025-09-17--05-24-14 INFO actix_server::accept] accept thread stopped

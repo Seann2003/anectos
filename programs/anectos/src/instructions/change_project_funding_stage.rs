@@ -6,15 +6,12 @@ use crate::{error::AnectosError, FundingRoundMeta, FundingStage};
 pub struct ChangeProjectFundingStage<'info> {
 	#[account(mut)]
 	pub user: Signer<'info>,
-    // Project meta PDA derived from the project account
     #[account(
         mut,
         seeds = [b"project_metadata", project.key().as_ref()],
         bump
     )]
     pub project_meta: Account<'info, ProjectMeta>,
-    // Project PDA derived from the project's owner (not the caller),
-    // so an authorized admin can act on behalf of the project owner.
     #[account(
         mut,
         seeds = [b"project", project.owner.key().as_ref()],
