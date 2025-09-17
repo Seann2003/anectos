@@ -14,7 +14,7 @@ export default function Home() {
         <div className="space-y-8">
           <h1 className="text-5xl md:text-7xl font-extrabold leading-tight text-gray-800 text-center">
             Welcome to the Future of{" "}
-            <span className="block bg-clip-text bg-gradient-to-r text-blue-800">
+            <span className="block bg-clip-text bg-gradient-to-r  font-extrabold text-blue-800">
               Decentralized Governance
             </span>
           </h1>
@@ -24,20 +24,18 @@ export default function Home() {
             funding.
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <Button
-              variant={"default"}
-              className="w-56 text-xl h-12"
+            <button
+              className="w-56 text-xl h-12 bg-blue-700 hover:bg-blue-800 text-white"
               onClick={() => route.push("/profile")}
             >
               Get Started →
-            </Button>
-            <Button
-              variant={"outline"}
-              className="w-56 text-xl h-12 bg-transparent border-blue-500 text-blue-700 hover:bg-blue-500 hover:text-white"
+            </button>
+            <button
+              className="w-56 text-xl h-12  border-blue-500 bg-blue-200 text-blue-700 hover:bg-blue-500 hover:text-white"
               onClick={() => route.push("/projects")}
             >
               Browse Projects
-            </Button>
+            </button>
           </div>
         </div>
       </section>

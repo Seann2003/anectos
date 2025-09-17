@@ -8,9 +8,10 @@ import { Loader2 } from "lucide-react";
 import SdgSelector from "@/components/sdg-selector";
 import ImageUploader from "@/components/image-uploader";
 import { supabase } from "@/lib/supabaseClient";
+
 import { DateTimePicker } from "@/components/date-time-picker";
 import { PublicKey, Transaction, Keypair } from "@solana/web3.js";
-import { CONNECTION } from "@/lib/constants";
+import { CONNECTION, umi } from "@/lib/constants";
 import { createProjectIx, initializeFundingRoundIx } from "@/lib/instructions";
 import {
   projectPdaFromOwner,
@@ -20,7 +21,7 @@ import {
 import { toSdgEnum } from "@/lib/helpers";
 
 export default function BusinessDashboardPage() {
-  const { user, authenticated } = usePrivy();
+  const { user, authenticated, signTransaction } = usePrivy();
   const { sendTransaction } = useSendTransaction();
 
   const [title, setTitle] = useState("");
@@ -147,7 +148,7 @@ export default function BusinessDashboardPage() {
 
       const tokenResult = await r.json();
       setToken(tokenResult.mint);
-      // 2) Try to submit on-chain: initialize funding round, then create project (best-effort)
+
       const ownerAddr = insertPayload.wallet_address;
       if (ownerAddr) {
         try {
@@ -155,6 +156,7 @@ export default function BusinessDashboardPage() {
           // Create a new round (no seeds) and its metadata PDA
           const roundKp = Keypair.generate();
           const roundPk = roundKp.publicKey;
+
           const [roundMetaPda] = fundingRoundMetadataPda(roundPk);
           const [projectPk] = projectPdaFromOwner(ownerPk);
           const [projectMetaPk] = projectMetadataPda(projectPk);
@@ -342,7 +344,7 @@ export default function BusinessDashboardPage() {
             max="4"
             value={milestoneCount}
             onChange={(e) => setMilestoneCount(e.target.value)}
-            placeholder="Set the number of milestones (1-4)"
+            placeholder="Set the number of milestones (1-4). The system will automatically create milestone funds based on your number!"
             className="w-full rounded-md border border-gray-300 px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
             required
           />

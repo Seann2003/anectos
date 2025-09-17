@@ -11,7 +11,7 @@ import { CONNECTION } from "@/lib/constants";
 import { PublicKey } from "@solana/web3.js";
 
 export default function ProfilePage() {
-  const { authenticated, user, ready } = usePrivy();
+  const { authenticated, user, ready, getAccessToken } = usePrivy();
   const router = useRouter();
   const [loading, setLoading] = useState(true);
   const [username, setUsername] = useState<string>("");

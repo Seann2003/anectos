@@ -1,7 +1,11 @@
 import { PublicKey } from "@solana/web3.js";
 import { BN } from "@coral-xyz/anchor";
 import { ANECTOS_PROGRAM, CONNECTION } from "@/lib/constants";
-import { projectPdaFromOwner, vaultPda } from "@/lib/pda";
+import {
+  fundingRoundMetadataPda,
+  projectPdaFromOwner,
+  vaultPda,
+} from "@/lib/pda";
 
 function isPublicKeyLike(v: any): v is PublicKey {
   return (
@@ -116,6 +120,9 @@ export async function GET(request: Request) {
       ?.matchingPool;
     const projectPoolDistributedBn: BN | undefined = (project as any)
       ?.poolDistributed;
+    const [roundMetaPk] = fundingRoundMetadataPda(roundPk);
+    const fundingRoundMeta =
+      await ANECTOS_PROGRAM.account.fundingRoundMeta.fetchNullable(roundMetaPk);
 
     const projectMatchingPoolLamportsStr = projectMatchingPoolBn
       ? projectMatchingPoolBn.toString()
@@ -199,6 +206,7 @@ export async function GET(request: Request) {
       walletBalanceLamports: walletStr
         ? String(walletBalanceLamportsNum)
         : null,
+      fundingRoundNFT: fundingRoundMeta?.nftMetadataUri,
       walletBalanceSol: walletStr ? toSol(walletBalanceLamportsNum) : null,
       // QF metrics (project-level pool)
       matchingPoolLamports: projectMatchingPoolLamportsStr, // kept name for backward compat

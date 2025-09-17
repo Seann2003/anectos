@@ -2,6 +2,20 @@
 
 import { useEffect, useRef, useState } from "react";
 import { ImagePlus } from "lucide-react";
+import { create, mplCore } from "@metaplex-foundation/mpl-core";
+import { usePrivy } from "@privy-io/react-auth";
+
+import {
+  generateSigner,
+  keypairIdentity,
+  signerIdentity,
+  sol,
+} from "@metaplex-foundation/umi";
+import { createUmi } from "@metaplex-foundation/umi-bundle-defaults";
+import { base58 } from "@metaplex-foundation/umi/serializers";
+import { walletAdapterIdentity } from "@metaplex-foundation/umi-signer-wallet-adapters";
+
+import fs from "fs";
 
 type UploadResult = {
   cid: string;
@@ -14,6 +28,7 @@ export interface ImageUploaderProps {
   onUploaded?: (result: UploadResult) => void;
   onError?: (message: string) => void;
   className?: string;
+  setImage?: (file: File) => void;
   showDetails?: boolean;
 }
 
@@ -24,6 +39,8 @@ export default function ImageUploader({
   className,
   showDetails = true,
 }: ImageUploaderProps) {
+  const { authenticated, user } = usePrivy();
+
   const [imagePreview, setImagePreview] = useState<string | null>(null);
   const [uploading, setUploading] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -73,14 +90,74 @@ export default function ImageUploader({
       if (!cid) throw new Error("Missing CID in response");
       const metadataUri: string =
         (typeof json === "object" && json?.metadataUri) || `ipfs://${cid}`;
-      const gatewayBase = (typeof window === "undefined" ? null : null) as null; // placeholder to satisfy linter
       const gatewayUrl =
         (typeof json === "object" && json?.gatewayUrl) ||
         `https://gateway.pinata.cloud/ipfs/${cid}`;
 
-      const uploadResult: UploadResult = { cid, metadataUri, gatewayUrl };
-      setResult(uploadResult);
-      onUploaded?.(uploadResult);
+      const umi = createUmi(
+        "https://devnet.helius-rpc.com/?api-key=3e441bb8-f92a-4d28-9468-8946faf092b0"
+      ).use(mplCore());
+
+      const metadata = JSON.stringify({
+        pinataContent: {
+          name: "My NFT",
+          description: "This is an NFT on Solana",
+          image: metadataUri,
+        },
+        pinataMetadata: {
+          name: "metadata.json",
+        },
+      });
+
+      const wallet = await fetch("/api/get-wallet", {
+        method: "GET",
+      });
+      const walletJson = await wallet.json();
+
+      umi.use(walletAdapterIdentity(walletJson.publicKey));
+
+      const apiKey = "47f4a0b82f6d86de919a";
+
+      const secret =
+        "b33f267b4bab775d2ca7299f6d59d4b52cf6620d94aab26cbb7cba073a8a439f";
+
+      const url = "https://api.pinata.cloud/pinning/pinJSONToIPFS";
+      const options = {
+        method: "POST",
+        headers: {
+          pinata_api_key: apiKey,
+          pinata_secret_api_key: secret,
+          "Content-Type": "application/json",
+        },
+        body: metadata,
+      };
+
+      try {
+        const response = await fetch(url, options);
+        const data = await response.json();
+        console.log("data", data);
+        console.log("Pinata JSON upload response:", data);
+        console.log("Creating NFT...");
+        const asset = generateSigner(umi);
+        const tx = await create(umi, {
+          asset,
+          name: "My NFT",
+          uri: `ipfs://${data.IpfsHash}`,
+        }).sendAndConfirm(umi);
+        console.log("tx: " + tx);
+        const signature = base58.deserialize(tx.signature)[0];
+        console.log(signature);
+
+        console.log("\nNFT Created");
+        console.log("View Transaction on Solana Explorer");
+
+        const uploadResult: UploadResult = { cid, metadataUri, gatewayUrl };
+        setResult(uploadResult);
+        onUploaded?.(uploadResult);
+        console.log(data);
+      } catch (error) {
+        console.error(error);
+      }
     } catch (e: any) {
       const msg = e?.message || "Failed to upload to Pinata";
       setError(msg);

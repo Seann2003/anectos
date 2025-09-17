@@ -25,6 +25,9 @@ import { lamportsToSol, solToLamports, formatSol } from "@/lib/utils";
 import { BN } from "@coral-xyz/anchor";
 import { supabase } from "@/lib/supabaseClient";
 import { toast } from "sonner";
+import { umi } from "@/lib/constants";
+import { generateSigner } from "@metaplex-foundation/umi";
+import { create } from "@metaplex-foundation/mpl-core";
 
 type UiProject = {
   id: string;
@@ -454,7 +457,7 @@ export default function ProjectDetailPage() {
               {isRoundOwner && (
                 <div className="mt-6 rounded-lg border border-blue-100 bg-blue-50 p-4">
                   <div className="text-sm font-medium text-blue-900 mb-2">
-                    Admin: Fund Project Matching Pool
+                    Fund Project Matching Pool
                   </div>
                   <div className="grid grid-cols-1 md:grid-cols-3 gap-3 items-end">
                     <label className="block">
@@ -642,12 +645,6 @@ export default function ProjectDetailPage() {
                       </div>
                       <Button
                         type="button"
-                        disabled={
-                          sending ||
-                          !authenticated ||
-                          !user?.wallet?.address ||
-                          !project
-                        }
                         onClick={async () => {
                           if (
                             !project ||
@@ -661,14 +658,12 @@ export default function ProjectDetailPage() {
                             setSending(true);
                             const adminPk = new PublicKey(user.wallet.address);
                             const projectPk = new PublicKey(project.id);
-                            // Derive PDAs: project vault is based on owner, but we don't have owner here.
-                            // However, the on-chain contribute expects `vault` PDA seeded by project.owner.
-                            // We don't have owner in UiProject, so fetch project account quickly.
                             const res = await fetch(
                               `/api/project?id=${project.id}`,
                               { cache: "no-store" }
                             );
                             const json = await res.json();
+
                             const ownerStr = json?.project?.owner as string;
                             const roundStr = json?.project?.round as string;
                             if (!ownerStr || !roundStr)
