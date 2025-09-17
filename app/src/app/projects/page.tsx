@@ -48,6 +48,7 @@ export default function ProjectsPage() {
   const [query, setQuery] = useState("");
   const [selectedSdgs, setSelectedSdgs] = useState<number[]>([]);
   const [items, setItems] = useState<UiProject[]>([]);
+  console.log("items", items);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 

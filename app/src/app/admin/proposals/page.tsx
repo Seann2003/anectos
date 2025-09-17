@@ -120,7 +120,8 @@ export default function AdminProposalsPage() {
           const meta = entry.projectMeta ?? {};
           const id = entry.projectPubkey as string;
           const title = (meta.title as string) || "Untitled Project";
-          const imageUrl = (meta.imageMetadataUri as string) || null;
+          const imageUrl =
+            (meta.imageMetadataUri.replace("ipfs://", "") as string) || null;
           const sdgGoalsRaw = (meta.sdgGoals as any[]) || [];
           const sdgs = sdgGoalsRaw
             .map((g) => sdgToNumber(g))
@@ -232,7 +233,7 @@ export default function AdminProposalsPage() {
                           ? "destructive"
                           : status === "active" || status === "ongoing"
                           ? "default"
-                          : "secondary"; 
+                          : "secondary";
                       return (
                         <TableRow
                           key={p.id}
@@ -289,7 +290,7 @@ export default function AdminProposalsPage() {
               <div className="md:col-span-1">
                 {selected.imageUrl ? (
                   <img
-                    src={selected.imageUrl}
+                    src={`https://ipfs.io/ipfs/${selected.imageUrl}`}
                     alt={selected.title}
                     className="w-full h-48 object-cover rounded-md border"
                   />

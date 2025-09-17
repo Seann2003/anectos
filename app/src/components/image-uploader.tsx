@@ -108,7 +108,6 @@ export default function ImageUploader({
           </span>
         </label>
         {imagePreview && (
-          // eslint-disable-next-line @next/next/no-img-element
           <img
             src={imagePreview}
             alt="Preview"
@@ -125,12 +124,12 @@ export default function ImageUploader({
             <div className="mt-2 text-xs text-gray-700 break-all">
               image link:{" "}
               <a
-                href={result.gatewayUrl || `https://ipfs.io/ipfs/${result.cid}`}
+                href={`https://ipfs.io/ipfs/${result.cid}`}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="text-blue-700 underline hover:text-blue-900"
               >
-                {result.gatewayUrl || `https://ipfs.io/ipfs/${result.cid}`}
+                {`https://ipfs.io/ipfs/${result.cid}`}
               </a>
             </div>
           )}

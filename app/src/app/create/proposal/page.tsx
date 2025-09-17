@@ -35,6 +35,7 @@ export default function BusinessDashboardPage() {
   const [success, setSuccess] = useState<string | null>(null);
   const [startAt, setStartAt] = useState<Date | null>(null);
   const [endAt, setEndAt] = useState<Date | null>(null);
+  const [token, setToken] = useState<any>(null);
 
   const handleImageUploaded = (r: {
     cid: string;
@@ -116,7 +117,6 @@ export default function BusinessDashboardPage() {
         end_time: Math.floor(endAt.getTime() / 1000),
       } as const;
 
-      // 1) Persist proposal to Supabase first
       let proposal: { id: number } | null = null;
       try {
         const { data, error } = await supabase
@@ -132,6 +132,21 @@ export default function BusinessDashboardPage() {
         );
       }
 
+      const body: Record<string, any> = {};
+      body.cid = "bafkreigcjffzx7ob3ryjfx24klabgndzdl3shdo7wug5nhugbvzjrcw7hy";
+      body.name = "Anectos";
+      body.symbol = "ACTS";
+      body.decimals = Number(9);
+      body.initialSupply = "100";
+
+      const r = await fetch("/api/create-token", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(body),
+      });
+
+      const tokenResult = await r.json();
+      setToken(tokenResult.mint);
       // 2) Try to submit on-chain: initialize funding round, then create project (best-effort)
       const ownerAddr = insertPayload.wallet_address;
       if (ownerAddr) {
@@ -183,6 +198,24 @@ export default function BusinessDashboardPage() {
             connection: CONNECTION,
             address: ownerAddr,
           });
+
+          const { error } = await supabase.from("projects").insert({
+            project_id: projectPk.toBase58(),
+            proposal_id: proposal?.id,
+            title: title.trim(),
+            description: description.trim(),
+            wallet_address: ownerAddr,
+            target_amount: amount.toString(),
+            milestone_count: mCount,
+            sdg_goals: sdgGoals.map(Number),
+            image_uri: imageMetadataUri || "",
+            round_id: roundPk.toBase58(),
+            created_at: new Date().toISOString(),
+          });
+
+          if (error) {
+            console.log("Failed to save project to Supabase:", error);
+          }
 
           const sig = receipt.signature;
           setSuccess(
@@ -236,6 +269,9 @@ export default function BusinessDashboardPage() {
           {success && (
             <div className="rounded-md border border-green-200 bg-green-50 text-green-700 px-4 py-2">
               {success}
+              {token && (
+                <p className="text-sm text-green-600">Token: {token}</p>
+              )}
             </div>
           )}
 
@@ -269,7 +305,7 @@ export default function BusinessDashboardPage() {
 
           <div>
             <label className="block text-sm font-medium text-gray-700 mb-1">
-              Target Amount (USD)
+              Target Amount (SOL)
             </label>
             <input
               type="number"

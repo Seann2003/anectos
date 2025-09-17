@@ -5,30 +5,13 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { useEffect, useState } from "react";
 import { usePrivy } from "@privy-io/react-auth";
-import { useSendTransaction } from "@privy-io/react-auth/solana";
-import { CONNECTION, ANECTOS_PROGRAM, SURFPOOL_RPC } from "@/lib/constants";
-import { PublicKey, SystemProgram, Transaction } from "@solana/web3.js";
+import { CONNECTION, ANECTOS_PROGRAM } from "@/lib/constants";
+import { PublicKey } from "@solana/web3.js";
 import { roundVaultPda } from "@/lib/pda";
-import {
-  createRoundVaultIx,
-  setMatchingPoolToVaultBalanceIx,
-  fundRoundPoolIx,
-  setAreaMaxIx,
-} from "@/lib/instructions";
-import { BN } from "@coral-xyz/anchor";
-import { solToLamports, lamportsToSol } from "@/lib/utils";
+import { lamportsToSol } from "@/lib/utils";
 
 export default function AdminPage() {
   const { user, authenticated } = usePrivy();
-  const { sendTransaction } = useSendTransaction();
-
-  const [roundStr, setRoundStr] = useState("");
-  console.log(roundStr);
-  const [amountSol, setAmountSol] = useState("");
-  const [areaMaxStr, setAreaMaxStr] = useState("");
-  const [busy, setBusy] = useState(false);
-  const [msg, setMsg] = useState<string | null>(null);
-  const [err, setErr] = useState<string | null>(null);
   const [rounds, setRounds] = useState<
     Array<{
       pubkey: string;
@@ -45,36 +28,10 @@ export default function AdminPage() {
   >([]);
   const [roundsLoading, setRoundsLoading] = useState(false);
   const [onlyMine, setOnlyMine] = useState(true);
-  const [walletLamports, setWalletLamports] = useState<number>(0);
-
-  // Load connected wallet balance (localnet)
-  useEffect(() => {
-    let cancelled = false;
-    const run = async () => {
-      try {
-        if (!authenticated || !user?.wallet?.address) return;
-        const bal = await CONNECTION.getBalance(
-          new PublicKey(user.wallet.address),
-          "confirmed"
-        );
-        if (!cancelled) setWalletLamports(bal);
-      } catch {
-        if (!cancelled) setWalletLamports(0);
-      }
-    };
-    run();
-    const t = setInterval(run, 10_000);
-    return () => {
-      cancelled = true;
-      clearInterval(t);
-    };
-  }, [authenticated, user?.wallet?.address]);
 
   const loadRounds = async () => {
     setRoundsLoading(true);
-    setErr(null);
     try {
-      // 1) Try fetching all rounds directly
       const all = await ANECTOS_PROGRAM.account.fundingRound.all();
       const myPk = user?.wallet?.address
         ? new PublicKey(user.wallet.address)
@@ -116,7 +73,6 @@ export default function AdminPage() {
         } catch {}
       }
 
-      // Apply onlyMine after merging if needed
       if (onlyMine && myPk) {
         for (const [k, acct] of Array.from(roundMap.entries())) {
           try {
@@ -160,7 +116,7 @@ export default function AdminPage() {
       );
       setRounds(enriched);
     } catch (e: any) {
-      setErr(e?.message || String(e));
+      console.error(e?.message || String(e));
     } finally {
       setRoundsLoading(false);
     }
@@ -172,180 +128,6 @@ export default function AdminPage() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [authenticated, user?.wallet?.address, onlyMine]);
 
-  const handleCreateRoundVault = async () => {
-    setMsg(null);
-    setErr(null);
-    if (!authenticated || !user?.wallet?.address) {
-      setErr("Please login with a Privy Solana wallet.");
-      return;
-    }
-    try {
-      setBusy(true);
-      const roundPk = new PublicKey(roundStr);
-      const [roundVault] = roundVaultPda(roundPk);
-      const ownerPk = new PublicKey(user.wallet.address);
-      console.log("Creating round vault", roundVault.toBase58());
-
-      const ix = await createRoundVaultIx({
-        owner: ownerPk,
-        fundingRound: roundPk,
-        roundVault,
-      });
-      console.log("Ix:", ix);
-      const tx = new Transaction().add(ix);
-      tx.feePayer = ownerPk;
-      const { blockhash } = await CONNECTION.getLatestBlockhash();
-      tx.recentBlockhash = blockhash;
-
-      const r = await sendTransaction({
-        transaction: tx,
-        connection: CONNECTION,
-        address: user.wallet.address,
-      });
-      setMsg(`Round vault created. Sig: ${r.signature}`);
-      console.log("hsdhisdhi");
-    } catch (e: any) {
-      setErr(e?.message || String(e));
-    } finally {
-      setBusy(false);
-    }
-  };
-
-  const handleFundMatchingPool = async () => {
-    setMsg(null);
-    setErr(null);
-    if (!authenticated || !user?.wallet?.address) {
-      setErr("Please login with a Privy Solana wallet.");
-      return;
-    }
-    const lamports = solToLamports(amountSol);
-    if (lamports <= BigInt(0)) {
-      setErr("Enter a positive SOL amount.");
-      return;
-    }
-    // Client-side balance check to avoid wasted prompts
-    // Use BigInt-safe comparison
-    if (lamports > BigInt(walletLamports)) {
-      setErr("Amount exceeds your wallet balance.");
-      return;
-    }
-    try {
-      setBusy(true);
-      const roundPk = new PublicKey(roundStr);
-      const [roundVault] = roundVaultPda(roundPk);
-      const ownerPk = new PublicKey(user.wallet.address);
-
-      const tx = new Transaction();
-      // If round vault doesn't exist yet, try to create it first
-      const info = await CONNECTION.getAccountInfo(roundVault, "confirmed");
-      if (!info) {
-        const createIx = await createRoundVaultIx({
-          owner: ownerPk,
-          fundingRound: roundPk,
-          roundVault,
-        });
-        tx.add(createIx);
-      }
-      // Fund pool via program to auto-increment matching_pool
-      const fundIx = await fundRoundPoolIx({
-        funder: ownerPk,
-        fundingRound: roundPk,
-        roundVault,
-        amount: Number(lamports),
-      });
-      tx.add(fundIx);
-      tx.feePayer = ownerPk;
-      const { blockhash } = await CONNECTION.getLatestBlockhash();
-      tx.recentBlockhash = blockhash;
-
-      const r = await sendTransaction({
-        transaction: tx,
-        connection: CONNECTION,
-        address: user.wallet.address,
-      });
-      setMsg(`Funded matching pool. Sig: ${r.signature}`);
-      await loadRounds();
-    } catch (e: any) {
-      setErr(e?.message || String(e));
-    } finally {
-      setBusy(false);
-    }
-  };
-
-  const handleSetPoolToVault = async () => {
-    setMsg(null);
-    setErr(null);
-    if (!authenticated || !user?.wallet?.address) {
-      setErr("Please login with a Privy Solana wallet.");
-      return;
-    }
-    try {
-      setBusy(true);
-      const roundPk = new PublicKey(roundStr);
-      const [roundVault] = roundVaultPda(roundPk);
-      const ownerPk = new PublicKey(user.wallet.address);
-
-      const tx = new Transaction();
-      // Ensure vault exists first
-      const info = await CONNECTION.getAccountInfo(roundVault, "confirmed");
-      if (!info) {
-        const createIx = await createRoundVaultIx({
-          owner: ownerPk,
-          fundingRound: roundPk,
-          roundVault,
-        });
-        tx.add(createIx);
-      }
-
-      const setIx = await setMatchingPoolToVaultBalanceIx({
-        owner: ownerPk,
-        fundingRound: roundPk,
-        roundVault,
-      });
-      tx.add(setIx);
-
-      tx.feePayer = ownerPk;
-      const { blockhash } = await CONNECTION.getLatestBlockhash();
-      tx.recentBlockhash = blockhash;
-
-      const r = await sendTransaction({
-        transaction: tx,
-        connection: CONNECTION,
-        address: user.wallet.address,
-      });
-      setMsg(`Matching pool set to vault balance. Sig: ${r.signature}`);
-      // refresh rounds list to reflect pool value
-      await loadRounds();
-    } catch (e: any) {
-      setErr(e?.message || String(e));
-    } finally {
-      setBusy(false);
-    }
-  };
-
-  const handleAirdrop = async () => {
-    setMsg(null);
-    setErr(null);
-    if (!authenticated || !user?.wallet?.address) {
-      setErr("Please login with a Privy Solana wallet.");
-      return;
-    }
-    try {
-      setBusy(true);
-      const pk = new PublicKey(user.wallet.address);
-      const sig = await CONNECTION.requestAirdrop(pk, 2 * 1_000_000_000);
-      await CONNECTION.confirmTransaction(sig, "confirmed");
-      // Refresh balance immediately
-      const bal = await CONNECTION.getBalance(pk, "confirmed");
-      setWalletLamports(bal);
-      setMsg(`Airdropped 2 SOL to ${pk.toBase58()}. Sig: ${sig}`);
-    } catch (e: any) {
-      setErr(e?.message || String(e));
-    } finally {
-      setBusy(false);
-    }
-  };
-
   return (
     <div className="container mx-auto px-4 py-8 space-y-6">
       <h1 className="text-3xl font-bold">Admin</h1>
@@ -354,10 +136,6 @@ export default function AdminPage() {
           <CardTitle>Welcome back admin!</CardTitle>
         </CardHeader>
         <CardContent className="space-y-4">
-          <p className="text-gray-600">
-            On-chain admin tools have been removed. Use database-backed tools
-            below.
-          </p>
           <div className="flex gap-3">
             <Link href="/admin/proposals">
               <Button variant="default">Review Proposals</Button>
@@ -371,24 +149,6 @@ export default function AdminPage() {
           <CardTitle>Funding Rounds On-Chain</CardTitle>
         </CardHeader>
         <CardContent className="space-y-3">
-          <div className="flex items-center gap-3">
-            <label className="inline-flex items-center gap-2 text-sm">
-              <input
-                type="checkbox"
-                checked={onlyMine}
-                onChange={(e) => setOnlyMine(e.target.checked)}
-              />
-              Show only my rounds
-            </label>
-            <Button
-              size="sm"
-              variant="secondary"
-              onClick={loadRounds}
-              disabled={roundsLoading}
-            >
-              {roundsLoading ? "Refreshing..." : "Refresh"}
-            </Button>
-          </div>
           {rounds.length === 0 && !roundsLoading && (
             <div className="text-sm text-gray-600">No rounds found.</div>
           )}
@@ -413,11 +173,6 @@ export default function AdminPage() {
                     <br />
                     Area: {r.area ?? "-"} · Target Area: {r.areaMax ?? "-"}
                   </div>
-                </div>
-                <div className="flex gap-2">
-                  <Button size="sm" onClick={() => setRoundStr(r.pubkey)}>
-                    Use
-                  </Button>
                 </div>
               </div>
             ))}

@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useMemo, useState } from "react";
+import { FormEvent, useEffect, useMemo, useState } from "react";
 import { useParams } from "next/navigation";
 import Link from "next/link";
 import { ArrowLeft } from "lucide-react";
@@ -23,6 +23,8 @@ import {
 import { projectMetadataPda, vaultPda, roundVaultPda } from "@/lib/pda";
 import { lamportsToSol, solToLamports, formatSol } from "@/lib/utils";
 import { BN } from "@coral-xyz/anchor";
+import { supabase } from "@/lib/supabaseClient";
+import { toast } from "sonner";
 
 type UiProject = {
   id: string;
@@ -89,6 +91,11 @@ export default function ProjectDetailPage() {
     expectedSettlementLamports: bigint;
     poolTotalLamports: bigint;
   } | null>(null);
+
+  // Add state for comments
+  const [comments, setComments] = useState<any[]>([]);
+  const [newComment, setNewComment] = useState("");
+  const [submittingComment, setSubmittingComment] = useState(false);
 
   const { user, authenticated } = usePrivy();
   const { sendTransaction } = useSendTransaction();
@@ -207,7 +214,6 @@ export default function ProjectDetailPage() {
     };
   }, [project?.id]);
 
-  // Admin gating: only round owner sees the fund project pool control
   useEffect(() => {
     let cancelled = false;
     const run = async () => {
@@ -237,44 +243,94 @@ export default function ProjectDetailPage() {
     };
   }, [project?.id, user?.wallet?.address]);
 
-  const percent = useMemo(() => {
-    if (!project) return 0;
-    const goal = project.fundingGoal;
-    if (!goal || goal <= 0) return 0;
-    const pct = Math.round((project.fundingRaised / goal) * 100);
-    return Math.min(100, Math.max(0, isFinite(pct) ? pct : 0));
-  }, [project]);
   const milestonesReached = useMemo(() => {
     if (!project) return [] as number[];
     return project.milestones.filter((m) => project.fundingRaised >= m);
   }, [project]);
 
-  const comments = [
-    {
-      id: "c1",
-      author: "Aisha Tan",
-      initial: "A",
-      createdAt: "2 hours ago",
-      content:
-        "Love this initiative. How are you handling maintenance for the purification units in remote areas?",
-    },
-    {
-      id: "c2",
-      author: "Daniel Ruiz",
-      initial: "D",
-      createdAt: "1 day ago",
-      content:
-        "We piloted a similar composting program in our city. Happy to share learnings on routing and contamination control.",
-    },
-    {
-      id: "c3",
-      author: "Mei Chen",
-      initial: "M",
-      createdAt: "3 days ago",
-      content:
-        "For mangrove restoration, do you plan to monitor blue carbon credits? Curious about your MRV setup.",
-    },
-  ];
+  const getUsername = async (wallet: string) => {
+    const { data } = await supabase
+      .from("profiles")
+      .select("name")
+      .eq("wallet_address", wallet)
+      .single();
+    return data?.name || "Anonymous";
+  };
+
+  // Add function to fetch comments
+  const fetchComments = async () => {
+    if (!id) return;
+
+    try {
+      const { data, error } = await supabase
+        .from("comments")
+        .select("id, body, author_name, created_at")
+        .eq("post_id", id)
+        .order("created_at", { ascending: false });
+
+      if (error) throw error;
+
+      // Transform data for display
+      const formattedComments = data.map((comment) => ({
+        id: comment.id,
+        content: comment.body,
+        author: comment.author_name
+          ? `${comment.author_name.substring(
+              0,
+              4
+            )}...${comment.author_name.substring(
+              comment.author_name.length - 4
+            )}`
+          : "Anonymous",
+        initial: comment.author_name
+          ? comment.author_name[0].toUpperCase()
+          : "A",
+        createdAt: new Date(comment.created_at).toLocaleDateString(),
+      }));
+
+      setComments(formattedComments);
+    } catch (err) {
+      console.error("Error fetching comments:", err);
+    }
+  };
+
+  // Add function to submit a comment
+  const submitComment = async (e: FormEvent) => {
+    e.preventDefault();
+    if (!authenticated || !user?.wallet?.address || !newComment.trim()) {
+      toast.error("Please sign in and enter a comment");
+      return;
+    }
+
+    setSubmittingComment(true);
+
+    try {
+      const { error } = await supabase.from("comments").insert({
+        post_id: id,
+        body: newComment.trim(),
+        author_name: await getUsername(user.wallet.address),
+        created_at: new Date().toISOString(),
+        updated_at: new Date().toISOString(),
+      });
+
+      if (error) throw error;
+
+      // Clear input and refresh comments
+      setNewComment("");
+      toast.success("Comment posted successfully");
+      fetchComments();
+    } catch (err) {
+      console.error("Error posting comment:", err);
+      toast.error("Failed to post comment. Please try again.");
+    } finally {
+      setSubmittingComment(false);
+    }
+  };
+
+  // Add useEffect to fetch comments when component mounts or id changes
+  useEffect(() => {
+    fetchComments();
+  }, [id]);
 
   return (
     <div className="min-h-screen bg-gradient-to-b from-blue-50 to-white">
@@ -562,11 +618,6 @@ export default function ProjectDetailPage() {
                       <div className="text-xs text-blue-700/70">
                         {authenticated && user?.wallet?.address ? (
                           <>
-                            Wallet:{" "}
-                            <span className="font-mono">
-                              {user.wallet.address}
-                            </span>
-                            <br />
                             Balance:{" "}
                             {balanceLamports !== null
                               ? formatSol(lamportsToSol(balanceLamports))
@@ -690,7 +741,10 @@ export default function ProjectDetailPage() {
               </li>
             ))}
           </ul>
-          <div className="mt-4 border-t border-blue-100 pt-4">
+          <form
+            className="mt-4 border-t border-blue-100 pt-4"
+            onSubmit={submitComment}
+          >
             <label
               htmlFor="new-comment"
               className="block text-sm font-medium text-blue-900 mb-1"
@@ -699,21 +753,21 @@ export default function ProjectDetailPage() {
             </label>
             <textarea
               id="new-comment"
+              value={newComment}
+              onChange={(e) => setNewComment(e.target.value)}
               className="w-full rounded-lg border border-blue-200 bg-white/90 px-3 py-2 text-sm text-blue-900 placeholder:text-blue-400 focus:outline-none focus:ring-2 focus:ring-blue-500"
-              placeholder="Share your thoughts... (coming soon)"
+              placeholder="Share your thoughts..."
               rows={3}
-              disabled
             />
             <div className="mt-2 flex justify-end">
               <Button
-                type="button"
-                className="rounded-lg bg-blue-600 text-white text-sm font-medium px-4 py-2 opacity-60 cursor-not-allowed"
-                disabled
+                type="submit"
+                className="rounded-lg bg-blue-700 text-white text-sm font-medium px-4 py-2"
               >
                 Post
               </Button>
             </div>
-          </div>
+          </form>
         </div>
       </div>
     </div>

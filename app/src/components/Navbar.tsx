@@ -58,12 +58,14 @@ export default function Navbar() {
 
       const { data } = await supabase
         .from("profiles")
-        .select("name")
+        .select("name,user_role")
         .eq("privy_user_id", user.id)
         .maybeSingle();
 
       const profileName = data?.name ?? "";
       setName(profileName);
+      const userRole = (data?.user_role ?? 0) as 0 | 1 | 2;
+      setRole(userRole);
 
       if (authenticated && !data && pathname !== "/signup") {
         router.push("/signup");
@@ -139,6 +141,14 @@ export default function Navbar() {
             className="text-blue-100 hover:text-white transition-colors"
           >
             Create Proposal
+          </Link>
+        )}
+        {authenticated && role === 1 && (
+          <Link
+            href="/project/dashboard"
+            className="text-blue-100 hover:text-white transition-colors"
+          >
+            Project Dashboard
           </Link>
         )}
         {authenticated && role === 2 && (
